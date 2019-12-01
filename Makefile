@@ -99,9 +99,8 @@ list:
 .PHONY: update
 update:
 	git pull
-	git diff --exit-code
-	if []; then \
-		echo "PUHING FILES REMOTE"; \
+	
+	if ! git diff --exit-code; then \
 		git add *; \
 		git commit; \
 		git push; \
