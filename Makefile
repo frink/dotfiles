@@ -98,10 +98,14 @@ list:
 
 .PHONY: update
 update:
-	git add *
-	git commit
 	git pull
-	git push
+	git diff --exit-code
+	if []; then \
+		echo "PUHING FILES REMOTE"; \
+		git add *; \
+		git commit; \
+		git push; \
+	fi
 	echo "DOTFILES UPDATED"
 
 .PHONY: uninstall
