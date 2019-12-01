@@ -91,7 +91,7 @@ list:
 		if [ "$$y" = "$(CURDIR)/$$x" ]; then \
 			echo "LINKED\t$$x"; \
 		else \
-			echo "------\t$$x"; \
+			echo "......\t$$x"; \
 		fi; \
 		unset y; \
 	done
