@@ -12,7 +12,7 @@ all: install
 
 .PHONY: install
 install: $(SYMLINKS)
-	echo "INSTALLED"
+	echo "DOTFILES INSTALLED"
 
 .PHONY: track
 track:
@@ -72,9 +72,11 @@ endif
 
 .PHONY: edit
 edit:
-ifeq ("$(FILE)", "")
+ifeq ("$(EDITOR)", "")
+	echo "NO EDITOR SPECIFIED"
+else ifeq ("$(FILE)", "")
 	echo "NO FILE SPECIFIED"
-else ifneq ("$(wildcard $(TRACKED))", "")
+else ifeq ("$(wildcard $(TRACKED))", "")
 	echo "MISSING $(FILENAME)"
 else
 	$(EDITOR) $(TRACKED)
@@ -82,12 +84,31 @@ else
 	git commit -m "updating $(FILENAME)"
 endif
 
+.PHONY: list
+list:
+	for x in $(DOTFILES); do \
+		export y=$$(readlink ~/.$$x); \
+		if [ "$$y" = "$(CURDIR)/$$x" ]; then \
+			echo "LINKED\t$$x"; \
+		else \
+			echo "------\t$$x"; \
+		fi; \
+		unset y; \
+	done
+
+.PHONY: update
+update:
+	git commit -a
+	git pull
+	git push
+	echo "DOTFILES UPDATED"
+
 .PHONY: uninstall
 uninstall:
 	for x in $(DOTFILES); do \
 		$(MAKE) -s unlink FILE=$$x; \
 	done
-	echo "UNINSTALLED"
+	echo "DOTFILES UNINSTALLED"
 
 ~/.%: %
 	$(MAKE) -s link FILE=$<
