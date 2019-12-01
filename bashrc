@@ -1,18 +1,28 @@
 set -o vi
 
 export PS1="\n\e[32m\W \e[34m\\$\e[0m "
+export EDITOR=$(which vim)
 
 function dotfiles() {
 	case $1 in
-		install|uninstall)
-			make -sC $(dirname $(readlink ~/.bashrc)) $1 FILE="$2"
+		install|uninstall|update|list)
+			make -sC $(dirname $(readlink ~/.bashrc)) $1
+
+			if [ "$1" = "update" ]; then
+				source ~/.bashrc
+			fi
 			;;
 		track|untrack|link|unlink|edit)
-			if [ -n "$2" ]; then 
-				make -sC $(dirname $(readlink ~/.bashrc)) $1 FILE="$2"
-			else
+			if [ -z "$2" ]; then 
 				dotfile
+
+				return
 			fi
+			if [ "$2" = "bashrc" ]; then
+				source ~/.bashrc
+			fi
+
+			make -sC $(dirname $(readlink ~/.bashrc)) $1 FILE="$2"
 			;;
 		*)
 			echo "
@@ -27,6 +37,8 @@ function dotfiles() {
 		link
 		unlink
 		edit
+		list
+		update
 
 			"
 			;;
@@ -38,7 +50,7 @@ function rash() {
 }
 
 
-alias vrc="vim ~/.bashrc; source ~/.bashrc"
+alias vrc="dotfiles edit bashrc"
 alias fio="rash https://raw.githubusercontent.com/boazsegev/facil.io/master/scripts/new/app"
 alias ll="ls -hang"
 alias rf="rm -rf"
