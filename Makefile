@@ -98,7 +98,8 @@ list:
 
 .PHONY: update
 update:
-	git commit -a
+	git add *
+	git commit
 	git pull
 	git push
 	echo "DOTFILES UPDATED"
