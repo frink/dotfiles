@@ -82,7 +82,7 @@ else
 	echo "EDITING $(FILENAME)"
 	$(EDITOR) $(TRACKED)
 	git add $(TRACKED)
-	git commit -m "updating $(FILENAME)" --quiet
+	git diff-index --quiet HEAD || git commit -m "updating $(FILENAME)"
 endif
 
 .PHONY: list
@@ -101,9 +101,9 @@ list:
 update:
 	git pull
 	
-	if ! git diff --exit-code --quiet origin; then \
+	if ! git diff-index --quiet origin; then \
 		git add *; \
-		git commit; \
+		git diff-index --quiet HEAD || git commit; \
 		git push; \
 	fi
 	echo "DOTFILES UPDATED"
