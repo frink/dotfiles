@@ -56,4 +56,5 @@ alias fio="rash https://raw.githubusercontent.com/boazsegev/facil.io/master/scri
 alias ll="ls -hang"
 alias rf="rm -rf"
 alias rgrep="grep -r"
+alias hgrep="history | grep"
 
