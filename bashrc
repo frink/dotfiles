@@ -20,6 +20,7 @@ function dotfiles() {
 				return
 			fi
 			if [ "$2" = "bashrc" ]; then
+				echo "reloading bashrc"
 				source ~/.bashrc
 			fi
 
