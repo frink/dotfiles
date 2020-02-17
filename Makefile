@@ -79,6 +79,7 @@ else ifeq ("$(FILE)", "")
 else ifeq ("$(wildcard $(TRACKED))", "")
 	echo "MISSING $(FILENAME)"
 else
+	echo "EDITING $(FILENAME)"
 	$(EDITOR) $(TRACKED)
 	git add $(TRACKED)
 	git commit -m "updating $(FILENAME)"
