@@ -1,7 +1,7 @@
 set -o vi
 
 export PATH="~/bin/:$PATH"
-export PS1="\n\e[32m\w \e[34m\\$\e[0m "
+export PS1="\n\u \e[32m\w \e[34m\\$\e[0m "
 export EDITOR=$(which vim)
 
 function dotfiles() {
