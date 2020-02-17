@@ -19,12 +19,15 @@ function dotfiles() {
 
 				return
 			fi
-			if [ "$2" = "bashrc" ]; then
+
+			echo "${1}ing $2"
+
+			make -sC $(dirname $(readlink ~/.bashrc)) $1 FILE="$2"
+
+			if [ "$1" == "edit" ] && [ "$2" == "bashrc" ]; then
 				echo "reloading bashrc"
 				source ~/.bashrc
 			fi
-
-			make -sC $(dirname $(readlink ~/.bashrc)) $1 FILE="$2"
 			;;
 		*)
 			echo "
