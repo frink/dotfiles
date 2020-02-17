@@ -42,7 +42,7 @@ ifeq ("$(LINKED)", "$(TRACKED)")
 	mv $(TRACKED) $(INSTALLED)
 endif
 	git rm $(TRACKED)
-	git commit -m "remove $(FILENAME)"
+	git commit -m "removing $(FILENAME)"
 	echo "UNTRACKING $(FILENAME)"
 endif
 
@@ -82,7 +82,7 @@ else
 	echo "EDITING $(FILENAME)"
 	$(EDITOR) $(TRACKED)
 	git add $(TRACKED)
-	git commit -m "updating $(FILENAME)"
+	git commit -m "updating $(FILENAME)" --quiet
 endif
 
 .PHONY: list
