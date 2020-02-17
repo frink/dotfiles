@@ -20,8 +20,6 @@ function dotfiles() {
 				return
 			fi
 
-			echo "${1}ing $2"
-
 			make -sC $(dirname $(readlink ~/.bashrc)) $1 FILE="$2"
 
 			if [ "$1" == "edit" ] && [ "$2" == "bashrc" ]; then
