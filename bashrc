@@ -22,7 +22,7 @@ function dotfiles() {
 
 			make -sC $(dirname $(readlink ~/.bashrc)) $1 FILE="$2"
 
-			if [ "$1" == "edit" ] && [ "$2" == "bashrc" ]; then
+			if [ "$2" == "bashrc" ]; then
 				echo "RELOADING ~./bashrc"
 				source ~/.bashrc
 			fi
