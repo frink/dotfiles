@@ -101,7 +101,7 @@ list:
 update:
 	git pull
 	
-	if ! git diff --exit-code; then \
+	if ! git diff --exit-code --quiet origin; then \
 		git add *; \
 		git commit; \
 		git push; \
