@@ -53,6 +53,7 @@ function rash() {
 }
 
 
+alias ff="find . -iname"
 alias vrc="dotfiles edit bashrc"
 alias fio="rash https://raw.githubusercontent.com/boazsegev/facil.io/master/scripts/new/app"
 alias ll="ls -hang"
