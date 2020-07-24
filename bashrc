@@ -31,19 +31,21 @@ function dotfiles() {
 			echo "FRINKnet Dotfile Management System v1.13.2
 © 2020 Frink & Friends - Licence: BSD Zero
 
-	Usage:
-		dotfiles [ACTION] [FILE]
+Usage:
 
-	Actions:
-		install
-		unistall
-		track
-		untrack
-		link
-		unlink
-		edit
-		list
-		update
+	dotfiles [ACTION] [FILE]
+
+Actions:
+
+	install
+	unistall
+	track
+	untrack
+	link
+	unlink
+	edit
+	list
+	update
 
 			"
 			;;
