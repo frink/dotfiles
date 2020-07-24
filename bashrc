@@ -28,8 +28,7 @@ function dotfiles() {
 			fi
 			;;
 		*)
-			echo "FRINKnet Dotfile Management System v1.13.2
-© 2020 Frink & Friends - Licence: BSD Zero
+			echo "FRINKnet Dotfile Management System v1.13.02\n© 2020 Frink & Friends - Licenced: BSD Zero
 
   Usage:
 
