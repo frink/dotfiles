@@ -29,6 +29,9 @@ function dotfiles() {
 			;;
 		*)
 			echo "
+FRINKnet Dot File Management System via Male
+© 2020 - Frink and Friends - MIT License
+
 	Usage:
 		dotfile [action] [file]
 
