@@ -45,6 +45,7 @@ function dotfiles() {
 	edit
 	list
 	update
+	status
 
 			"
 			;;
