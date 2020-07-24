@@ -6,7 +6,7 @@ export EDITOR=$(which vim)
 
 function dotfiles() {
 	case $1 in
-		install|uninstall|status|update|list)
+		install|uninstall|status|sync|list)
 			make -sC $(dirname $(readlink ~/.bashrc)) $1
 
 			if [ "$1" = "update" ]; then
