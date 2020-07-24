@@ -29,7 +29,7 @@ function dotfiles() {
 			;;
 		*)
 			echo "FRINKnet Dotfile Management System v1.13.2
-© 2020 Frink & Friends - Licence: MIT
+© 2020 Frink & Friends - Licence: BSD Zero
 
 	Usage:
 		dotfile [action] [file]
