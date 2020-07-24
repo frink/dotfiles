@@ -28,8 +28,7 @@ function dotfiles() {
 			fi
 			;;
 		*)
-			echo "
-FRINKnet Dot File Management System via Male
+			echo "FRINKnet Dotfile Management System v1.13.2
 © 2020 - Frink and Friends - MIT License
 
 	Usage:
