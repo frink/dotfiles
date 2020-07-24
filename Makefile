@@ -100,9 +100,10 @@ list:
 .PHONY: status
 status:
 	if ! git diff-index --quiet origin; then \
-		echo -e "OUT OF SYNC!!!\nRun: dotfiles update"; \
+		echo "DOTFILES OUT OF SYNC!!!"; \
+		echo "Run: dotfiles update"; \
 	else \
-		echo "ALL UP TO DATE!"; \
+		echo "DOTFILES UP TO DATE!"; \
 	fi
 
 .PHONY: update
