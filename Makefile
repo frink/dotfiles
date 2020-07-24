@@ -101,7 +101,7 @@ list:
 status:
 	if ! git diff-index --quiet origin; then \
 		echo "DOTFILES OUT OF SYNC!!!"; \
-		echo "Run: dotfiles sync"; \
+		echo "Please Run: dotfiles sync"; \
 	else \
 		echo "DOTFILES UP TO DATE!"; \
 	fi
