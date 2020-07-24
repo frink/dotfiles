@@ -15,7 +15,7 @@ function dotfiles() {
 			;;
 		track|untrack|link|unlink|edit)
 			if [ -z "$2" ]; then 
-				$0
+				dotfiles
 
 				return
 			fi
