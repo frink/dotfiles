@@ -108,7 +108,7 @@ status:
 
 .PHONY: update
 update:
-	git pull
+	git pull --ff-only
 	
 	if ! git diff-index --quiet origin; then \
 		git add *; \
