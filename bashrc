@@ -32,7 +32,7 @@ function dotfiles() {
 © 2020 Frink & Friends - Licence: BSD Zero
 
 	Usage:
-		dotfiles [action] [file]
+		dotfiles [ACTION] [FILE]
 
 	Actions:
 		install
