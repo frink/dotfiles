@@ -66,4 +66,5 @@ alias ll="ls -hang"
 alias rf="rm -rf"
 alias rgrep="grep -r"
 alias hgrep="history | grep"
+alias pgrep="ps -a | grep"
 
