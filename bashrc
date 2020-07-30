@@ -88,6 +88,7 @@ function -() {
 	cd -
 }
 
+alias apt="sudo apt"
 alias drun="docker exec -it"
 alias vrc="dotfiles edit bashrc"
 alias vd="vimdiff"
