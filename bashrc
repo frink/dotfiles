@@ -3,13 +3,21 @@ set -o vi
 export PATH="~/bin/:$PATH"
 export PS1="\n\e[33m<\h>\n\e[32m../\W/ \e[34m\\$\e[0m "
 export EDITOR=$(which vim)
-
 function dotfiles() {
-	case $1 in
-		install|uninstall|status|sync|list)
-			make -sC $(dirname $(readlink ~/.bashrc)) $1
+	DOTREPO=$(dirname $(readlink ~/.bashrc))
 
-			if [ "$1" = "update" ]; then
+	case $1 in
+		repo)
+			cd $DOTREPO
+			;;
+		list|install|uninstall|status|sync)
+			if [ -z "$2" ]; then 
+				make -sC $DOTREPO $1
+			else
+				make -sC $DOTREPO $1 FILE="$2"
+			fi
+
+			if [ "$1" = "sync" ]; then
 				source ~/.bashrc
 			fi
 			;;
@@ -20,7 +28,7 @@ function dotfiles() {
 				return
 			fi
 
-			make -sC $(dirname $(readlink ~/.bashrc)) $1 FILE="$2"
+			make -sC $DOTREPO $1 FILE="$2"
 
 			if [ "$2" == "bashrc" ]; then
 				echo "RELOADING ~./bashrc"
@@ -38,13 +46,17 @@ function dotfiles() {
 
 	install
 	unistall
-	track
-	untrack
+
+	track [FILE]
+	untrack [FILE]
+
 	link
 	unlink
+
 	edit
+
 	list
-	update
+	sync
 	status
 
 			"
@@ -76,6 +88,7 @@ function -() {
 	cd -
 }
 
+alias drun="docker -it"
 alias vrc="dotfiles edit bashrc"
 alias fio="rash https://raw.githubusercontent.com/boazsegev/facil.io/master/scripts/new/app"
 alias ll="ls -hang"

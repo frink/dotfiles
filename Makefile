@@ -1,4 +1,5 @@
-DOTFILES := $(filter-out Makefile, $(wildcard *))
+NOTFILES := Makefile README.md LICENSE
+DOTFILES := $(filter-out $(NOTFILES), $(wildcard *))
 SYMLINKS := $(addprefix ~/., $(DOTFILES))
 FILENAME := "~/.$(FILE)"
 INSTALLED := ~/.$(FILE)
@@ -35,7 +36,7 @@ untrack:
 ifeq ("$(FILE)", "")
 	echo "NO FILE SPECIFIED"
 else ifeq ("$(wildcard $(TRACKED))", "")
-	echo "NOT TRACKING $(FILENAME)"
+	echo "UNTRACKING LOCALFILE $(FILENAME)"
 else
 ifeq ("$(LINKED)", "$(TRACKED)")
 	rm $(INSTALLED)
@@ -112,7 +113,7 @@ sync:
 	
 	if ! git diff-index --quiet origin; then \
 		git add *; \
-		echo "Please make a note about what you changed? \n"; \
+		echo "Please write a note about what you changed? \n"; \
 		read COMMIT; \
 		git diff-index --quiet HEAD || git commit -m "$$COMMIT"; \
 		git push; \
