@@ -112,7 +112,7 @@ sync:
 	
 	if ! git diff-index --quiet origin; then \
 		git add *; \
-		echo "Please make a note about what you changed?"; \
+		echo "Please make a note about what you changed? \n"; \
 		read COMMIT; \
 		git diff-index --quiet HEAD || git commit -m "$$COMMIT"; \
 		git push; \
