@@ -88,7 +88,7 @@ function -() {
 	cd -
 }
 
-alias drun="docker -it"
+alias drun="docker exec -it"
 alias vrc="dotfiles edit bashrc"
 alias fio="rash https://raw.githubusercontent.com/boazsegev/facil.io/master/scripts/new/app"
 alias ll="ls -hang"
