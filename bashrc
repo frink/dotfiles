@@ -60,6 +60,22 @@ function ff() {
 	find . -iname "*$1*"
 }
 
+function v() {
+	$EDITOR $(find . -iname "*$1*")
+}
+
+function cdx() {
+	if [ -z "$2" ]; then
+		cd "$1"
+	else
+		cdx "$1/$2" ${@:3}
+	fi
+}
+
+function -() {
+	cd -
+}
+
 alias vrc="dotfiles edit bashrc"
 alias fio="rash https://raw.githubusercontent.com/boazsegev/facil.io/master/scripts/new/app"
 alias ll="ls -hang"
@@ -67,4 +83,5 @@ alias rf="rm -rf"
 alias rgrep="grep -r"
 alias hgrep="history | grep"
 alias pgrep="ps -a | grep"
-
+alias ..="cdx .."
+alias ~="cdx ~"

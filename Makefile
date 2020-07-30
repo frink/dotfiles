@@ -112,7 +112,9 @@ sync:
 	
 	if ! git diff-index --quiet origin; then \
 		git add *; \
-		git diff-index --quiet HEAD || git commit; \
+		echo "Please make a note about what you changed?"; \
+		read COMMIT; \
+		git diff-index --quiet HEAD || git commit -m "$$COMMIT"; \
 		git push; \
 	fi
 	echo "DOTFILES UPDATED"
