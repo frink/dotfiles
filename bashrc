@@ -102,7 +102,7 @@ alias pgrep="ps -a | grep"
 alias ..="cdx .."
 alias ~="cdx ~"
 
-alias whead="wget -qS --method=HEAD"
 alias wbody="wget -qO- --method=GET"
+alias whead="wget -qS --method=HEAD"
 alias wpost="wget -qO- --body-file=- --method=POST"
 alias wput="wget -qO- --body-file=- --method=PUT"
