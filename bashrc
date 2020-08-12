@@ -104,5 +104,5 @@ alias ~="cdx ~"
 
 alias whead="wget -qS --method=HEAD"
 alias wbody="wget -qO- --method=GET"
-alias wpost="wget -qO- --post-file=- --method=POST"
+alias wpost="wget -qO- --body-file=- --method=POST"
 alias wput="wget -qO- --body-file=- --method=PUT"
