@@ -84,8 +84,12 @@ function cdx() {
 	fi
 }
 
-function x() {
+function -() {
 	cd -
+}
+
+function wcat() {
+	wcat -O- 
 }
 
 
