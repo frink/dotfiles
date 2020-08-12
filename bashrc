@@ -103,3 +103,4 @@ alias ..="cdx .."
 alias ~="cdx ~"
 
 alias wcat="wget -qO-"
+alias whead="wget -qO/dev/null -S"
