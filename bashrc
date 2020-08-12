@@ -84,9 +84,11 @@ function cdx() {
 	fi
 }
 
-function -() {
+function x() {
 	cd -
 }
+
+
 
 alias apt="sudo apt"
 alias drun="docker exec -it"
@@ -100,3 +102,4 @@ alias hgrep="history | grep"
 alias pgrep="ps -a | grep"
 alias ..="cdx .."
 alias ~="cdx ~"
+alias -="cd -"
