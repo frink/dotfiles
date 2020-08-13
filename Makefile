@@ -109,8 +109,6 @@ status:
 		echo "DOTFILES UP TO DATE!"; \
 	fi
 
-	echo
-
 .PHONY: sync
 sync:
 	git pull --ff-only 1>/dev/null 2>/dev/null
