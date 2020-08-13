@@ -128,6 +128,7 @@ alias pgrep="ps -a | grep"
 
 alias ..="cdx .."
 alias ~="cdx ~"
+alias g..="cdx $$(git rev-parse --show-toplevel 2>/dev/null || echo '..')"
 
 function -() {
 	cd -
