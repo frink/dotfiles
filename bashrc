@@ -3,6 +3,8 @@
 
 set -o vi
 
+[ -f ~/.localrc ] && source ~/.localrc
+
 if [ $PREFIX = "/data/data/com.termux/files/usr" ]; then
 	export HOSTNAME="chromebook"
 	export USER="termux"
@@ -20,8 +22,11 @@ function .change() {
 }
 
 function .path() {
+	groot=$(git rev-parse --show-toplevel 2>/dev/null || echo '@@@')
+
 	case $PWD in
 		$HOME) echo "~/";;
+		$groot*) echo "${groot##*/}/";;
 		"/") echo "/";;
 		*) echo "../${PWD##*/}/";;
 	esac
