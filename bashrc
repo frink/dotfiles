@@ -52,14 +52,14 @@ function dotfiles() {
 		repo)
 			cd $DOTREPO
 			;;
-		list|install|uninstall|status|sync)
+		list|install|uninstall|status|resync)
 			if [ -z "$2" ]; then 
 				make -sC $DOTREPO $1
 			else
 				make -sC $DOTREPO $1 FILE="$2"
 			fi
 
-			if [ "$1" = "sync" ]; then
+			if [ "$1" = "resync" ]; then
 				source ~/.bashrc
 			fi
 			;;
@@ -91,18 +91,16 @@ function dotfiles() {
 	install
 	unistall
 
+	link [FILE]
+	unlink [FILE]
 	track [FILE]
 	untrack [FILE]
+	edit [FILE]
 
-	link
-	unlink
-
-	edit
 	repo
-
 	list
-	sync
 	status
+	resync
 
 			"
 			;;
