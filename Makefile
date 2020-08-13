@@ -104,8 +104,6 @@ status:
 
 	if ! git diff --quiet --exit-code origin; then \
 		echo "DOTFILES OUT OF SYNC!!!"; \
-		echo; \
-		echo "RUN: dotfiles sync"; \
 	else \
 		echo "DOTFILES UP TO DATE!"; \
 	fi
