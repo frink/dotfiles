@@ -118,7 +118,8 @@ sync:
 		git diff --quiet --cached --exit-code || git commit -m "$$COMMIT"; \
 		git push; \
 	fi
-	echo "DOTFILES ARE NOW UP TO DATE"
+
+	echo -n "\nDOTFILES ARE NOW UP TO DATE"
 
 .PHONY: uninstall
 uninstall:
