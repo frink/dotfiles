@@ -146,7 +146,10 @@ function rash() {
 	bash <(curl -s $1) ${@:2}
 }
 
-[ ! $OS_TERMUX ] && alias apt="sudo apt"
+if [ ! $OS_TERMUX ]l then
+	alias apt="sudo apt"
+fi
+
 alias drun="docker exec -it"
 
 alias wcat="wget -O- --method=GET"
