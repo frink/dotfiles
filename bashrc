@@ -11,10 +11,10 @@ function .change() {
 }
 
 function .path() {
-	case $(pwd) in
+	case $PWD in
 		$HOME) echo "~/";;
 		"/") echo "/";;
-		*) echo "../\W/";;
+		*) echo "../${PWD##*/}/";;
 	esac
 }
 
