@@ -5,7 +5,7 @@ set -o vi
 
 [ -f ~/.localrc ] && source ~/.localrc
 
-if [ $PREFIX = "/data/data/com.termux/files/usr" ]; then
+if [ $PREFIX == "/data/data/com.termux/files/usr" ]; then
 	export HOSTNAME="chromebook"
 	export USER="termux"
 	export OS_TERMUX=1
