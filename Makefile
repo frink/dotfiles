@@ -100,7 +100,7 @@ list:
 
 .PHONY: status
 status:
-	if ! git diff-index --quiet origin; then \
+	if ! git diff --quiet --exit-code origin; then \
 		echo "DOTFILES OUT OF SYNC!!!"; \
 		echo "Please Run: dotfiles sync"; \
 	else \
@@ -109,7 +109,7 @@ status:
 
 .PHONY: sync
 sync:
-	git pull --ff-only
+	git pull --ff-only 1>/dev/null 2>/dev/null
 	
 	if ! git diff --quiet --exit-code origin; then \
 		git add * 2>/dev/null; \
