@@ -100,9 +100,7 @@ function dotfiles() {
 	repo
 	list
 	status
-	resync
-
-			"
+	resync"
 			;;
 	esac
 }
