@@ -34,7 +34,7 @@ function .path() {
 
 	case $PWD in
 		$HOME) echo "~/";;
-		$groot*) echo "${groot##*/}${PWD##$groot}/";;
+		$groot*) echo "⑆${groot##*/}${PWD##$groot}/";;
 		"/") echo "/";;
 		*) echo "../${PWD##*/}/";;
 	esac
