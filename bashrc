@@ -98,6 +98,8 @@ function dotfiles() {
 	esac
 }
 
+dotfiles status
+
 alias ls="ls --color=auto"
 alias ll="ls -hang"
 
