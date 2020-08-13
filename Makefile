@@ -1,4 +1,4 @@
-NOTFILES := Makefile README.md LICENSE
+NOTFILES := Makefile README.md LICENSE localrc
 DOTFILES := $(filter-out $(NOTFILES), $(wildcard *))
 SYMLINKS := $(addprefix ~/., $(DOTFILES))
 FILENAME := "~/.$(FILE)"
