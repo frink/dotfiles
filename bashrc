@@ -1,3 +1,6 @@
+# interactive shells only
+[ -z "$PS1" ] && return
+
 set -o vi
 
 source ~/.localrc
@@ -52,7 +55,7 @@ function dotfiles() {
 			case $2 in
 				bashrc|localrc)
 					echo "RELOADING ~./.$2"
-					source ~/.$2
+					source ~/.bashrc
 					;;
 			esac
 			;;
