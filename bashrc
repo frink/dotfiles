@@ -19,7 +19,7 @@ function .path() {
 }
 
 export PATH="~/bin/:$PATH"
-export PS1="\n\e[33m<$HOSTNAME>\e[31m\e[1m\$(.branch)\n\e[34m@$USER \e[32m\$(.path) \e[34m\\$\e[0m "
+export PS1="\n\e[33m<$HOSTNAME>\e[91m\$(.branch)\n\e[34m@$USER \e[32m\$(.path) \e[37m\\$\e[0m "
 export EDITOR=$(which vim)
 
 function dotfiles() {
