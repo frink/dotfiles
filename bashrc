@@ -34,8 +34,7 @@ function dotfiles() {
 			make -sC $DOTREPO $1 FILE="$2"
 
 			case $2 in
-				"bashrc")
-				"localrc")
+				bashrc|localrc)
 					echo "RELOADING ~./.$2"
 					source ~/.$2
 					;;
