@@ -3,6 +3,7 @@
 
 set -o vi
 
+
 if [ "$PREFIX" = "/data/data/com.termux/files/usr" ]; then
 	export HOSTNAME="chromebook"
 	export USER="termux"
