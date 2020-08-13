@@ -129,8 +129,10 @@ alias pgrep="ps -a | grep"
 alias ..="cdx .."
 alias ~="cdx ~"
 
-function g..() {
-	cdx "$(git rev-parse --show-toplevel 2>/dev/null || echo '..')" $@
+function ..g() {
+	groot=$(git rev-parse --show-toplevel 2>/dev/null || echo '..')
+
+	cdx "$groot" $@
 }
 
 function -() {
