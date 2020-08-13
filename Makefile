@@ -113,7 +113,7 @@ sync:
 	
 	if ! git diff --quiet --exit-code origin; then \
 		git add * 2>/dev/null; \
-		echo "\nPlease write a note about what you changed? \n"; \
+		echo "\nPlease write a note about what you changed?\n "; \
 		read COMMIT; \
 		git diff --quiet --cached --exit-code || git commit -m "$$COMMIT"; \
 		git push; \
