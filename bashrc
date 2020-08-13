@@ -3,13 +3,13 @@
 
 set -o vi
 
-[ -f ~/.localrc ] && source ~/.localrc
-
 if [ "$PREFIX" = "/data/data/com.termux/files/usr" ]; then
 	export HOSTNAME="chromebook"
 	export USER="termux"
 	export OS_TERMUX=1
 fi
+
+[ -f ~/.localrc ] && source ~/.localrc
 
 function .branch() {
 	git branch 2> /dev/null | sed '/^[^*]/d' | sed 's/.* \(.*\)/ [\1'$(.change)']/'
