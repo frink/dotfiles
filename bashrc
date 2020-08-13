@@ -2,13 +2,13 @@ set -o vi
 
 source ~/.localrc
 
-#function .branch() {
-#	#git branch 2> /dev/null | sed '/^[^*]/d' | sed 's/.* \(.*\)/ [\1]/'
-#}
-#
-function .change() {
+function .branch() {
+	#git branch 2> /dev/null | sed '/^[^*]/d' | sed 's/.* \(.*\)/ [\1]/'
 	echo
-	#git diff-index HEAD 2>/dev/null && .branch || echo "$(.branch)*"
+}
+
+function .change() {
+	git diff-index HEAD 2>/dev/null && .branch || echo "$(.branch)*"
 }
 
 export PATH="~/bin/:$PATH"
