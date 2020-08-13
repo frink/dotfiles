@@ -105,13 +105,13 @@ status:
 
 	if ! git diff --quiet --exit-code origin; then \
 		echo "DOTFILES OUT OF SYNC!!!"; \
-		echo "Just run: dotfiles sync"; \
+		echo "Run dotfiles resync to update..."; \
 	else \
 		echo "DOTFILES UP TO DATE!"; \
 	fi
 
-.PHONY: sync
-sync:
+.PHONY: resync
+resync:
 	git pull --ff-only 1>/dev/null 2>/dev/null
 	
 	if ! git diff --quiet --exit-code origin; then \
