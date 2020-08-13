@@ -115,6 +115,7 @@ sync:
 		git add * 2>/dev/null; \
 		echo "\nPlease write a note about what you changed?\n "; \
 		read COMMIT; \
+		echo; \
 		git diff --quiet --cached --exit-code || git commit -m "$$COMMIT"; \
 		git push; \
 	fi
