@@ -11,8 +11,6 @@ if [ "$PREFIX" = "/data/data/com.termux/files/usr" ]; then
 	export OS_TERMUX=1
 fi
 
-source ~/.localrc
-
 function .branch() {
 	git branch 2> /dev/null | sed '/^[^*]/d' | sed 's/.* \(.*\)/ [\1'$(.change)']/'
 }
