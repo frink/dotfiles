@@ -26,7 +26,7 @@ else ifneq ("$(wildcard $(TRACKED))", "")
 else
 	mv $(INSTALLED) "$(TRACKED)"
 	ln -s "$(TRACKED)" $(INSTALLED)
-	git add $(TRACKED)
+	git add $(TRACKED) 2>/dev/null
 	git commit -m "adding $(FILENAME)"
 	echo "TRACKING $(FILENAME)"
 endif
