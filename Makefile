@@ -124,8 +124,6 @@ sync:
 		git push; \
 	fi
 
-	echo -n "\nDOTFILES SYNCRONIZED!\n"
-
 .PHONY: uninstall
 uninstall:
 	for x in $(DOTFILES); do \
