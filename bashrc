@@ -4,7 +4,7 @@ set -o vi
 source ~/.localrc
 
 function .branch() {
-	git branch 2> /dev/null | sed '/^[^*]/d' | sed 's/.* \(.*\)/ [\1\$(.change)]/'
+	git branch 2> /dev/null | sed '/^[^*]/d' | sed 's/.* \(.*\)/ [\1'$(.change)']/'
 }
 
 function .change() {
