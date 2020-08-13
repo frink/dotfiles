@@ -6,6 +6,7 @@ set -o vi
 if [ $PREFIX = "/data/data/com.termux/files/usr" ]; then
 	export HOSTNAME="chromebook"
 	export USER="termux"
+	export OS_TERMUX=1
 fi
 
 source ~/.localrc
@@ -138,7 +139,7 @@ function rash() {
 	bash <(curl -s $1) ${@:2}
 }
 
-alias apt="sudo apt"
+[ ! $OS_TERMUX ] && alias apt="sudo apt"
 alias drun="docker exec -it"
 
 alias wcat="wget -O- --method=GET"
