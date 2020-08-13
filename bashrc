@@ -8,7 +8,7 @@ function .branch() {
 }
 
 function .change() {
-	git diff-index HEAD | sed 's/.\+$/*/'
+	git diff-index HEAD 2> /dev/null | sed 's/.\+$/*/'
 }
 
 export PATH="~/bin/:$PATH"
