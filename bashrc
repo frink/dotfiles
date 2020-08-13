@@ -1,18 +1,18 @@
 set -o vi
 
+
 source ~/.localrc
 
 function .branch() {
-	#git branch 2> /dev/null | sed '/^[^*]/d' | sed 's/.* \(.*\)/ [\1]/'
-	echo
+	git branch 2> /dev/null | sed '/^[^*]/d' | sed 's/.* \(.*\)/ [\1\$(.change)]/'
 }
 
 function .change() {
-	git diff-index HEAD 2>/dev/null && .branch || echo "$(.branch)*"
+	git diff-index &>/dev/null || echo "*"
 }
 
 export PATH="~/bin/:$PATH"
-export PS1="\n\e[33m<$HOSTNAME>\e[31m\$(.change)\n\e[34m@$USER \e[32m../\W/ \e[34m\\$\e[0m "
+export PS1="\n\e[33m<$HOSTNAME>\e[31m\$(.branch)\n\e[34m@$USER \e[32m../\W/ \e[34m\\$\e[0m "
 export EDITOR=$(which vim)
 
 function dotfiles() {
