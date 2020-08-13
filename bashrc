@@ -14,7 +14,7 @@ function .path() {
 	case $PWD in
 		$HOME) echo "~/";;
 		"/") echo "/";;
-		*) echo "../${PWD##*/}/";;
+		*) echo "..${PWD##*/}/";;
 	esac
 }
 
