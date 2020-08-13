@@ -19,7 +19,9 @@ function .branch() {
 		-e 's/\].*$//' \
 		-e 's/\[\|$/ /' \
 		-e 's/ahead /+/' \
-		-e 's/^/ [/' -e 's/$/]/'
+		-e 's/\( .*\)$/'$(.change)'\1/' \
+		-e 's/^/ [/' \
+		-e 's/$/]/'
 }
 
 function .change() {
