@@ -83,7 +83,7 @@ else
 	echo "EDITING $(FILENAME)"
 	$(EDITOR) $(TRACKED)
 	git add $(TRACKED) 2>/dev/null || true
-	git diff-index --quiet HEAD || git commit -m "updating $(FILENAME)" 2>/dev/null || true
+	git diff --quiet --cached --exit-code || git commit -m "updating $(FILENAME)" 2>/dev/null || true
 endif
 
 .PHONY: list
