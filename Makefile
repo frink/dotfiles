@@ -111,11 +111,11 @@ status:
 sync:
 	git pull --ff-only
 	
-	if ! git diff-index --quiet origin; then \
-		git add *; \
+	if ! git diff --quiet --exit-code origin; then \
+		git add * 2>/dev/null; \
 		echo "Please write a note about what you changed? \n"; \
 		read COMMIT; \
-		git diff-index --quiet HEAD || git commit -m "$$COMMIT"; \
+		git diff --quiet --cached --exit-code || git commit -m "$$COMMIT"; \
 		git push; \
 	fi
 	echo "DOTFILES UPDATED"
