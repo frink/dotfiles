@@ -2,8 +2,12 @@ set -o vi
 
 source ~/.localrc
 
+function .branch {
+	git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/⌥ \1/'
+}
+
 export PATH="~/bin/:$PATH"
-export PS1="\n\e[33m<$HOSTNAME>\n\e[34m@$USER \e[32m../\W/ \e[34m\\$\e[0m "
+export PS1="\n\e[33m<$HOSTNAME>\$(.branch)\n\e[34m@$USER \e[32m../\W/ \e[34m\\$\e[0m "
 export EDITOR=$(which vim)
 
 function dotfiles() {
