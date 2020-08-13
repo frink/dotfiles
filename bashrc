@@ -70,16 +70,11 @@ function dotfiles() {
 	esac
 }
 
-function rash() {
-	bash <(curl -s $1) ${@:2}
-}
+alias ls="ls --color=auto"
+alias ll="ls -hang"
 
 function ff() {
 	find . -iname "*$1*"
-}
-
-function v() {
-	$EDITOR $(find . -iname "*$1*")
 }
 
 function cdx() {
@@ -90,26 +85,37 @@ function cdx() {
 	fi
 }
 
+alias rgrep="grep -r"
+alias hgrep="history | grep"
+alias pgrep="ps -a | grep"
+
+alias ..="cdx .."
+alias ~="cdx ~"
+
 function -() {
 	cd -
 }
 
-alias ls="ls --color=auto"
-alias apt="sudo apt"
-alias drun="docker exec -it"
+alias rm.="rm -rf"
+
+# vim stuff
+alias vd="vimdiff"
+
+function v() {
+	$EDITOR $(find . -iname "*$1*")
+}
 
 alias vrc="dotfiles edit bashrc"
 alias vrc.="dotfiles edit localrc"
 
-lias vd="vimdiff"
 alias fio="rash https://raw.githubusercontent.com/boazsegev/facil.io/master/scripts/new/app"
-alias ll="ls -hang"
-alias rf="rm -rf"
-alias rgrep="grep -r"
-alias hgrep="history | grep"
-alias pgrep="ps -a | grep"
-alias ..="cdx .."
-alias ~="cdx ~"
+
+function rash() {
+	bash <(curl -s $1) ${@:2}
+}
+
+alias apt="sudo apt"
+alias drun="docker exec -it"
 
 alias wcat="wget -O- --method=GET"
 alias wbody="wget -qO- --method=GET"
