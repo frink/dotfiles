@@ -13,7 +13,12 @@ fi
 
 function .branch() {
 	#git branch 2> /dev/null | sed -e '/^[^*]/d' -e  's/.* \(.*\)/ [\1'$(.change)']/'
-	git branch -v 2> /dev/null | sed -e '/^[^*]/d' -e 's/^..\([^ ]*\)[^\[]*/\1/' -e 's/\].*$//' -e 's/\[\|$/'$(.change)' - /'
+	git branch -v 2> /dev/null | sed \
+		-e '/^[^*]/d' \
+		-e 's/^..\([^ ]*\)[^\[]*/\1/' \
+		-e 's/\].*$//' \
+		-e 's/\[\|$/'$(.change)' - /' \
+		-e 's/^/ [/' -e 's/$/]/'
 }
 
 function .change() {
