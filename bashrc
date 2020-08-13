@@ -27,7 +27,7 @@ function .branch() {
 }
 
 function .change() {
-	git diff-index HEAD 2> /dev/null | sed 's/.\+$/*/'
+	git diff-index HEAD 2> /dev/null | sed 's/.\+$/*/' | uniq
 }
 
 function .path() {
