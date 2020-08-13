@@ -101,6 +101,7 @@ list:
 .PHONY: status
 status:
 	echo
+	git fetch 2>/dev/null
 
 	if ! git diff --quiet --exit-code origin; then \
 		echo "DOTFILES OUT OF SYNC!!!"; \
