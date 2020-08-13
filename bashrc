@@ -6,12 +6,13 @@ source ~/.localrc
 #	#git branch 2> /dev/null | sed '/^[^*]/d' | sed 's/.* \(.*\)/ [\1]/'
 #}
 #
-#function .change() {
-#	#git diff-index HEAD 2>/dev/null && .branch || echo "$(.branch)*"
-#}
+function .change() {
+	echo
+	#git diff-index HEAD 2>/dev/null && .branch || echo "$(.branch)*"
+}
 
 export PATH="~/bin/:$PATH"
-export PS1="\n\e[33m<$HOSTNAME>\e[31m\$(echo *)\n\e[34m@$USER \e[32m../\W/ \e[34m\\$\e[0m "
+export PS1="\n\e[33m<$HOSTNAME>\e[31m\$(.change)\n\e[34m@$USER \e[32m../\W/ \e[34m\\$\e[0m "
 export EDITOR=$(which vim)
 
 function dotfiles() {
