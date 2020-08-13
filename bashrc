@@ -11,7 +11,11 @@ function .change() {
 }
 
 function .path() {
-	echo
+	case $(pwd) in
+		$HOME) echo "~";;
+		"/") echo "/";;
+		*) echo "../\W/";;
+	esac
 }
 
 export PATH="~/bin/:$PATH"
