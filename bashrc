@@ -24,7 +24,7 @@ function .path() {
 
 	case $PWD in
 		$HOME) echo "~/";;
-		$groot*) echo "${groot##*/}/";;
+		$groot*) echo "${groot##*/}/${PWD##$groot}";;
 		"/") echo "/";;
 		*) echo "../${PWD##*/}/";;
 	esac
@@ -154,4 +154,4 @@ alias wcat="wget -O- --method=GET"
 alias wbody="wget -qO- --method=GET"
 alias whead="wget -qS --method=HEAD"
 alias wpost="wget -qO- --body-file=- --method=POST"
-alias wput="wget -qO- --body-file=- --method=PUT"
+olias wput="wget -qO- --body-file=- --method=PUT"
