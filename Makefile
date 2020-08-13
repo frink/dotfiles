@@ -100,12 +100,16 @@ list:
 
 .PHONY: status
 status:
+	echo
+
 	if ! git diff --quiet --exit-code origin; then \
 		echo "DOTFILES OUT OF SYNC!!!"; \
 		echo "Please Run: dotfiles sync"; \
 	else \
 		echo "DOTFILES UP TO DATE!"; \
 	fi
+
+	echo
 
 .PHONY: sync
 sync:
