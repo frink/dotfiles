@@ -33,10 +33,13 @@ function dotfiles() {
 
 			make -sC $DOTREPO $1 FILE="$2"
 
-			if [ "$2" == "bashrc" ]; then
-				echo "RELOADING ~./bashrc"
-				source ~/.bashrc
-			fi
+			case $2 in
+				"bashrc")
+				"localrc")
+					echo "RELOADING ~./.$2"
+					source ~/.$2
+					;;
+			esac
 			;;
 		*)
 			echo -e "FRINKnet Dotfile Management System v1.13.02\n© 2020 Frink & Friends - Licenced: BSD Zero
@@ -96,9 +99,10 @@ alias ls="ls --color=auto"
 alias apt="sudo apt"
 alias drun="docker exec -it"
 
-alias vrc.="$EDITOR ~/.localrc"
-alias vrc.="$EDITOR ~/.localrc; . ~/.localrc"
-alias vd="vimdiff"
+alias vrc="dotfiles edit bashrc"
+alias vrc.="dotfiles edit localrc"
+
+lias vd="vimdiff"
 alias fio="rash https://raw.githubusercontent.com/boazsegev/facil.io/master/scripts/new/app"
 alias ll="ls -hang"
 alias rf="rm -rf"
