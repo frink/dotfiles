@@ -3,9 +3,7 @@
 
 set -o vi
 
-if [ -f ~/.localrc ]; then
-	source ~/.localrc
-fi
+[ -f ~/.localrc ] && source ~/.localrc
 
 if [ $PREFIX = "/data/data/com.termux/files/usr" ]; then
 	export HOSTNAME="chromebook"
