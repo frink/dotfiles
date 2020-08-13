@@ -3,8 +3,7 @@ set -o vi
 source ~/.localrc
 
 function .branch {
-	git branch 2> /dev/null | sed -e "/^[^*]/d" -e "s/* \(.*\)/ [$(git diff-index HEAD && echo "* ")\1]/"
-	
+	git branch 2> /dev/null | sed -e "/^[^*]/d" -e "s/* \(.*\)/ [$(git diff-index HEAD && echo "*")\1]/"
 }
 
 export PATH="~/bin/:$PATH"
