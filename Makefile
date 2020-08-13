@@ -119,7 +119,7 @@ sync:
 		git push; \
 	fi
 
-	echo -n "\nDOTFILES ARE NOW UP TO DATE\n"
+	echo -n "\nDOTFILES SYNCRONIZED!\n"
 
 .PHONY: uninstall
 uninstall:
