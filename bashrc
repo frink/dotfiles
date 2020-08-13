@@ -1,7 +1,9 @@
 set -o vi
 
+source ~/.localrc
+
 export PATH="~/bin/:$PATH"
-export PS1="\n\e[33m<\h>\n\e[32m../\W/ \e[34m\\$\e[0m "
+export PS1="\n\e[33m<$HOSTNAME>\n\e[34m@$USER \e[32m../\W/ \e[34m\\$\e[0m "
 export EDITOR=$(which vim)
 
 function dotfiles() {
@@ -55,6 +57,7 @@ function dotfiles() {
 	unlink
 
 	edit
+	repo
 
 	list
 	sync
@@ -92,7 +95,9 @@ function -() {
 alias ls="ls --color=auto"
 alias apt="sudo apt"
 alias drun="docker exec -it"
-alias vrc="dotfiles edit bashrc"
+
+alias vrc.="$EDITOR ~/.localrc"
+alias vrc.="$EDITOR ~/.localrc; . .localrc"
 alias vd="vimdiff"
 alias fio="rash https://raw.githubusercontent.com/boazsegev/facil.io/master/scripts/new/app"
 alias ll="ls -hang"
