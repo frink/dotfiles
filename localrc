@@ -1,0 +1,8 @@
+#!/bin/sh
+
+export USER="rods"
+export HOSTNAME="chromebook"
+
+alias greendev="ssh rods@greenkpi.codeheavy.com"
+alias greenapi="ssh root@api.greenkpi.com.au"
+alias greenpre="ssh root@dev.api.greenkpi.com.au"
