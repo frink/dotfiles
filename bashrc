@@ -3,6 +3,7 @@ set -o vi
 export PATH="~/bin/:$PATH"
 export PS1="\n\e[33m<\h>\n\e[32m../\W/ \e[34m\\$\e[0m "
 export EDITOR=$(which vim)
+
 function dotfiles() {
 	DOTREPO=$(dirname $(readlink ~/.bashrc))
 
