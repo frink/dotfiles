@@ -15,7 +15,7 @@ function .branch() {
 	#git branch 2> /dev/null | sed -e '/^[^*]/d' -e  's/.* \(.*\)/ [\1'$(.change)']/'
 	git branch -v 2> /dev/null | sed \
 		-e '/^[^*]/d' \
-		-e 's/^..\([^ ]*\)[^\[]*/\1/' \
+		-e 's/^..(?\([^ ]*\)[^\[]*/\1/' \
 		-e 's/\].*$//' \
 		-e 's/\[\|$/ /' \
 		-e 's/ahead /+/' \
