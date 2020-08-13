@@ -1,6 +1,5 @@
 set -o vi
 
-
 source ~/.localrc
 
 function .branch() {
