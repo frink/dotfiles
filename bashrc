@@ -146,7 +146,7 @@ function rash() {
 	bash <(curl -s $1) ${@:2}
 }
 
-if [ ! $OS_TERMUX ]l then
+if [ ! $OS_TERMUX ]; then
 	alias apt="sudo apt"
 fi
 
