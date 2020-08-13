@@ -97,7 +97,7 @@ alias apt="sudo apt"
 alias drun="docker exec -it"
 
 alias vrc.="$EDITOR ~/.localrc"
-alias vrc.="$EDITOR ~/.localrc; . .localrc"
+alias vrc.="$EDITOR ~/.localrc; . ~/.localrc"
 alias vd="vimdiff"
 alias fio="rash https://raw.githubusercontent.com/boazsegev/facil.io/master/scripts/new/app"
 alias ll="ls -hang"
