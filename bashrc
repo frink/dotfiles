@@ -22,7 +22,7 @@ function .branch() {
 		-e 's/ahead /+/' \
 		-e 's/behind /-/' \
 		-e 's/\( .*\)$/\1/' \
-		-e 's/^/ '$(.change)'[/' \
+		-e 's/^/ ['$(.change)'/' \
 		-e 's/ *$/]/'
 }
 
