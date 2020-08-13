@@ -113,13 +113,13 @@ sync:
 	
 	if ! git diff --quiet --exit-code origin; then \
 		git add * 2>/dev/null; \
-		echo "Please write a note about what you changed? \n"; \
+		echo "\nPlease write a note about what you changed? \n"; \
 		read COMMIT; \
 		git diff --quiet --cached --exit-code || git commit -m "$$COMMIT"; \
 		git push; \
 	fi
 
-	echo -n "\nDOTFILES ARE NOW UP TO DATE"
+	echo -n "\nDOTFILES ARE NOW UP TO DATE\n"
 
 .PHONY: uninstall
 uninstall:
