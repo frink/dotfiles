@@ -19,6 +19,7 @@ function .branch() {
 		-e 's/\].*$//' \
 		-e 's/\[\|$/ /' \
 		-e 's/ahead /+/' \
+		-e 's/behind /-/' \
 		-e 's/\( .*\)$/'$(.change)'\1/' \
 		-e 's/^/ [/' \
 		-e 's/ *$/]/'
