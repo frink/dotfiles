@@ -4,7 +4,7 @@ source ~/.localrc
 
 function .branch {
 	git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ [\1]/'
-	git diff-index HEAD &>/dev/null && printf "*"
+	git diff-index HEAD &>/dev/null && printf "%s" "*"
 }
 
 export PATH="~/bin/:$PATH"
