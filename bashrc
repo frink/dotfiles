@@ -12,14 +12,14 @@ function .change() {
 
 function .path() {
 	case $(pwd) in
-		$HOME) echo "~";;
+		$HOME) echo "~/";;
 		"/") echo "/";;
 		*) echo "../\W/";;
 	esac
 }
 
 export PATH="~/bin/:$PATH"
-export PS1="\n\e[33m<$HOSTNAME>\e[31m\$(.branch)\n\e[34m@$USER \e[32m../\W/ \e[34m\\$\e[0m "
+export PS1="\n\e[33m<$HOSTNAME>\e[31m\$(.branch)\n\e[34m@$USER \e[32m../\$(.path)/ \e[34m\\$\e[0m "
 export EDITOR=$(which vim)
 
 function dotfiles() {
