@@ -164,6 +164,10 @@ fi
 
 alias drun="docker exec -it"
 
+function whos() {
+	whois -h $(whois -h whois.iana.org ${1#*.}|grep whois:|sed 's/whois:\s\+//') $@
+}
+
 alias wcat="wget -O- --method=GET"
 alias wbody="wget -qO- --method=GET"
 alias whead="wget -qS --method=HEAD"
