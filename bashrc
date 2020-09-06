@@ -165,7 +165,15 @@ fi
 alias drun="docker exec -it"
 
 function whos() {
-	whois $(whois -h whois.iana.org ${1#*.}|grep whois:|sed 's/whois:\s\+/-h /') $@
+	local tld=${1#*.}
+	local dns=$(whois -h whois.iana.org $tld|grep whois:|sed 's/whois:\s\+//')
+
+	if [ -z "$dns" ]; then
+		echo "No Whois Sever found for .$tld!"
+		return
+	fi
+
+	whois  $@
 }
 
 alias wcat="wget -O- --method=GET"
