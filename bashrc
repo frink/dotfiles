@@ -173,7 +173,6 @@ function whos() {
 		return
 	else
 		echo "Server: $dns"
-		echo
 	fi
 
 	whois -h $dns $@
