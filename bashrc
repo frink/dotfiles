@@ -171,9 +171,12 @@ function whos() {
 	if [ -z "$dns" ]; then
 		echo "No Whois Sever found for .$tld!"
 		return
+	else
+		echo "Server: $dns"
+		echo
 	fi
 
-	whois  $@
+	whois -h $dns $@
 }
 
 alias wcat="wget -O- --method=GET"
