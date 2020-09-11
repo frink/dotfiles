@@ -10,7 +10,7 @@ set noerrorbells novisualbell t_vb= tm=500
 set foldcolumn=1
 
 syntax enable
-colorscheme ron 
+" colorscheme ron 
 
 set hid
 set ruler
