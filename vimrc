@@ -9,7 +9,7 @@ set showmatch mat=2
 set noerrorbells novisualbell t_vb= tm=500
 set foldcolumn=1
 
-" syntax enable
+syntax enable
 " colorscheme ron 
 " 
 " set hid
