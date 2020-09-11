@@ -10,7 +10,7 @@ set noerrorbells novisualbell t_vb= tm=500
 set foldcolumn=1
 
 syntax enable
-" colorscheme ron 
+colorscheme ron 
 
 set hid
 set ruler
@@ -18,7 +18,6 @@ set history=500
 set wildmenu
 set autoread
 
-" Configure backspace so it acts as it should act
 set backspace=eol,start,indent
 set whichwrap+=<,>,h,l
 
