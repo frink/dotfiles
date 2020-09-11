@@ -1,5 +1,5 @@
-set number nowrap foldmethod=indent
-set list lcs=tab:•·,space:•,trail:·,nbsp:•,precedes:◀,extends:▶
+set list number nowrap foldmethod=indent
+set lcs=tab:•·,space:•,trail:·,nbsp:•,precedes:◀,extends:▶
 set sidescroll=1 scrolloff=3
 set hlsearch incsearch magic
 set cursorline
