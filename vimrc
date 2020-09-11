@@ -1,3 +1,4 @@
+set encoding=utf8 ffs=unix,dos,mac
 set list number nowrap foldmethod=indent
 set lcs=tab:•·,space:•,trail:·,nbsp:•,precedes:◀,extends:▶
 set sidescroll=1 scrolloff=3
@@ -7,7 +8,6 @@ set lazyredraw
 set showmatch mat=2
 set noerrorbells novisualbell t_vb= tm=500
 set foldcolumn=1
-set encoding=utf8 ffs=unix,dos,mac
 
 " syntax enable
 " colorscheme ron 
