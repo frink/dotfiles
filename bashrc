@@ -150,7 +150,7 @@ function v() {
 }
 
 alias vrc="dotfiles edit bashrc"
-alias vrc.="[ ! -e ~/.localrc ] touch ~/.localrc;dotfiles edit localrc"
+alias vrc.="[ ! -f ~/.localrc ] && touch ~/.localrc && ln -s ~/.localrc $DOTREPO/localrc;dotfiles edit localrc"
 
 alias fio="rash https://raw.githubusercontent.com/boazsegev/facil.io/master/scripts/new/app"
 
