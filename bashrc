@@ -110,6 +110,7 @@ dotfiles status
 
 alias ls="ls --color=auto"
 alias ll="ls -hang"
+alias path="echo $PATH"
 
 function ff() {
 	find . -iname "*$1*"
