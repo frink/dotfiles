@@ -35,6 +35,7 @@ function .path() {
 
 	case $PWD in
 		$HOME) echo "~/";;
+		$HOME/${PWD##*/}) echo "~/${PWD##*/}";;
 		$groot*) echo "git:${groot##*/}${PWD##$groot}/";;
 		"/") echo "/";;
 		*) echo "../${PWD##*/}/";;
