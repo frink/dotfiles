@@ -127,6 +127,10 @@ alias lgrep="grep -rl"
 alias hgrep="history | grep"
 alias pgrep="ps -a | grep"
 
+function vgrep() {
+	vim -p $(lgrep $@)
+}
+
 alias ..="cdx .."
 alias ~="cdx ~"
 
