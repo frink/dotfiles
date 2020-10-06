@@ -34,3 +34,5 @@ highlight EndOfBuffer ctermfg=23
 highlight CursorLine cterm=NONE ctermbg=17 ctermfg=NONE
 highlight CursorLineNR cterm=NONE ctermbg=17 ctermfg=26
 highlight Folded ctermbg=17 ctermfg=NONE
+
+
