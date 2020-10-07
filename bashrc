@@ -111,7 +111,7 @@ alias ls="ls --color=auto"
 alias ll="ls -hang"
 
 function ff() {
-	find . -iname "*$1*"
+	find . -ipath "*$1*"
 }
 
 function cdx() {
