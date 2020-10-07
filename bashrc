@@ -146,7 +146,7 @@ alias rm.="rm -rf"
 alias vd="vimdiff"
 
 function v() {
-	$EDITOR $(find . -iname "*$1*")
+	$EDITOR $(find . -ipath "*$1*")
 }
 
 alias vrc="dotfiles edit bashrc"
