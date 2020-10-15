@@ -152,7 +152,7 @@ alias rm.="rm -rf"
 alias vd="vimdiff"
 
 function v() {
-	$EDITOR $(find . -ipath "*$1*")
+	$EDITOR $(ff $@)
 }
 
 alias vrc="dotfiles edit bashrc"
