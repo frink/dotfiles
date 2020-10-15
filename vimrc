@@ -1,6 +1,6 @@
 set encoding=utf8 ffs=unix,dos,mac
 set list number nowrap foldmethod=indent
-set lcs=tab:•·,space:•,trail:·,nbsp:•,precedes:◀,extends:▶
+set lcs=tab:•·,space:•,trail:·,nbsp:·,precedes:◀,extends:▶
 set sidescroll=1 scrolloff=3
 set hlsearch incsearch magic
 set cursorline
