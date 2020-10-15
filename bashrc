@@ -113,7 +113,7 @@ alias ll="ls -hang"
 alias path="echo $PATH | tr : '\n'"
 
 function ff() {
-	find . -iname "*$1*"
+	find . -ipath "*$1*"
 }
 
 function cdx() {
@@ -152,7 +152,7 @@ alias rm.="rm -rf"
 alias vd="vimdiff"
 
 function v() {
-	$EDITOR $(find . -iname "*$1*")
+	$EDITOR $(find . -ipath "*$1*")
 }
 
 alias vrc="dotfiles edit bashrc"
