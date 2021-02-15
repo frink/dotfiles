@@ -101,7 +101,9 @@ list:
 .PHONY: status
 status:
 	echo
-	git fetch 2>/dev/null
+	if [ -z "$\(ping -c 1 8.8.8.8 | grep ttl)" ]; then \
+		git fetch 2>/dev/null; \
+	fi
 
 	if ! git diff --quiet --exit-code origin; then \
 		echo "DOTFILES OUT OF SYNC!!!"; \
@@ -116,7 +118,7 @@ resync:
 	
 	if ! git diff --quiet --exit-code origin; then \
 		git add * 2>/dev/null; \
-		echo "\nPlease write a note about what you changed?\n "; \
+		echo -e "\nPlease write a note about what you changed?\n "; \
 		read COMMIT; \
 		echo; \
 		git diff --quiet --cached --exit-code || git commit -m "$$COMMIT"; \
