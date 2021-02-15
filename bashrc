@@ -35,6 +35,7 @@ function .path() {
 
 	case $PWD in
 		$HOME) echo "~/";;
+		$HOME/${PWD##*/}) echo "~/${PWD##*/}";;
 		$groot*) echo "git:${groot##*/}${PWD##$groot}/";;
 		"/") echo "/";;
 		*) echo "../${PWD##*/}/";;
@@ -42,7 +43,7 @@ function .path() {
 }
 
 export PATH="~/bin/:$PATH"
-export PS1="\n\e[33m<$HOSTNAME>\e[91m\$(.branch)\n\e[34m@$USER \e[32m\$(.path) \e[90m\\$\e[0m "
+export PS1="\n\e[33;1m<$HOSTNAME>\e[91m\$(.branch)\n\e[34m@$USER \e[32m\$(.path) \e[90m\\$\e[0m "
 export EDITOR=$(which vim)
 
 function dotfiles() {
@@ -126,6 +127,10 @@ alias rgrep="grep -r"
 alias lgrep="grep -rl"
 alias hgrep="history | grep"
 alias pgrep="ps -a | grep"
+
+function vgrep() {
+	vim -p $(lgrep $@)
+}
 
 alias ..="cdx .."
 alias ~="cdx ~"
