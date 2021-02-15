@@ -36,3 +36,6 @@ highlight Folded ctermbg=17 ctermfg=NONE
 
 let g:user_emmet_leader_key='<C-m>'
 
+autocmd FileType javascript setlocal shiftwidth=2 tabstop=2 expandtab
+autocmd FileType vue setlocal shiftwidth=2 tabstop=2 expandtab
+
