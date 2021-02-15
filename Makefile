@@ -101,7 +101,9 @@ list:
 .PHONY: status
 status:
 	echo
-	git fetch 2>/dev/null
+	if [ -z "$\(ping -c 1 8.8.8.8 | grep ttl)" ]; then \
+		git fetch 2>/dev/null; \
+	fi
 
 	if ! git diff --quiet --exit-code origin; then \
 		echo "DOTFILES OUT OF SYNC!!!"; \
