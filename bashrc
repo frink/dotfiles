@@ -130,7 +130,6 @@ function note() {
 }
 
 alias todo="note todo"
-alias domains="note domains"
 
 alias ls="ls --color=auto"
 alias ll="ls -hang"
