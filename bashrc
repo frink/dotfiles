@@ -108,6 +108,30 @@ function dotfiles() {
 
 dotfiles status
 
+function note() {
+	[ -z "$1" ] && echo -e "
+
+  Usage:
+
+	note [LIST] [NOTE]
+
+	" && exit
+
+
+	[ ! -d ~/.notes ] && mkdir ~/.notes
+
+	if [ -z "$2" ]; then
+		[ -f ~/.notes/$1 ] && cat ~/.notes/$1 | sort
+	elif [ "$2" = "edit" ]; then
+		$EDITOR ~/.notes/$1
+	else
+		echo ${@:2} >> ~/.notes/$1
+	fi
+}
+
+alias todo="note todo"
+alias domains="note domains"
+
 alias ls="ls --color=auto"
 alias ll="ls -hang"
 
