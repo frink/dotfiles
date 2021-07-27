@@ -115,7 +115,7 @@ function note() {
 
 	note [LIST] [NOTE]
 
-	" && exit
+	" && return
 
 
 	[ ! -d ~/.notes ] && mkdir ~/.notes
@@ -124,6 +124,8 @@ function note() {
 		[ -f ~/.notes/$1 ] && cat ~/.notes/$1 | sort
 	elif [ "$2" = "edit" ]; then
 		$EDITOR ~/.notes/$1
+	elif [ "$2" = "clear" ]; then
+		rm -rf ~/.notes/$1
 	else
 		echo ${@:2} >> ~/.notes/$1
 	fi
@@ -205,6 +207,17 @@ function whos() {
 	fi
 
 	whois -h $dns $@
+}
+
+function dns() {
+	dig +nocmd hinfo +multiline +noall +answer $1
+	dig +nocmd ns +multiline +noall +answer $1
+	dig +nocmd soa +multiline +noall +answer $1
+	dig +nocmd srv +multiline +noall +answer $1
+	dig +nocmd mx +multiline +noall +answer $1
+	dig +nocmd cname +multiline +noall +answer $1
+	dig +nocmd a +multiline +noall +answer $1
+	dig +nocmd txt +multiline +noall +answer $1
 }
 
 alias wcat="wget -O- --method=GET"
