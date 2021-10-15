@@ -1,6 +1,6 @@
 set encoding=utf8 ffs=unix,dos,mac
-set list number nowrap foldmethod=indent
-set lcs=tab:•·,space:•,trail:·,nbsp:•,precedes:◀,extends:▶
+set number nowrap foldmethod=indent
+set list lcs=tab:•·,space:•,trail:·,nbsp:•,precedes:◀,extends:▶
 set sidescroll=1 scrolloff=3
 set hlsearch incsearch magic
 set cursorline
@@ -8,6 +8,9 @@ set lazyredraw
 set showmatch mat=2
 set noerrorbells novisualbell t_vb= tm=500
 set foldcolumn=1
+set autoindent
+set smartindent
+set cindent
 
 syntax enable
 colorscheme ron 
@@ -30,3 +33,9 @@ highlight EndOfBuffer ctermfg=23
 highlight CursorLine cterm=NONE ctermbg=17 ctermfg=NONE
 highlight CursorLineNR cterm=NONE ctermbg=17 ctermfg=26
 highlight Folded ctermbg=17 ctermfg=NONE
+
+let g:user_emmet_leader_key='<C-m>'
+
+autocmd FileType javascript setlocal shiftwidth=2 tabstop=2 expandtab
+autocmd FileType vue setlocal shiftwidth=2 tabstop=2 expandtab
+

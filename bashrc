@@ -108,6 +108,31 @@ function dotfiles() {
 
 dotfiles status
 
+function note() {
+	[ -z "$1" ] && echo -e "
+
+  Usage:
+
+	note [LIST] [NOTE]
+
+	" && return
+
+
+	[ ! -d ~/.notes ] && mkdir ~/.notes
+
+	if [ -z "$2" ]; then
+		[ -f ~/.notes/$1 ] && cat ~/.notes/$1 | sort
+	elif [ "$2" = "edit" ]; then
+		$EDITOR ~/.notes/$1
+	elif [ "$2" = "clear" ]; then
+		rm -rf ~/.notes/$1
+	else
+		echo ${@:2} >> ~/.notes/$1
+	fi
+}
+
+alias todo="note todo"
+
 alias ls="ls --color=auto"
 alias ll="ls -hang"
 alias path="echo $PATH | tr : '\n'"
@@ -156,7 +181,8 @@ function v() {
 }
 
 alias vrc="dotfiles edit bashrc"
-alias vrc.="dotfiles edit localrc"
+alias vvc="dotfiles edit vimrc"
+alias vrc.="[ ! -f ~/.localrc ] && touch ~/.localrc && ln -s ~/.localrc $DOTREPO/localrc;dotfiles edit localrc"
 
 alias fio="rash https://raw.githubusercontent.com/boazsegev/facil.io/master/scripts/new/app"
 
@@ -182,6 +208,17 @@ function whos() {
 	fi
 
 	whois -h $dns $@
+}
+
+function dns() {
+	dig +nocmd hinfo +multiline +noall +answer $1
+	dig +nocmd ns +multiline +noall +answer $1
+	dig +nocmd soa +multiline +noall +answer $1
+	dig +nocmd srv +multiline +noall +answer $1
+	dig +nocmd mx +multiline +noall +answer $1
+	dig +nocmd cname +multiline +noall +answer $1
+	dig +nocmd a +multiline +noall +answer $1
+	dig +nocmd txt +multiline +noall +answer $1
 }
 
 alias wcat="wget -O- --method=GET"
