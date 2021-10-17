@@ -106,7 +106,7 @@ function dotfiles() {
 	esac
 }
 
-#dotfiles status
+dotfiles status
 
 function note() {
 	[ -z "$1" ] && echo -e "
