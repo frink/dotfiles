@@ -178,8 +178,7 @@ alias vd="vimdiff"
 function v() {
 	echo $EDITOR $(
 		for x in "$@"; do
-			echo "*$x*"
-			#find . -ipath "*$x*"
+			find . -ipath "*$x*"
 		done
 	)
 }
