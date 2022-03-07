@@ -44,7 +44,7 @@ function .path() {
 
 export PATH="~/bin/:$PATH"
 export PS1="\n\e[33;1m<$HOSTNAME>\e[91m\$(.branch)\n\e[34m@$USER \e[32m\$(.path) \e[90m\\$\e[0m "
-export EDITOR=$(which vim)
+export EDITOR="$(which vim) -p"
 
 function dotfiles() {
 	DOTREPO=$(dirname $(readlink ~/.bashrc))
@@ -154,7 +154,7 @@ alias hgrep="history | grep"
 alias pgrep="ps -a | grep"
 
 function vgrep() {
-	vim -p $(lgrep $@)
+	$EDITOR $(lgrep $@)
 }
 
 alias ..="cdx .."
