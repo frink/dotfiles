@@ -176,7 +176,7 @@ alias rm.="rm -rf"
 alias vd="vimdiff"
 
 function v() {
-	echo $EDITOR $(
+	$EDITOR $(
 		for x in "$@"; do
 			find . -ipath "*$x*"
 		done
