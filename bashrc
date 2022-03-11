@@ -229,3 +229,16 @@ alias wbody="wget -qO- --method=GET"
 alias whead="wget -qS --method=HEAD"
 alias wpost="wget -qO- --body-file=- --method=POST"
 alias wput="wget -qO- --body-file=- --method=PUT"
+
+function API() {
+	export API_ENDPOINT="$@"
+
+	echo $API_CALL $API_ENDPOINT
+}
+
+for x in "GET PUT POST DELETE HEAD"; do
+	function $x() {
+		wget -qO- --method=$x $API_ENDPOINT/$1
+	}
+done
+
