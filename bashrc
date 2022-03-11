@@ -233,7 +233,7 @@ alias wput="wget -qO- --body-file=- --method=PUT"
 function API() {
 	export API_ENDPOINT="$@"
 
-	for x in "GET PUT POST DELETE HEAD"; do
+	for x in GET PUT POST DELETE HEAD; do
 		echo alias $x="_() { wget -qO- --method=$x '$API_ENDPOINT/'"'"$1"'"; };_"
 	done
 }
