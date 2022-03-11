@@ -234,7 +234,7 @@ function API() {
 	export API_ENDPOINT="$@"
 
 	for x in GET PUT POST DELETE HEAD; do
-		echo alias $x="_() { wget -qO- --method=$x '$API_ENDPOINT/'"'"$1"'"; };_"
+		echo alias API:$x="_() { wget -qO- --method=$x '$API_ENDPOINT/'"'"$1"'"; };_"
 	done
 }
 
