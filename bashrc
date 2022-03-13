@@ -244,6 +244,7 @@ Usage: api [options] [method] [path]
 	--set: set url endpoint and wget arguments
 	--call: show the actual wget call
 	--debug: debug wget call
+	--protocol: show only line protocol
 		";;
 	esac
 }
