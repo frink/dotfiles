@@ -232,8 +232,7 @@ alias wput="wget -qO- --body-file=- --method=PUT"
 
 function api() {
 	case $1 in
-		url) export API_URL="$2";;
-		args) export API_ARGS="${@:2}";;
+		set) export API_URL="$2"; export API_ARGS="${@:3}";;
 		get|put|post|delete|head) wget -qO- $([[ $2 =~ put|post ]] && echo --body-file=-) --method="${1}" "$API_ARGS" "${API_URL%/}$([ -n "$2" ] && echo /)${2#/}";;
 		debug) echo wget -O- $([[ $2 =~ put|post ]] && echo --body-file=-) --method="${2:-get}" "$API_ARGS" "${API_URL%/}$([ -n "$3" ] && echo /)${3#/}";;
 		test) api debug "${@:2}"; wget -O- $([[ $2 =~ put|post ]] && echo --body-file=-) --method="${2:-get}" "$API_ARGS" "${API_URL%/}$([ -n "$3" ] && echo /)${3#/}";;
@@ -242,7 +241,7 @@ API via wget.
 
 Usage: api [command] [seting]
 
-	url: set url endpoint
+	set: set url endpoint
 	args: set wget arguments
 	get: get an endpoint 
 	put: put to an endpoint
