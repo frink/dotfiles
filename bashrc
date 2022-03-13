@@ -235,8 +235,8 @@ function api() {
 		url) export API_URL="$2";;
 		args) export API_ARGS="${@:2}";;
 		get|put|post|delete|head) wget -qO- $([[ $1 =~ put|post ]] && echo --body-file=-) --method=$1 $API_ARGS ${API_URL%/}$([ -z ${2+1} ] && echo /)${2#/};;
-		test) echo wget -qO- $([[ $2 =~ put|post ]] && echo --body-file=-) --method=${2:-get} $API_ARGS ${API_URL%/}$([ -z ${3+1} ] && echo /)${3#/};;
-		try) wget -O- $([[ $2 =~ put|post ]] && echo --body-file=-) --method=${2:-get} $API_ARGS ${API_URL%/}$([ -z ${3+1} ] && echo /)${3#/};;
+		test) echo wget -qO- $([[ $2 =~ put|post ]] && echo --body-file=-) --method=${2:-get} $API_ARGS ${API_URL%/}$([ -z "$3" ] && echo /)${3#/};;
+		try) wget -O- $([[ $2 =~ put|post ]] && echo --body-file=-) --method=${2:-get} $API_ARGS ${API_URL%/}$([ -z "$3" ] && echo /)${3#/};;
 		*) echo "
 API via wget.
 
