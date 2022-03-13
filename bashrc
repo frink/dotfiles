@@ -232,10 +232,10 @@ alias wput="wget -qO- --body-file=- --method=PUT"
 
 function api() {
 	case $1 in
-		get|put|post|delete|head) wget -qO- $([[ $2 =~ put|post ]] && echo --body-file=-) --method="${1}" "${API_ARGS[@]}" "${API_URL%/}$([ -n "$2" ] && echo /)${2#/}";;
 		--set) export API_URL="$2"; export API_ARGS=( "${@:3}" );;
-		--call) echo wget -O- $([[ $2 =~ put|post ]] && echo --body-file=-) --method="${2:-get}" $API_ARGS "${API_URL%/}$([ -n "$3" ] && echo /)${3#/}";;
-		--debug) api call "${@:2}"; wget -O- $([[ $2 =~ put|post ]] && echo --body-file=-) --method="${2:-get}" $API_ARGS "${API_URL%/}$([ -n "$3" ] && echo /)${3#/}";;
+		--call) echo wget -O- $([[ $2 =~ put|post ]] && echo --body-file=-) --method="${2:-get}" "${API_ARGS[@]}" "${API_URL%/}$([ -n "$3" ] && echo /)${3#/}";;
+		--debug) api call "${@:2}"; wget -O- $([[ $2 =~ put|post ]] && echo --body-file=-) --method="${2:-get}" "${API_ARGS[@]}" "${API_URL%/}$([ -n "$3" ] && echo /)${3#/}";;
+		get|put|post|delete|head) wget -qO- $([[ $2 =~ put|post ]] && echo --body-file=-) --method="${1}" "${API_ARGS[@]}" "${API_URL%/}$([ -n "$2" ] && echo /)${2#/}";;
 		*) echo "
 API via wget.
 
