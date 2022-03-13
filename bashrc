@@ -235,9 +235,9 @@ function api() {
 		url) export API_URL="$2";;
 		args) export API_ARGS="${@:2}";;
 		get|put|post|delete|head) wget -qO- --body-file=- --method=$1 $API_ARGS $API_URL/$2;;
-		test) echo wget -qO- --body-file=- --method=$1 $API_ARGS $API_URL/$2;;
+		test) echo wget -qO- --body-file=- --method=get $API_ARGS $API_URL/$2;;
 		*) echo "
-api via wget.
+API via wget.
 
 Usage: api [command] [seting]
 
