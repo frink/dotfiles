@@ -230,14 +230,23 @@ alias whead="wget -qS --method=HEAD"
 alias wpost="wget -qO- --body-file=- --method=POST"
 alias wput="wget -qO- --body-file=- --method=PUT"
 
-function API() {
-	export API_ENDPOINT="$@"
+function api() {
+	case $1 in
+		url) export API_URL="$2";;
+		args) export API_ARGS="${@:2}";;
+		get|put|post|delete|head) wget -qO- --body-file=- --method=$1 $API_ARGS $API_URL/$2;;
+		*) echo "
+api via wget.
 
-	alias API:TEST="_() { wget -O- --method=GET \"\$API_ENDPOINT/\$1\"; };_"
+Usage: api [command] [seting]
 
-	for x in GET PUT POST DELETE HEAD; do
-		alias API:$x="_() { wget -qO- --method=$x \"\$API_ENDPOINT/\$1\"; };_"
-	done
+	url: set url endpoint
+	args: set wget arguments
+	get: get an endpoint 
+	put: put to an endpoint
+	post: post to an endpoint
+	head: head to an endpoint
+	delete: depete to an endpoint
+		";;
+	esac
 }
-
-
