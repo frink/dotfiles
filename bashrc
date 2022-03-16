@@ -233,7 +233,7 @@ alias wput="wget -qO- --body-file=- --method=PUT"
 function api() {
 	umask 077
 
-	$API_BODY="$(mktemp -p /dev/shm/)"
+	export API_BODY="$(mktemp -p /dev/shm/)"
 
 	return
 	[ ! -t 0 ] && cat - > $API_BODY
@@ -256,4 +256,5 @@ Usage: api [options] [method] [path]
 	esac
 
 	rm $API_BODY
+	unset $API_BODY
 }
