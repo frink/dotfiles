@@ -242,7 +242,7 @@ function api() {
 
 	return
 
-	case ${1^^} in
+	case "${1^^}" in
 		--SET) export API_URL="$2"; export API_ARGS=( "${@:3}" );;
 		--CALL) echo wget -dvO- $([[ ${2^^} =~ PUT|POST ]] && echo --body-file=post-data.txt) --method="${2:-GET}" $(for x in "${API_ARGS[@]}"; do echo "${x%%=*}$([ -n "${x#*=}" ] && echo  ="'${x#*=}'") "; done)"${API_URL%/}$([ -n "$3" ] && echo /)${3#/}";;
 		--DEBUG) api --call "${@:2}"; wget -dvO- --save-headers $([[ ${2^^} =~ PUT|POST ]] && echo --body-data=$API_BODY) --method="${2:-GET}" "${API_ARGS[@]}" "${API_URL%/}$([ -n "$3" ] && echo /)${3#/}" 2>&1 | less;;
@@ -258,6 +258,6 @@ Usage: api [options] [method] [path]
 		";;
 	esac
 
-	rm $API_BODY
+	[ "${1^^}" -eq "--DEBUG" ] || rm $API_BODY
 	unset $API_BODY
 }
