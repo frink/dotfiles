@@ -235,6 +235,7 @@ function api() {
 	
 	$API_BODY="$(mktemp -p /dev/shm/)"
 
+	exit
 	[ ! -t 0 ] && cat - > $API_BODY
 
 	case ${1^^} in
