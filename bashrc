@@ -150,8 +150,11 @@ function cdx() {
 
 alias rgrep="grep -r"
 alias lgrep="grep -rl"
-alias hgrep="history | grep"
 alias pgrep="ps -a | grep"
+
+function hgrep() {
+	history | grep "$@"
+}
 
 function vgrep() {
 	$EDITOR $(lgrep $@)
