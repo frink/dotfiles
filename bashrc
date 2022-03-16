@@ -153,7 +153,7 @@ alias lgrep="grep -rl"
 alias pgrep="ps -a | grep"
 
 function hgrep() {
-	history | grep "'$(echo $@)'"
+	history | grep "$(echo $@)"
 }
 
 function vgrep() {
