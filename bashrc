@@ -255,6 +255,6 @@ Usage: api [options] [method] [path]
 		";;
 	esac
 
-	[[ "${1^^}" =~ "GET|PUT|POST|DELETE|HEAD" ]] && rm -f $API_BODY
-	unset $API_BODY
+#	[[ "${1^^}" =~ "GET|PUT|POST|DELETE|HEAD" ]] && rm -f $API_BODY
+#	unset $API_BODY
 }
