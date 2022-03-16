@@ -239,7 +239,7 @@ function api() {
 	case "${1^^}" in
 		--SET) export API_URL="$2"; export API_ARGS=( "${@:3}" );;
 		--CALL) echo wget -dvO- $([[ ${2^^} =~ PUT|POST ]] && echo --body-file=$API_BODY) --method="${2:-GET}" $(for x in "${API_ARGS[@]}"; do echo "${x%%=*}$([ -n "${x#*=}" ] && echo  ="'${x#*=}'") "; done)"${API_URL%/}$([ -n "$3" ] && echo /)${3#/}";;
-		--DEBUG) api --call "${@:2}"; [ ! -t 0 ] && (echo "API ${@^^} BODY";cat $API_BODY); wget -dvO- --save-headers $([[ ${2^^} =~ PUT|POST ]] && echo --body-file=$API_BODY) --method="${2:-GET}" "${API_ARGS[@]}" "${API_URL%/}$([ -n "$3" ] && echo /)${3#/}" 2>&1 | less;;
+		--DEBUG) api --call "${@:2}"; [ ! -t 0 ] && (echo "API ${@^^} BODY:";cat $API_BODY); wget -dvO- --save-headers $([[ ${2^^} =~ PUT|POST ]] && echo --body-file=$API_BODY) --method="${2:-GET}" "${API_ARGS[@]}" "${API_URL%/}$([ -n "$3" ] && echo /)${3#/}" 2>&1 | less;;
 		GET|PUT|POST|DELETE|HEAD) wget -qO- $([[ ${2^^} =~ PUT|POST ]] && echo --body-file=$API_BODY) --method="${1}" "${API_ARGS[@]}" "${API_URL%/}$([ -n "$2" ] && echo /)${2#/}";;
 		*) echo "
 API command line accessor via wget.
