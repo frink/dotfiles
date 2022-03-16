@@ -232,6 +232,8 @@ alias wput="wget -qO- --body-file=- --method=PUT"
 
 function api() {
 	umask 077
+	$API_BODY="$(mktemp -p /dev/shm/)"
+
 	case ${1^^} in
 		--SET) export API_URL="$2"; export API_ARGS=( "${@:3}" );;
 		--CALL) echo wget -dvO- $([[ ${2^^} =~ PUT|POST ]] && echo --body-file=-) --method="${2:-GET}" $(for x in "${API_ARGS[@]}"; do echo "${x%%=*}$([ -n "${x#*=}" ] && echo  ="'${x#*=}'") "; done)"${API_URL%/}$([ -n "$3" ] && echo /)${3#/}";;
