@@ -243,7 +243,7 @@ function api() {
 		--DEBUG) api --call "${@:2}"; wget -dvO- --save-headers $([[ ${2^^} =~ PUT|POST ]] && echo --body-data=$API_BODY) --method="${2:-GET}" "${API_ARGS[@]}" "${API_URL%/}$([ -n "$3" ] && echo /)${3#/}" 2>&1 | less;;
 		GET|PUT|POST|DELETE|HEAD) wget -qO- $([[ ${2^^} =~ PUT|POST ]] && echo --body-file=$API_BODY) --method="${1}" "${API_ARGS[@]}" "${API_URL%/}$([ -n "$2" ] && echo /)${2#/}";;
 		*) echo "
-API via wget.
+API command line accessor via wget.
 
 Usage: api [options] [method] [path]
 
