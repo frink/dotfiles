@@ -232,10 +232,10 @@ alias wput="wget -qO- --body-file=- --method=PUT"
 
 function api() {
 	umask 077
-	
-	$API_BODY="$(mktemp -p /dev/shm/)"
 
 	return
+	$API_BODY="$(mktemp -p /dev/shm/)"
+
 	[ ! -t 0 ] && cat - > $API_BODY
 
 	case ${1^^} in
