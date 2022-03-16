@@ -253,6 +253,6 @@ Usage: api [options] [method] [path]
 		";;
 	esac
 
-	[ "${1^^}" -eq "--DEBUG" ] || rm $API_BODY
+	[ ! "${1^^}" -eq "--DEBUG" ] && rm $API_BODY
 	unset $API_BODY
 }
