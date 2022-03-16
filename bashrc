@@ -237,7 +237,7 @@ function api() {
 	umask 077
 
 	if [ ! -t 0 ]; then
-		export API_BODY="$(mktemp -p /dev/shm/)";
+		[ -z "$API_BODY" ] && export API_BODY="$(mktemp -p /dev/shm/)";
 		cat - > $API_BODY;
 	fi
 
