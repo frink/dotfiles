@@ -240,6 +240,7 @@ function api() {
 	cat $API_BODY
 	rm $API_BODY
 
+	return
 
 	case ${1^^} in
 		--SET) export API_URL="$2"; export API_ARGS=( "${@:3}" );;
