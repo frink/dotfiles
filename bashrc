@@ -236,11 +236,14 @@ alias wput="wget -qO- --body-file=- --method=PUT"
 function api() {
 	umask 077
 
+	echo $@
 	if [ ! -t 0 ]; then
 		[ -z "$API_BODY" ] && export API_BODY="$(mktemp -p /dev/shm/)";
 		cat - > $API_BODY;
 		echo "API_BODY=$API_BODY"
 	fi
+
+	return
 
 	case "${1^^}" in
 		--SET) export API_URL="$2"; export API_ARGS=( "${@:3}" );;
