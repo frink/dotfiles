@@ -239,6 +239,7 @@ function api() {
 	if [ ! -t 0 ]; then
 		[ -z "$API_BODY" ] && export API_BODY="$(mktemp -p /dev/shm/)";
 		cat - > $API_BODY;
+		echo "API_BODY=$API_BODY"
 	fi
 
 	case "${1^^}" in
