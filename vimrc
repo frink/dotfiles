@@ -11,6 +11,7 @@ set foldcolumn=1
 set autoindent
 set smartindent
 set cindent
+set mouse=a
 
 syntax enable
 colorscheme ron 
