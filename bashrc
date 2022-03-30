@@ -243,9 +243,9 @@ function api() {
 
 	case "${1^^}" in
 		--SET) export API_URL="$2"; export API_ARGS=( "${@:3}" );;
-		--CALL) echo wget -dvO- $([[ ${2^^} =~ PUT|POST ]] && echo --body-file=$API_BODY) --method="${2:-GET}" $(for x in "${API_ARGS[@]}"; do echo "${x%%=*}$([ -n "${x#*=}" ] && echo  ="'${x#*=}'") "; done)"${API_URL%/}$([ -n "$3" ] && echo /)${3#/}";;
-		--DEBUG) wget -dvO- --save-headers $([[ ${2^^} =~ PUT|POST ]] && echo --body-file=$API_BODY) --method="${2:-GET}" "${API_ARGS[@]}" "${API_URL%/}$([ -n "$3" ] && echo /)${3#/}" 2>&1 | less; api --call "${@:2}";;
-		GET|PUT|POST|DELETE|HEAD) wget -qO- --content-on-error $([[ ${2^^} =~ PUT|POST ]] && echo --body-file=$API_BODY) --method="${1}" "${API_ARGS[@]}" "${API_URL%/}$([ -n "$2" ] && echo /)${2#/}";;
+		--CALL) echo wget -dvO- $([[ ${2^^} =~ PUT|POST ]] && echo --body-file=$API_BODY) --method="${2^^:-GET}" $(for x in "${API_ARGS[@]}"; do echo "${x%%=*}$([ -n "${x#*=}" ] && echo  ="'${x#*=}'") "; done)"${API_URL%/}$([ -n "$3" ] && echo /)${3#/}";;
+		--DEBUG) wget -dvO- --save-headers $([[ ${2^^} =~ PUT|POST ]] && echo --body-file=$API_BODY) --method="${2^^:-GET}" "${API_ARGS[@]}" "${API_URL%/}$([ -n "$3" ] && echo /)${3#/}" 2>&1 | less; api --call "${@:2}";;
+		GET|PUT|POST|DELETE|HEAD) wget -qO- --content-on-error $([[ ${1^^} =~ PUT|POST ]] && echo --body-file=$API_BODY) --method="${1^^}" "${API_ARGS[@]}" "${API_URL%/}$([ -n "$2" ] && echo /)${2#/}";;
 		*) echo "
 API command line accessor via wget.
 
