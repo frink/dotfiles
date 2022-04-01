@@ -210,9 +210,9 @@ function v() {
 	fi
 
 	if [ -n "$VFILES" ]; then
-		$EDITOR $VFILES
+		echo $EDITOR $VFILES
 	else
-		$EDITOR $PWD
+		echo $EDITOR $PWD
 	fi
 }
 
