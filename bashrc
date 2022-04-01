@@ -175,10 +175,6 @@ function -() {
 	cd -
 }
 
-function in() {
-	dtach -A /dev/shm/$1 ${@:2}
-}
-
 alias rm.="rm -rf"
 
 # vim stuff
