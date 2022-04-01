@@ -207,7 +207,7 @@ function v() {
 
 	echo "$VFILES"
 
-	if [ -n "$VFILES" ]; then
+	[ -n "" ] && if [ -n "$VFILES" ]; then
 		$EDITOR $(
 			for x in "$VFILES"; do
 				find . -ipath "*$x*"
