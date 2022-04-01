@@ -185,8 +185,12 @@ alias vrc.="[ ! -f ~/.localrc ] && touch ~/.localrc && ln -s ~/.localrc $DOTREPO
 
 alias fio="rash https://raw.githubusercontent.com/boazsegev/facil.io/master/scripts/new/app"
 
+function surash() {
+	wbody $1 |sudo bash  ${@:2}
+}
+
 function rash() {
-	bash <(curl -s $1) ${@:2}
+	bash <(wbody $1) ${@:2}
 }
 
 if [ ! $OS_TERMUX ]; then
