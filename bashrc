@@ -149,9 +149,9 @@ function cdx() {
 }
 
 function cdr() {
-	pushd $1
+	cd $1
 	${@:2}
-	popd
+	cd -
 }
 
 alias ..="cdx .."
