@@ -163,7 +163,7 @@ function vgrep() {
 alias ..="cdx .."
 alias ~="cdx ~"
 
-if [ -d "~/Work" ]; then
+if [ -d ~/Work ]; then
 	alias wk="cdx ~/Work"
 fi
 
