@@ -183,6 +183,7 @@ function g.() {
 }
 
 function v.() {
+	unset VFILES
 	unalias $(alias|grep "alias v\."|cut -d"=" -f1|cut -d" " -f2)
 
 	for x in $(ls -d */ 2>/dev/null); do
@@ -205,9 +206,7 @@ function v() {
 		export VFILES=( "$@" )
 	fi
 
-	echo "$VFILES"
-
-	[ -n "" ] && if [ -n "$VFILES" ]; then
+	if [ -n "$VFILES" ]; then
 		$EDITOR $(
 			for x in "$VFILES"; do
 				find . -ipath "*$x*"
