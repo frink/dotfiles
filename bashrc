@@ -203,8 +203,9 @@ alias vd="vimdiff"
 function v() {
 	if [ -n "$@" ]; then
 		export VFILES=( "$@" )
-		echo "$VFILES"
 	fi
+
+	echo "$VFILES"
 
 	if [ -n "$VFILES" ]; then
 		$EDITOR $(
