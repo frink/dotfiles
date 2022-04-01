@@ -186,7 +186,7 @@ function v.() {
 		alias v.${x%/}="vim $PWD/$x";
 	done
 
-	echo "NEW SCOPE $PWD"
+	echo "SCOPE: $PWD"
 }
 
 function -() {
