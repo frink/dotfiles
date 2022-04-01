@@ -208,6 +208,10 @@ fi
 
 alias drun="docker exec -it"
 
+function on() {
+	dtach -A /dev/shm/on-$1 ${@:2}
+}
+
 function whos() {
 	local tld=${1#*.}
 	local dns=$(whois -h whois.iana.org $tld|grep whois:|sed 's/whois:\s\+//')
@@ -270,6 +274,6 @@ Usage: api [options] [method] [path]
 }
 
 if [ -n "$(which quasar)" ]; then
-	alias qdev="quasar dev &> /dev/null"
-	alias qbuild="quasar build"
+	alias qdev="on quasar quasar dev"
+	alias qbuild="on quasar quasar build"
 fi
