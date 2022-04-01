@@ -148,6 +148,10 @@ function cdx() {
 	fi
 }
 
+function cdr() {
+	(cd $1 && ${@:2})
+}
+
 alias ..="cdx .."
 alias ~="cdx ~"
 
@@ -182,7 +186,7 @@ function v.() {
 	unalias $(alias|grep "alias v\."|cut -d"=" -f1|cut -d" " -f2)
 
 	for x in $(ls -d */ 2>/dev/null); do
-		alias v.${x%/}="vim $PWD/$x";
+		alias v.${x%/}="cdr '$PWD/$x' v";
 		echo v.${x%/}
 	done
 }
