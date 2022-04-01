@@ -183,11 +183,10 @@ function g.() {
 }
 
 function v.() {
-	unset VFILES
 	unalias $(alias|grep "alias v\."|cut -d"=" -f1|cut -d" " -f2)
 
 	for x in $(ls -d */ 2>/dev/null); do
-		alias v.${x%/}="cdr '$PWD/$x' v";
+		alias v.${x%/}="unset VFILES;cdr '$PWD/$x' v";
 		echo v.${x%/}
 	done
 }
