@@ -170,11 +170,18 @@ function vgrep() {
 function g.() {
 	cdx "$(git rev-parse --show-toplevel 2>/dev/null || echo '.')" $@
 
-	unalias $(alias|grep "alias [gv]\."|cut -d"=" -f1|cut -d" " -f2)
+	unalias $(alias|grep "alias g\."|cut -d"=" -f1|cut -d" " -f2)
 
 	for x in $(ls -d */ 2>/dev/null); do
 		alias g.${x%/}="cdx $PWD/$x";
-		alias v.${x%/}="cdx $PWD/$x;v";
+	done
+}
+
+function v.() {
+	unalias $(alias|grep "alias v\."|cut -d"=" -f1|cut -d" " -f2)
+
+	for x in $(ls -d */ 2>/dev/null); do
+		alias v.${x%/}="vim $PWD/$x";
 	done
 }
 
