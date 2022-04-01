@@ -198,8 +198,8 @@ alias vd="vimdiff"
 
 function v() {
 	if [ -n "$@" ]; then
-		echo "setting"
 		export VFILES=( "$@" )
+		echo "$VFILES"
 	fi
 
 	if [ -n "$VFILES" ]; then
@@ -208,7 +208,6 @@ function v() {
 				find . -ipath "*$x*"
 			done
 		)
-
 	else
 		$EDITOR $PWD
 	fi
