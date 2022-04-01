@@ -197,16 +197,18 @@ alias rm.="rm -rf"
 alias vd="vimdiff"
 
 function v() {
-	if [ -n "$1" ]; then
-		export VFILES=$(
-			for x in "$@"; do
-				find . -ipath "*$x*"
-			done
-		)
+	if [ -n "$@" ]; then
+		echo "setting"
+		export VFILES=( "$@" )
 	fi
 
 	if [ -n "$VFILES" ]; then
-		$EDITOR $VFILES
+		$EDITOR $(
+			for x in "$VFILES"; do
+				find . -ipath "*$x*"
+			done
+		)
+
 	else
 		$EDITOR $PWD
 	fi
