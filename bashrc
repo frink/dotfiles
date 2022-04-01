@@ -168,7 +168,8 @@ function vgrep() {
 }
 
 function g.() {
-	cdx "$(git rev-parse --show-toplevel 2>/dev/null || echo '..')" $@
+	cdx "$(git rev-parse --show-toplevel 2>/dev/null || echo '.')" $@
+	unalias $(alias|grep "alias g\."|cut -d"=" -f1|cut -d" " -f2)
 }
 
 function -() {
