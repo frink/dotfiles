@@ -163,6 +163,10 @@ function vgrep() {
 alias ..="cdx .."
 alias ~="cdx ~"
 
+if [ -d "~/Work" ]; then
+	alias wk="cdx ~/Work"
+fi
+
 function ..g() {
 	groot=$(git rev-parse --show-toplevel 2>/dev/null || echo '..')
 
