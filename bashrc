@@ -197,7 +197,7 @@ alias vrc.="[ ! -f ~/.localrc ] && touch ~/.localrc && ln -s ~/.localrc $DOTREPO
 alias fio="rash https://raw.githubusercontent.com/boazsegev/facil.io/master/scripts/new/app"
 
 function surash() {
-	wbody $1 |sudo bash  ${@:2}
+	wbody $1 |sudo bash ${@:2}
 }
 
 function rash() {
@@ -270,3 +270,8 @@ Usage: api [options] [method] [path]
 		unset $API_BODY
 	fi
 }
+
+if [ -n "$(which quasar)" ]; then
+	alias qdev="quasar dev &> /dev/null"
+	alias qbuild="quasar build"
+fi
