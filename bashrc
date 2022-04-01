@@ -174,9 +174,8 @@ function g.() {
 
 	for x in $(ls -d */ 2>/dev/null); do
 		alias g.${x%/}="cdx $PWD/$x";
+		echo g.${x%/}
 	done
-
-	v.
 }
 
 function v.() {
@@ -184,9 +183,8 @@ function v.() {
 
 	for x in $(ls -d */ 2>/dev/null); do
 		alias v.${x%/}="vim $PWD/$x";
+		echo v.${x%/}
 	done
-
-	echo "SCOPE: $PWD"
 }
 
 function -() {
