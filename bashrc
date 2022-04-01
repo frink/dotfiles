@@ -201,7 +201,7 @@ alias rm.="rm -rf"
 alias vd="vimdiff"
 
 function v() {
-	if [ -n "$@" ]; then
+	if [ -n "$1" ]; then
 		export VFILES=( "$@" )
 	fi
 
