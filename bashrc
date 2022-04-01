@@ -167,7 +167,7 @@ function vgrep() {
 	$EDITOR $(lgrep $@)
 }
 
-function ..g() {
+function g.() {
 	cdx "$(git rev-parse --show-toplevel 2>/dev/null || echo '..')" $@
 }
 
