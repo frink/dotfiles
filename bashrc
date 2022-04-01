@@ -173,7 +173,7 @@ function g.() {
 	unalias $(alias|grep "alias g\."|cut -d"=" -f1|cut -d" " -f2)
 
 	for x in $(ls -d */ 2>/dev/null); do
-		alias g.${x%/}="cd $PWD/$x";
+		alias g.${x%/}="cdx $PWD/$x";
 	done
 }
 
