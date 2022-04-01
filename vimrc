@@ -39,4 +39,6 @@ let g:user_emmet_leader_key='<C-m>'
 
 autocmd FileType javascript setlocal shiftwidth=2 tabstop=2 expandtab
 autocmd FileType vue setlocal shiftwidth=2 tabstop=2 expandtab
+autocmd FileType css setlocal shiftwidth=2 tabstop=2 expandtab
+autocmd FileType svg setlocal shiftwidth=2 tabstop=2 expandtab
 
