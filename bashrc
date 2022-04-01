@@ -204,7 +204,7 @@ function v() {
 	if [ -n "$1" ]; then
 		export VFILES=$(
 			for x in "$@"; do
-				find $PWD -ipath "*$x*"
+				find . -ipath "*$x*"
 			done
 		)
 	fi
