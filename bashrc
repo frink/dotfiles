@@ -204,7 +204,9 @@ function v() {
 	if [ -n "$1" ]; then
 		export VFILES=$(
 			for x in "$@"; do
-				find . -ipath "*$x*"
+				for x in $(find . -ipath "*home*"); do
+					echo $PWD/${x/.};
+				done
 			done
 		)
 	fi
