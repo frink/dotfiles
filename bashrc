@@ -202,15 +202,15 @@ alias vd="vimdiff"
 
 function v() {
 	if [ -n "$1" ]; then
-		export VFILES=( "$@" )
-	fi
-
-	if [ -n "$VFILES" ]; then
-		$EDITOR $(
-			for x in "$VFILES"; do
+		export VFILES=$(
+			for x in "$@"; do
 				find . -ipath "*$x*"
 			done
 		)
+	fi
+
+	if [ -n "$VFILES" ]; then
+		$EDITOR $VFILES
 	else
 		$EDITOR $PWD
 	fi
