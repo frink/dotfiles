@@ -148,6 +148,13 @@ function cdx() {
 	fi
 }
 
+alias ..="cdx .."
+alias ~="cdx ~"
+
+if [ -d ~/Work ]; then
+	alias wk="cdx ~/Work"
+fi
+
 alias rgrep="grep -r"
 alias lgrep="grep -rl"
 alias pgrep="ps -a | grep"
@@ -160,17 +167,8 @@ function vgrep() {
 	$EDITOR $(lgrep $@)
 }
 
-alias ..="cdx .."
-alias ~="cdx ~"
-
-if [ -d ~/Work ]; then
-	alias wk="cdx ~/Work"
-fi
-
 function ..g() {
-	groot=$(git rev-parse --show-toplevel 2>/dev/null || echo '..')
-
-	cdx "$groot" $@
+	cdx "$(git rev-parse --show-toplevel 2>/dev/null || echo '..')" $@
 }
 
 function -() {
