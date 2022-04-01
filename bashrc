@@ -44,7 +44,7 @@ function .path() {
 
 export PATH="~/bin/:$PATH"
 export PS1="\n\e[33;1m<$HOSTNAME>\e[91m\$(.branch)\n\e[34m@$USER \e[32m\$(.path) \e[90m\\$\e[0m "
-export EDITOR=$(which vim)
+export EDITOR="$(which vim) -p"
 
 function dotfiles() {
 	DOTREPO=$(dirname $(readlink ~/.bashrc))
@@ -150,11 +150,14 @@ function cdx() {
 
 alias rgrep="grep -r"
 alias lgrep="grep -rl"
-alias hgrep="history | grep"
 alias pgrep="ps -a | grep"
 
+function hgrep() {
+	history | grep "$(echo $@)"
+}
+
 function vgrep() {
-	vim -p $(lgrep $@)
+	$EDITOR $(lgrep $@)
 }
 
 alias ..="cdx .."
@@ -176,7 +179,11 @@ alias rm.="rm -rf"
 alias vd="vimdiff"
 
 function v() {
-	$EDITOR $(find . -ipath "*$1*")
+	$EDITOR $(
+		for x in "$@"; do
+			find . -ipath "*$x*"
+		done
+	)
 }
 
 alias vrc="dotfiles edit bashrc"
@@ -229,3 +236,33 @@ alias wbody="wget -qO- --method=GET"
 alias whead="wget -qS --method=HEAD"
 alias wpost="wget -qO- --body-file=- --method=POST"
 alias wput="wget -qO- --body-file=- --method=PUT"
+
+function api() {
+	umask 077
+
+	if [ ! -t 0 ]; then
+		[ -z "$API_BODY" ] && export API_BODY="$(mktemp -p /dev/shm/)";
+		cat - > $API_BODY;
+	fi
+
+	case "${1^^}" in
+		--SET) export API_URL="$2"; export API_ARGS=( "${@:3}" );;
+		--CALL) echo wget -dvO- $([[ ${2^^} =~ PUT|POST ]] && echo --body-file=$API_BODY) --method="${2^^:-GET}" $(for x in "${API_ARGS[@]}"; do echo "${x%%=*}$([ -n "${x#*=}" ] && echo  ="'${x#*=}'") "; done)"${API_URL%/}$([ -n "$3" ] && echo /)${3#/}";;
+		--DEBUG) wget -dvO- --save-headers $([[ ${2^^} =~ PUT|POST ]] && echo --body-file=$API_BODY) --method="${2^^:-GET}" "${API_ARGS[@]}" "${API_URL%/}$([ -n "$3" ] && echo /)${3#/}" 2>&1 | less; api --call "${@:2}";;
+		GET|PUT|POST|DELETE|HEAD) wget -qO- --content-on-error $([[ ${1^^} =~ PUT|POST ]] && echo --body-file=$API_BODY) --method="${1^^}" "${API_ARGS[@]}" "${API_URL%/}$([ -n "$2" ] && echo /)${2#/}";;
+		*) echo "
+API command line accessor via wget.
+
+Usage: api [options] [method] [path]
+
+	--set: set url endpoint and wget arguments
+	--call: show the actual wget call
+	--debug: debug wget call
+		";;
+	esac
+
+	if [[ "${1^^}" =~ "GET|PUT|POST|DELETE|HEAD" ]]; then
+		rm -f $API_BODY
+		unset $API_BODY
+	fi
+}
