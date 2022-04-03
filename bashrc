@@ -307,6 +307,6 @@ Usage: api [options] [method] [path]
 }
 
 if [ -n "$(which quasar)" ]; then
-	alias qdev="on quasar quasar dev"
-	alias qbuild="on quasar quasar build"
+	alias qdev="(g.;on quasar quasar dev)"
+	alias qbuild="(g.;on quasar quasar build)"
 fi
