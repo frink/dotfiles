@@ -133,6 +133,8 @@ function note() {
 
 alias todo="note todo"
 
+alias open="xdg-open"
+alias o="open"
 alias ls="ls --color=auto"
 alias ll="ls -hang"
 
