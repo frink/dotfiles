@@ -300,7 +300,7 @@ function api() {
 		--SET) export API_URL="${2%\?*}";  export API_QUERY="${2#*\?}";export API_ARGS=( "${@:3}" );;
 		--CALL) echo wget -dvO- $([[ ${2^^} =~ PUT|POST ]] && echo --body-file=$API_BODY) --method="${2^^:-GET}" $(for x in "${API_ARGS[@]}"; do echo "${x%%=*}$([ "${x%%=*}" != "${x#*=}" ] && echo  ="'${x#*=}'") "; done)"'${API_URL%/}$([ -n "$3" ] && echo /)$(echo ${3#/} | cut -d? -f1)?$([ -n "$API_QUERY" ] && echo "$API_QUERY&")$(echo ${3#/} | cut -d? -f2)'";;
 		--DEBUG) echo $(export API_ARGS=( --save-headers "$API_ARGS" ); api --call "${@:2}") | bash | less; api --call "${@:2}";;
-		GET|PUT|POST|DELETE|HEAD) api --call "${@:2}" | bash;;
+		GET|PUT|POST|DELETE|HEAD) api --call "${@}" | bash;;
 		*) echo "
 API command line accessor via wget.
 
