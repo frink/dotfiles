@@ -150,17 +150,27 @@ function cdx() {
 	fi
 }
 
-function cdr() {
+function cdrun() {
 	cd $1
 	${@:2}
 	cd -
+}
+
+function mkcd() {
+	if [ -z "$2" ]; then
+		mkdir -p "$1"
+		cd "$1"
+	else
+		mkcd "$1/$2"
+		${@:3}
+	fi
 }
 
 alias ..="cdx .."
 alias ~="cdx ~"
 
 if [ -d ~/Work ]; then
-	alias wk="cdx ~/Work"
+	alias wk="mkcd ~/Work"
 fi
 
 alias rgrep="grep -r"
@@ -191,7 +201,7 @@ function v.() {
 
 
 	for x in $(ls -d */ 2>/dev/null); do
-		alias v.${x%/}="unset VFILES;cdr '$PWD/$x' v";
+		alias v.${x%/}="unset VFILES;cdrun '$PWD/$x' v";
 		echo v.${x%/}
 	done
 }
