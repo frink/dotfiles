@@ -1,4 +1,4 @@
-home# interactive shells only
+#!/bin/bash
 [ -z "$PS1" ] && return
 
 set -o vi
