@@ -178,7 +178,7 @@ alias lgrep="grep -rl"
 alias pgrep="ps -a | grep"
 
 function hgrep() {
-	history | grep "$(echo $@)"
+	history | grep -i "$(echo $@)"
 }
 
 function vgrep() {
@@ -322,3 +322,5 @@ if [ -n "$(which quasar)" ]; then
 	alias qdev="(g.;on quasar quasar dev)"
 	alias qbuild="(g.;on quasar quasar build)"
 fi
+
+alias qdev="dtach -A qdev quasar dev"
