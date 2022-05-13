@@ -324,3 +324,5 @@ if [ -n "$(which quasar)" ]; then
 fi
 
 alias qdev="dtach -A /tmp/qdev quasar dev"
+
+alias rm.orig="find . -type f -iname "*.orig" -exec rm {} \;"
