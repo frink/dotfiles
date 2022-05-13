@@ -323,4 +323,4 @@ if [ -n "$(which quasar)" ]; then
 	alias qbuild="(g.;on quasar quasar build)"
 fi
 
-alias qdev="dtach -A qdev quasar dev"
+alias qdev="dtach -A /tmp/qdev quasar dev"
