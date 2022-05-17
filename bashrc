@@ -53,14 +53,14 @@ function dotfiles() {
 		repo)
 			cd $DOTREPO
 			;;
-		list|install|uninstall|status|resync)
+		list|install|uninstall|status|sync)
 			if [ -z "$2" ]; then 
 				make -sC $DOTREPO $1
 			else
 				make -sC $DOTREPO $1 FILE="$2"
 			fi
 
-			if [ "$1" = "resync" ]; then
+			if [ "$1" = "sync" ]; then
 				source ~/.bashrc
 			fi
 			;;
@@ -101,7 +101,7 @@ function dotfiles() {
 	repo
 	list
 	status
-	resync"
+	sync"
 			;;
 	esac
 }
