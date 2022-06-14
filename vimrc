@@ -37,8 +37,9 @@ highlight Folded ctermbg=17 ctermfg=NONE
 
 let g:user_emmet_leader_key='<C-m>'
 
-autocmd FileType javascript setlocal shiftwidth=2 tabstop=2 expandtab
-autocmd FileType vue setlocal shiftwidth=2 tabstop=2 expandtab
-autocmd FileType css setlocal shiftwidth=2 tabstop=2 expandtab
-autocmd FileType svg setlocal shiftwidth=2 tabstop=2 expandtab
-
+autocmd FileType javascript setlocal tabstop=4 softtabstop=0 expandtab shiftwidth=2 smarttab
+autocmd FileType vue setlocal tabstop=4 softtabstop=0 expandtab shiftwidth=2 smarttab
+autocmd FileType css setlocal tabstop=4 softtabstop=0 expandtab shiftwidth=2 smarttab
+autocmd FileType svg setlocal tabstop=4 softtabstop=0 expandtab shiftwidth=2 smarttab
+autocmd FileType html setlocal tabstop=4 softtabstop=0 expandtab shiftwidth=2 smarttab
+autocmd FileType php setlocal tabstop=8 softtabstop=0 expandtab shiftwidth=4 smarttab
