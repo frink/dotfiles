@@ -323,7 +323,7 @@ if [ -n "$(which quasar)" ]; then
 	alias qbuild="(g.;on quasar quasar build)"
 fi
 
-alias qdev="dtach -A /tmp/qdev quasar dev"
+alias qdev="(g.; dtach -A /tmp/qdev quasar dev)"
 
 alias rm.orig="find . -type f -iname "*.orig" -exec rm {} \;"
 alias rm.swp="find . -type f -iname "*.swp" -exec rm {} \;"
