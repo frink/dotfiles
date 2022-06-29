@@ -307,8 +307,9 @@ function api() {
 			export API_ARGS=( "${@:3}" )
 			;;
 		--CALL)
-			API_METHOD=${2^^:-GET};
-			API_PATH=$3;
+			error calling
+			API_METHOD=${2^^:-GET}
+			API_PATH=$3
 			API_INCLUDE=$([[ $API_METHOD =~ POST|PUT ]] && echo --body-file=$API_BODY)
 
 			echo wget -O- --content-on-error=on \
@@ -318,6 +319,7 @@ function api() {
 				"'${API_URL%/}$([ -n "$API_PATH" ] && echo /)$(echo ${API_PATH#/} | cut -d? -f1)?$([ -n "$API_QUERY" ] && echo "$API_QUERY&")$(echo ${API_PATH#/}? | cut -d? -f2)'"
 
 			unset API_METHOD API_PATH API_INCLUDE
+			error called
 			;;
 		--DEBUG)
 			echo $(export API_ARGS=( -vd --save-headers "${API_ARGS[@]}" ); api --call "${@:2}") | bash | less
@@ -329,9 +331,7 @@ function api() {
 			;;
 		GET|POST|PUT|DELETE|HEAD)
 			echo $(export API_ARGS=( -q "${API_ARGS[@]}" )
-			error calling;
 			api --call "${@}") | cat
-			error called;
 			;;
 		*) echo "
 API command line accessor via wget.
