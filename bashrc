@@ -336,11 +336,11 @@ function api() {
 				api --call "${@:2}"
 			) | less; api --call "${@:2}";;
 		--TEST)
-			bash <(
+			(
 				export API_ARGS=( -q "${API_ARGS[@]}" )
 				export API_URL="https://httpbin.org/anything"
 
-				api  "$@"
+				api "${@:2}"
 			);;
 		GET|POST|PUT|DELETE|HEAD|OPTIONS)
 			bash <(
