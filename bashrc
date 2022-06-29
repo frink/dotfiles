@@ -314,10 +314,9 @@ Usage: api [options] [method] [path]
 		";;
 	esac
 
-	if [ "${1^^}" = "POST" ] || [ "${1^^}" = "PUT" ]; then
-		rm -f $API_BODY
-		unset $API_BODY
-	fi
+	case "${1^^}" in
+		POST|PUT) rm -f $API_BODY; unset $API_BODY;;
+	esac
 }
 
 if [ -n "$(which quasar)" ]; then
