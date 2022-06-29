@@ -299,7 +299,11 @@ function api() {
 	echo CASE api $@ >&2;
 
 	case "${1^^}" in
-		--SET) export API_URL="${2%\?*}";  export API_QUERY="${2#*\?}";export API_ARGS=( "${@:3}" );;
+		--SET)
+			export API_URL="${2%\?*}"
+			export API_QUERY="${2#*\?}"
+			export API_ARGS=( "${@:3}" )
+			;;
 		--CALL)
 			API_METHOD=${2^^:-GET};
 			API_PATH=$3;
@@ -310,10 +314,21 @@ function api() {
 				--method="$API_METHOD" \
 				$(for x in "${API_ARGS[@]}"; do echo "${x%%=*}$([ "${x%%=*}" != "${x#*=}" ] && echo  ="'${x#*=}'") "; done) \
 				"'${API_URL%/}$([ -n "$API_PATH" ] && echo /)$(echo ${API_PATH#/} | cut -d? -f1)?$([ -n "$API_QUERY" ] && echo "$API_QUERY&")$(echo ${API_PATH#/}? | cut -d? -f2)'"
-			unset;;
-		--DEBUG) echo $(export API_ARGS=( -vd --save-headers "${API_ARGS[@]}" ); api --call "${@:2}") | bash | less; api --call "${@:2}";;
-		--TEST) echo $(export API_URI="https://httpbin.org/anything"; api --call "${@:2}") | bash; api --call "${@:2}";;
-		GET|POST|PUT|DELETE|HEAD) echo $(export API_ARGS=( -q "${API_ARGS[@]}" ); api --call "${@}") | bash;;
+
+			unset API_METHOD API_PATH API_INCLUDE
+			;;
+		--DEBUG)
+			echo $(export API_ARGS=( -vd --save-headers "${API_ARGS[@]}" ); api --call "${@:2}") | bash | less
+			api --call "${@:2}"
+			;;
+		--TEST)
+			echo $(export API_URI="https://httpbin.org/anything"; api --call "${@:2}") | bash
+			api --call "${@:2}"
+			;;
+		GET|POST|PUT|DELETE|HEAD)
+			echo $(export API_ARGS=( -q "${API_ARGS[@]}" )
+			api --call "${@}") | bash
+			;;
 		*) echo "
 API command line accessor via wget.
 
@@ -328,7 +343,7 @@ Usage: api [options] [method] [path]
 
 	if [[ "${1^^}" =~ POST|PUT ]]; then
 		rm -f $API_BODY;
-		unset $API_BODY;
+		unset API_BODY;
 	fi
 }
 
