@@ -332,10 +332,10 @@ function api() {
 			) | bash
 			;;
 		--DEBUG)
-			$(
+			echo $(
 				export API_ARGS=( -vd --save-headers "${API_ARGS[@]}" )
 				api --call "${@:2}"
-			) | less
+			) | bash | less
 			api --call "${@:2}"
 			;;
 		--TEST)
