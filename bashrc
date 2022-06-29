@@ -329,9 +329,8 @@ function api() {
 			;;
 		GET|POST|PUT|DELETE|HEAD)
 			echo $(export API_ARGS=( -q "${API_ARGS[@]}" )
-			error calling
-			api --call "${@}") | cat
-			error calling
+			api --call "${@}") | bash
+			echo called
 			;;
 		*) echo "
 API command line accessor via wget.
