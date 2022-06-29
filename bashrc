@@ -300,8 +300,6 @@ function api() {
 		cat - > $API_BODY;
 	fi
 
-	error CASE api $@;
-
 	case "${1^^}" in
 		--SET)
 			export API_URL="${2%\?*}"
@@ -313,8 +311,6 @@ function api() {
 			API_PATH=$3;
 			API_INCLUDE=$([[ $API_METHOD =~ POST|PUT ]] && echo --body-file=$API_BODY)
 
-			error vars set;
-
 			echo wget -O- --content-on-error=on \
 				$API_INCLUDE \
 				--method="$API_METHOD" \
@@ -322,7 +318,6 @@ function api() {
 				"'${API_URL%/}$([ -n "$API_PATH" ] && echo /)$(echo ${API_PATH#/} | cut -d? -f1)?$([ -n "$API_QUERY" ] && echo "$API_QUERY&")$(echo ${API_PATH#/}? | cut -d? -f2)'"
 
 			unset API_METHOD API_PATH API_INCLUDE
-			error vars unset;
 			;;
 		--DEBUG)
 			echo $(export API_ARGS=( -vd --save-headers "${API_ARGS[@]}" ); api --call "${@:2}") | bash | less
@@ -333,8 +328,9 @@ function api() {
 			api --call "${@:2}"
 			;;
 		GET|POST|PUT|DELETE|HEAD)
-			echo $(export API_ARGS=( -q "${API_ARGS[@]}" )
-			api --call "${@}") | bash
+			error calling;
+			echo $(export API_ARGS=( -q "${API_ARGS[@]}" ) api --call "${@}") | bash
+			error called;
 			;;
 		*) echo "
 API command line accessor via wget.
