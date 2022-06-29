@@ -328,8 +328,8 @@ function api() {
 			api --call "${@:2}"
 			;;
 		--TEST)
-#			bash <(export API_URI="https://httpbin.org/anything"; api --call "${@:2}")
-#			api --call "${@:2}"
+			bash <(export API_URI="https://httpbin.org/anything"; api --call "${@:2}")
+			api --call "${@:2}"
 			;;
 		GET|POST|PUT|DELETE|HEAD)
 #			bash <(
