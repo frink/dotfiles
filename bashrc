@@ -333,7 +333,7 @@ function api() {
 				export API_ARGS=( -q "${API_ARGS[@]}")
 				api --call "${@}"
 			error after
-			) | bash
+			) | cat
 			;;
 		*) echo "
 API command line accessor via wget.
