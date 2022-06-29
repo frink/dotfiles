@@ -332,7 +332,7 @@ function api() {
 			echo $(
 				export API_ARGS=( -q "${API_ARGS[@]}" )
 				api --call "${@}"
-			) | bash
+			) | cat
 			error after
 			;;
 		*) echo "
