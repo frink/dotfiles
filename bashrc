@@ -300,40 +300,38 @@ function api() {
 		cat - > $API_BODY;
 	fi
 
-}
-function dope() {
 	case "${1^^}" in
 		--SET)
-			export API_URL="${2%\?*}"
-			export API_QUERY="${2#*\?}"
-			export API_ARGS=( "${@:3}" )
+#			export API_URL="${2%\?*}"
+#			export API_QUERY="${2#*\?}"
+#			export API_ARGS=( "${@:3}" )
 			;;
 		--CALL)
-			API_METHOD=${2^^:-GET}
-			API_PATH=$3
-			API_INCLUDE=$([[ $API_METHOD =~ POST|PUT ]] && echo --body-file=$API_BODY)
-
-			echo wget -O- --content-on-error=on \
-				$API_INCLUDE \
-				--method="$API_METHOD" \
-				$(for x in "${API_ARGS[@]}"; do echo "${x%%=*}$([ "${x%%=*}" != "${x#*=}" ] && echo  ="'${x#*=}'") "; done) \
-				"'${API_URL%/}$([ -n "$API_PATH" ] && echo /)$(echo ${API_PATH#/} | cut -d? -f1)?$([ -n "$API_QUERY" ] && echo "$API_QUERY&")$(echo ${API_PATH#/}? | cut -d? -f2)'"
-
-			unset API_METHOD API_PATH API_INCLUDE
+#			API_METHOD=${2^^:-GET}
+#			API_PATH=$3
+#			API_INCLUDE=$([[ $API_METHOD =~ POST|PUT ]] && echo --body-file=$API_BODY)
+#
+#			echo wget -O- --content-on-error=on \
+#				$API_INCLUDE \
+#				--method="$API_METHOD" \
+#				$(for x in "${API_ARGS[@]}"; do echo "${x%%=*}$([ "${x%%=*}" != "${x#*=}" ] && echo  ="'${x#*=}'") "; done) \
+#				"'${API_URL%/}$([ -n "$API_PATH" ] && echo /)$(echo ${API_PATH#/} | cut -d? -f1)?$([ -n "$API_QUERY" ] && echo "$API_QUERY&")$(echo ${API_PATH#/}? | cut -d? -f2)'"
+#
+#			unset API_METHOD API_PATH API_INCLUDE
 			;;
 		--DEBUG)
-			bash <(export API_ARGS=( -vd --save-headers "${API_ARGS[@]}" ); api --call "${@:2}") | less
-			api --call "${@:2}"
+#			bash <(export API_ARGS=( -vd --save-headers "${API_ARGS[@]}" ); api --call "${@:2}") | less
+#			api --call "${@:2}"
 			;;
 		--TEST)
-			bash <(export API_URI="https://httpbin.org/anything"; api --call "${@:2}")
-			api --call "${@:2}"
+#			bash <(export API_URI="https://httpbin.org/anything"; api --call "${@:2}")
+#			api --call "${@:2}"
 			;;
 		GET|POST|PUT|DELETE|HEAD)
-			bash <(
-				export API_ARGS=( -q "${API_ARGS[@]}" )
-				api --call "${@}"
-			)
+#			bash <(
+#				export API_ARGS=( -q "${API_ARGS[@]}" )
+#				api --call "${@}"
+#			)
 			;;
 		*) echo "
 API command line accessor via wget.
