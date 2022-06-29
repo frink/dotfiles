@@ -300,7 +300,17 @@ function api() {
 
 	case "${1^^}" in
 		--SET) export API_URL="${2%\?*}";  export API_QUERY="${2#*\?}";export API_ARGS=( "${@:3}" );;
-		--CALL) echo wget -O- --content-on-error=on $([[ ${2^^} =~ POST|PUT ]] && echo --body-file=$API_BODY) --method="${2^^:-GET}" $(for x in "${API_ARGS[@]}"; do echo "${x%%=*}$([ "${x%%=*}" != "${x#*=}" ] && echo  ="'${x#*=}'") "; done)"'${API_URL%/}$([ -n "$3" ] && echo /)$(echo ${3#/} | cut -d? -f1)?$([ -n "$API_QUERY" ] && echo "$API_QUERY&")$(echo ${3#/}? | cut -d? -f2)'";;
+		--CALL)
+			API_METHOD=${2^^:-GET};
+			API_PATH=$3;
+			API_INCLUDE=$([[ $API_METHOD =~ POST|PUT ]] && echo --body-file=$API_BODY)
+
+			echo wget -O- --content-on-error=on \
+				$API_INCLUDE \
+				--method="$API_METHOD" \
+				$(for x in "${API_ARGS[@]}"; do echo "${x%%=*}$([ "${x%%=*}" != "${x#*=}" ] && echo  ="'${x#*=}'") "; done) \
+				"'${API_URL%/}$([ -n "$API_PATH" ] && echo /)$(echo ${API_PATH#/} | cut -d? -f1)?$([ -n "$API_QUERY" ] && echo "$API_QUERY&")$(echo ${API_PATH#/}? | cut -d? -f2)'"
+			unset;;
 		--DEBUG) echo $(export API_ARGS=( -vd --save-headers "${API_ARGS[@]}" ); api --call "${@:2}") | bash | less; api --call "${@:2}";;
 		--TEST) echo $(export API_URI="https://httpbin.org/anything"; api --call "${@:2}") | bash; api --call "${@:2}";;
 		GET|POST|PUT|DELETE|HEAD) echo $(export API_ARGS=( -q "${API_ARGS[@]}" ); api --call "${@}") | bash;;
