@@ -307,17 +307,17 @@ function api() {
 #			export API_ARGS=( "${@:3}" )
 			;;
 		--CALL)
-#			API_METHOD=${2^^:-GET}
-#			API_PATH=$3
-#			API_INCLUDE=$([[ $API_METHOD =~ POST|PUT ]] && echo --body-file=$API_BODY)
-#
-#			echo wget -O- --content-on-error=on \
-#				$API_INCLUDE \
-#				--method="$API_METHOD" \
-#				$(for x in "${API_ARGS[@]}"; do echo "${x%%=*}$([ "${x%%=*}" != "${x#*=}" ] && echo  ="'${x#*=}'") "; done) \
-#				"'${API_URL%/}$([ -n "$API_PATH" ] && echo /)$(echo ${API_PATH#/} | cut -d? -f1)?$([ -n "$API_QUERY" ] && echo "$API_QUERY&")$(echo ${API_PATH#/}? | cut -d? -f2)'"
-#
-#			unset API_METHOD API_PATH API_INCLUDE
+			API_METHOD=${2^^:-GET}
+			API_PATH=$3
+			API_INCLUDE=$([[ $API_METHOD =~ POST|PUT ]] && echo --body-file=$API_BODY)
+
+			echo wget -O- --content-on-error=on \
+				$API_INCLUDE \
+				--method="$API_METHOD" \
+				$(for x in "${API_ARGS[@]}"; do echo "${x%%=*}$([ "${x%%=*}" != "${x#*=}" ] && echo  ="'${x#*=}'") "; done) \
+				"'${API_URL%/}$([ -n "$API_PATH" ] && echo /)$(echo ${API_PATH#/} | cut -d? -f1)?$([ -n "$API_QUERY" ] && echo "$API_QUERY&")$(echo ${API_PATH#/}? | cut -d? -f2)'"
+
+			unset API_METHOD API_PATH API_INCLUDE
 			;;
 		--DEBUG)
 #			bash <(export API_ARGS=( -vd --save-headers "${API_ARGS[@]}" ); api --call "${@:2}") | less
