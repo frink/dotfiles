@@ -291,15 +291,15 @@ alias wput="wget -qO- --body-file=- --method=PUT"
 function api() {
 	umask 077
 
-	if [ ! -t 0 ]; then
-		[ -z "$API_BODY" ] && export API_BODY="$(mktemp -p /dev/shm/)";
-		cat - > $API_BODY;
-		echo BODY SAVED: $API_BODY;
-	fi
+# if [ ! -t 0 ]; then
+# 	[ -z "$API_BODY" ] && export API_BODY="$(mktemp -p /dev/shm/)";
+# 	cat - > $API_BODY;
+# 	echo BODY SAVED: $API_BODY;
+# fi
 
 	case "${1^^}" in
 		--SET) export API_URL="${2%\?*}";  export API_QUERY="${2#*\?}";export API_ARGS=( "${@:3}" );;
-		--CALL) echo wget -O- --content-on-error $([[ ${2^^} =~ PUT|POST ]] && echo --body-file=$API_BODY) --method="${2^^:-GET}" $(for x in "${API_ARGS[@]}"; do echo "${x%%=*}$([ "${x%%=*}" != "${x#*=}" ] && echo  ="'${x#*=}'") "; done)"'${API_URL%/}$([ -n "$3" ] && echo /)$(echo ${3#/} | cut -d? -f1)?$([ -n "$API_QUERY" ] && echo "$API_QUERY&")$(echo ${3#/}? | cut -d? -f2)'";;
+		--CALL) echo wget -O- --content-on-error $([[ ${2^^} =~ PUT|POST ]] && echo --body-file=/dev/stdin) --method="${2^^:-GET}" $(for x in "${API_ARGS[@]}"; do echo "${x%%=*}$([ "${x%%=*}" != "${x#*=}" ] && echo  ="'${x#*=}'") "; done)"'${API_URL%/}$([ -n "$3" ] && echo /)$(echo ${3#/} | cut -d? -f1)?$([ -n "$API_QUERY" ] && echo "$API_QUERY&")$(echo ${3#/}? | cut -d? -f2)'";;
 		--DEBUG) echo $(export API_ARGS=( -vd --save-headers "${API_ARGS[@]}" ); api --call "${@:2}") | bash | less; api --call "${@:2}";;
 		GET|PUT|POST|DELETE|HEAD) echo $(export API_ARGS=( -q "${API_ARGS[@]}" ); api --call "${@}");;
 		*) echo "
