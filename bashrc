@@ -295,7 +295,7 @@ function api() {
 		[ -z "$API_BODY" ] && export API_BODY="$(mktemp -p /dev/shm/)";
 		cat - > $API_BODY;
 
-		ls $API_BODY;
+#ls $API_BODY;
 	fi
 
 	case "${1^^}" in
