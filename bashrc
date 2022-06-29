@@ -331,11 +331,11 @@ function api() {
 			bash <(export API_URI="https://httpbin.org/anything"; api --call "${@:2}")
 			api --call "${@:2}"
 			;;
-		GET|POST|PUT|DELETE|HEAD)
-#			bash <(
-#				export API_ARGS=( -q "${API_ARGS[@]}" )
-#				api --call "${@}"
-#			)
+		GET|POST|PUT|DELETE|HEAD|OPTIONS)
+			bash <(
+				export API_ARGS=( -q "${API_ARGS[@]}" )
+				api --call "${@}"
+			)
 			;;
 		*) echo "
 API command line accessor via wget.
