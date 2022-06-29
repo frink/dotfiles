@@ -324,8 +324,8 @@ function api() {
 			unset API_METHOD API_PATH API_INCLUDE
 			;;
 		--DEBUG)
-#			bash <(export API_ARGS=( -vd --save-headers "${API_ARGS[@]}" ); api --call "${@:2}") | less
-#			api --call "${@:2}"
+			bash <(export API_ARGS=( -vd --save-headers "${API_ARGS[@]}" ); api --call "${@:2}") | less
+			api --call "${@:2}"
 			;;
 		--TEST)
 #			bash <(export API_URI="https://httpbin.org/anything"; api --call "${@:2}")
