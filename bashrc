@@ -329,7 +329,7 @@ function api() {
 				done
 
 				echo  "'$API_URI'"
-			) | bash
+			)
 			;;
 		--DEBUG)
 			echo $(
