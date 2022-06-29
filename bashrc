@@ -311,10 +311,13 @@ function api() {
 			fi
 			;;
 		--CALL)
-			API_PATH="${API_URL%/}/$(echo ${3#/} | cut -d? -f1)"
-			API_PATH="$API_PATH?$([ -n "$API_QUERY" ] && echo "$API_QUERY&")"
-			API_PATH="'$API_PATH$(echo ${3#/}? | cut -d? -f2)'"
-			API_FLAGS=$(
+			(
+				API_URI="${API_URL%/}/$(echo ${3#/} | cut -d? -f1)"
+				API_URI+="?$([ -n "$API_QUERY" ] && echo "$API_QUERY&")"
+				API_URI+="$(echo ${3#/}? | cut -d? -f2)"
+
+				echo wget -O- --content-on-error=on
+
 				if [[ "${2^^:-GET}" =~ POST|PUT ]]; then
 					echo --body-file=$API_BODY
 				fi
@@ -324,11 +327,9 @@ function api() {
 				for x in "${API_ARGS[@]}"; do
 					echo "${x%%=*}$([ "${x%%=*}" != "${x#*=}" ] && echo  ="'${x#*=}'") "
 				done
-			)
 
-			echo wget -O- --content-on-error=on $API_FLAGS $API_PATH
-
-			unset API_FLAGS API_PATH
+				echo  "'$API_PATH'"
+			) | echo
 			;;
 		--DEBUG)
 			bash <(
