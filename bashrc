@@ -328,12 +328,12 @@ function api() {
 			api --call "${@:2}"
 			;;
 		GET|POST|PUT|DELETE|HEAD)
+			error before
 			#echo $(
 				export API_ARGS=( -q "${API_ARGS[@]}" )
-			error before
 				api --call "${@}"
-			error after
 			#) | bash
+			error after
 			;;
 		*) echo "
 API command line accessor via wget.
