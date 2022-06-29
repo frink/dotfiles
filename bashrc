@@ -329,7 +329,7 @@ function api() {
 			;;
 		GET|POST|PUT|DELETE|HEAD)
 			error before
-			bash < $(
+			bash <(
 				export API_ARGS=( -q "${API_ARGS[@]}" )
 				api --call "${@}"
 			)
