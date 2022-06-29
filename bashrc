@@ -294,6 +294,7 @@ function api() {
 	if [ ! -t 0 ] && [ -z "$API_BODY" ]; then
 		export API_BODY="$(mktemp -p /dev/shm/)";
 		cat - > $API_BODY;
+		echo BODY SAVED: api $@;
 	fi
 
 	case "${1^^}" in
