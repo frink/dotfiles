@@ -330,7 +330,7 @@ function api() {
 		GET|POST|PUT|DELETE|HEAD)
 			echo $(export API_ARGS=( -q "${API_ARGS[@]}" )
 			error calling;
-			api --call "${@}") #| bash
+			api --call "${@}") >&2 #| bash
 			error called;
 			;;
 		*) echo "
