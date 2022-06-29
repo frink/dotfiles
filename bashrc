@@ -300,10 +300,6 @@ function api() {
 		cat - > $API_BODY;
 	fi
 
-	echo from: $@
-	echo args: $API_ARGS
-	echo call: $API_URL?$API_QUERY
-
 	case "${1^^}" in
 		--SET)
 			if [ -z "$2" ]; then
@@ -336,7 +332,7 @@ function api() {
 			)
 			;;
 		--DEBUG)
-			bash <(
+			$(
 				export API_ARGS=( -vd --save-headers "${API_ARGS[@]}" )
 				api --call "${@:2}"
 			) | less
@@ -351,7 +347,7 @@ function api() {
 			)
 			;;
 		GET|POST|PUT|DELETE|HEAD|OPTIONS)
-			bash <(
+			$(
 				export API_ARGS=( -q "${API_ARGS[@]}" )
 				api --call "${@}"
 			)
