@@ -314,6 +314,8 @@ Usage: api [options] [method] [path]
 		";;
 	esac
 
+	echo CALL: ${1^^}
+
 	if [[ "${1^^}" =~ "GET|PUT|POST|DELETE|HEAD" ]]; then
 		echo DELETING $API_BODY;
 		rm -f $API_BODY
