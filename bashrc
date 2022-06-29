@@ -311,17 +311,24 @@ function api() {
 			fi
 			;;
 		--CALL)
-			API_METHOD=${2^^:-GET}
-			API_PATH=$3
-			API_INCLUDE=$([[ $API_METHOD =~ POST|PUT ]] && echo --body-file=$API_BODY)
+			API_PATH="${API_URL%/}/$(echo ${3#/} | cut -d? -f1)"
+			API_PATH="$API_PATH?$([ -n "$API_QUERY" ] && echo "$API_QUERY&")"
+			API_PATH="'$API_PATH$(echo ${3#/}? | cut -d? -f2)'"
+			API_FLAGS=$(
+				if [[ "${2^^:-GET}" =~ POST|PUT ]]; then
+					echo --body-file=$API_BODY
+				fi
 
-			echo wget -O- --content-on-error=on \
-				$API_INCLUDE \
-				--method="$API_METHOD" \
-				$(for x in "${API_ARGS[@]}"; do echo "${x%%=*}$([ "${x%%=*}" != "${x#*=}" ] && echo  ="'${x#*=}'") "; done) \
-				"'${API_URL%/}$([ -n "$API_PATH" ] && echo /)$(echo ${API_PATH#/} | cut -d? -f1)?$([ -n "$API_QUERY" ] && echo "$API_QUERY&")$(echo ${API_PATH#/}? | cut -d? -f2)'"
+				echo --method="${2^^:-GET}"
 
-			unset API_METHOD API_PATH API_INCLUDE
+				for x in "${API_ARGS[@]}"; do
+					echo "${x%%=*}$([ "${x%%=*}" != "${x#*=}" ] && echo  ="'${x#*=}'") "
+				done
+			)
+
+			echo wget -O- --content-on-error=on $API_FLAGS $API_PATH
+
+			unset API_FLAGS API_PATH
 			;;
 		--DEBUG)
 			bash <(
