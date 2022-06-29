@@ -302,9 +302,13 @@ function api() {
 
 	case "${1^^}" in
 		--SET)
-#			export API_URL="${2%\?*}"
-#			export API_QUERY="${2#*\?}"
-#			export API_ARGS=( "${@:3}" )
+			if [ -z "$2" ]; then
+				api
+			else
+				export API_URL="${2%\?*}"
+				export API_QUERY="${2#*\?}"
+				export API_ARGS=( "${@:3}" )
+			fi
 			;;
 		--CALL)
 			API_METHOD=${2^^:-GET}
