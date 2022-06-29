@@ -328,7 +328,7 @@ function api() {
 					echo "${x%%=*}$([ "${x%%=*}" != "${x#*=}" ] && echo  ="'${x#*=}'") "
 				done
 
-				echo  "'$API_PATH'"
+				echo  "'$API_URI'"
 			)
 			;;
 		--DEBUG)
