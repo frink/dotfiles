@@ -347,11 +347,7 @@ function api() {
 			) | bash
 			;;
 		GET|POST|PUT|DELETE|HEAD|OPTIONS)
-			(
-				export API_ARGS=( -q "${API_ARGS[@]}" )
-
-				api --call "${@:2}"
-			)
+			echo $1
 			;;
 		*) echo "
 API command line accessor via wget.
