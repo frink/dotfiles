@@ -320,20 +320,18 @@ function api() {
 			unset API_METHOD API_PATH API_INCLUDE
 			;;
 		--DEBUG)
-			echo $(export API_ARGS=( -vd --save-headers "${API_ARGS[@]}" ); api --call "${@:2}") | bash | less
+			bash <(export API_ARGS=( -vd --save-headers "${API_ARGS[@]}" ); api --call "${@:2}") | less
 			api --call "${@:2}"
 			;;
 		--TEST)
-			echo $(export API_URI="https://httpbin.org/anything"; api --call "${@:2}") | bash
+			bash <(export API_URI="https://httpbin.org/anything"; api --call "${@:2}")
 			api --call "${@:2}"
 			;;
 		GET|POST|PUT|DELETE|HEAD)
-			error before
 			bash <(
-#export API_ARGS=( -q "${API_ARGS[@]}" )
+				export API_ARGS=( -q "${API_ARGS[@]}" )
 				api --call "${@}"
 			)
-			error after
 			;;
 		*) echo "
 API command line accessor via wget.
