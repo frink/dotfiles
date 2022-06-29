@@ -291,8 +291,8 @@ alias wput="wget -qO- --body-file=- --method=PUT"
 function api() {
 	umask 077
 
-	if [ ! -t 0 ]; then
-		[ -z "$API_BODY" ] && export API_BODY="$(mktemp -p /dev/shm/)";
+	if [ ! -t 0 ] && [ -z "$API_BODY" ]; then
+		export API_BODY="$(mktemp -p /dev/shm/)";
 		cat - > $API_BODY;
 		echo BODY SAVED: $API_BODY - $0 $@;
 	fi
