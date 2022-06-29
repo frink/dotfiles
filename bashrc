@@ -331,11 +331,11 @@ function api() {
 			api --call "${@:2}"
 			;;
 		--TEST)
-			cat <(
+			echo $(
 				export API_ARGS=( -q "${API_ARGS[@]}" )
 				export API_URI="https://httpbin.org/anything"
 				api --call "${@:2}"
-			)
+			) | bash
 			;;
 		GET|POST|PUT|DELETE|HEAD|OPTIONS)
 			bash <(
