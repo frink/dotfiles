@@ -300,6 +300,10 @@ function api() {
 		cat - > $API_BODY;
 	fi
 
+	echo from: $@
+	echo args: $API_ARGS
+	echo call: $API_URL?$API_QUERY
+
 	case "${1^^}" in
 		--SET)
 			if [ -z "$2" ]; then
