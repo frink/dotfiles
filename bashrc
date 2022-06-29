@@ -329,10 +329,10 @@ function api() {
 			;;
 		GET|POST|PUT|DELETE|HEAD)
 			error before
-			#echo $(
+			echo $(
 				export API_ARGS=( -q "${API_ARGS[@]}" )
 				api --call "${@}"
-			#) | bash
+			) | bash
 			error after
 			;;
 		*) echo "
