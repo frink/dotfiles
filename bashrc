@@ -328,8 +328,7 @@ function api() {
 			api --call "${@:2}"
 			;;
 		GET|POST|PUT|DELETE|HEAD)
-			echo $(export API_ARGS=( -q "${API_ARGS[@]}" )
-			api --call "${@}") | bash
+			echo $(export API_ARGS=( -q "${API_ARGS[@]}"); api --call "${@}") | bash
 			error called
 			;;
 		*) echo "
