@@ -346,9 +346,6 @@ function api() {
 				api --call "${@:2}"
 			) | bash
 			;;
-		GET|POST|PUT|DELETE|HEAD|OPTIONS)
-			echo $1
-			;;
 		*) echo "
 API command line accessor via wget.
 
