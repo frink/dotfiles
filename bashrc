@@ -314,10 +314,7 @@ Usage: api [options] [method] [path]
 		";;
 	esac
 
-	echo call: ${1^^};
-
 	if [ "${1^^}" = "POST" ] || [ "${1^^}" = "PUT" ]; then
-		echo DELETING $API_BODY;
 		rm -f $API_BODY
 		unset $API_BODY
 	fi
