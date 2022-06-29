@@ -344,7 +344,7 @@ function api() {
 				export API_URL="https://httpbin.org/anything"
 
 				api --call "${@:2}"
-			)
+			) | bash
 			;;
 		GET|POST|PUT|DELETE|HEAD|OPTIONS)
 			$(
