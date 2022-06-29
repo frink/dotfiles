@@ -329,8 +329,8 @@ function api() {
 			;;
 		GET|POST|PUT|DELETE|HEAD)
 			echo $(
-			error before
 				export API_ARGS=( -q "${API_ARGS[@]}" )
+			error before
 				api --call "${@}"
 			error after
 			)
