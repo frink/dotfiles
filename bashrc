@@ -332,21 +332,27 @@ function api() {
 			(
 				export API_ARGS=( -vd --save-headers "${API_ARGS[@]}" )
 
-				api --call "${@:2}" | bash | less
-			); api --call "${@:2}";;
+				api --call "${@:2:2}" | bash | less
+			); api --call "${@:2:2}";;
 		--TEST)
 			(
 				export API_ARGS=( -q "${API_ARGS[@]}" )
 				export API_URL="https://httpbin.org/anything"
 
-				api --call "${@:2}" | bash
+				api --call "${@:2:2}" | bash 
+			);;
+		--PARSE)
+			(
+				cat - | jq "${@:2}" 2>/dev/null
+					cat -
+				fi
 			);;
 		GET|POST|PUT|DELETE|HEAD|OPTIONS)
 			(
-#export API_ARGS=( -q "${API_ARGS[@]}" )
+				export API_ARGS=( -q "${API_ARGS[@]}" )
 
-				echo api --call "$@"
-			);;
+				echo api --call "${@:1:2}"
+			) | api --parse;;
 		*) echo "
 API command line accessor via wget.
 
