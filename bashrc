@@ -334,7 +334,7 @@ function api() {
 			(
 				export API_ARGS=( -vd --save-headers "${API_ARGS[@]}" )
 
-				api --call "${@:2}" | bash | less
+				api "${@:2}"
 			); api --call "${@:2}";;
 		--TEST)
 			(
