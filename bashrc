@@ -378,6 +378,14 @@ Usage: api [options] [method] [path]
 	fi
 }
 
+jqm() {
+	(
+		API_RTN=$( cat )
+
+		echo "$API_RTN" #| jq "${@:2}" 2>/dev/null || echo "$API_RTN"
+	)
+}
+
 if [ -n "$(which quasar)" ]; then
 	alias qdev="(g.;on quasar quasar dev)"
 	alias qbuild="(g.;on quasar quasar build)"
