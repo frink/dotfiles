@@ -343,7 +343,7 @@ function api() {
 				export API_URL="https://httpbin.org/anything"
 
 				api --call "${@:2:2}" | bash 
-			) | api --parse "${@:3}"
+			) | api --parse "${@:4}"
 			;;
 		--PARSE)
 			(
