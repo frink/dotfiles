@@ -327,26 +327,31 @@ function api() {
 				done
 
 				echo  "'$API_URI'"
-			);;
+			)
+			;;
 		--DEBUG)
 			(
 				export API_ARGS=( -vd --save-headers "${API_ARGS[@]}" )
 
 				api --call "${@:2:2}" | bash | less
-			); api --call "${@:2:2}";;
+			)
+			api --call "${@:2:2}"
+			;;
 		--TEST)
 			(
 				export API_ARGS=( -q "${API_ARGS[@]}" )
 				export API_URL="https://httpbin.org/anything"
 
 				api --call "${@:2:2}" | bash 
-			) | api --parse "${@:4}";;
+			) | api --parse "${@:4}"
+			;;
 		--PARSE)
 			(
 				API_RTN=$(cat -);
 
-				echo $API_RTN | jq ${@:2) 2>/dev/null || echo $API_RTN
-			);;
+				echo $API_RTN | jq ${@:2} 2>/dev/null || echo $API_RTN
+			)
+			;;
 		GET|POST|PUT|DELETE|HEAD|OPTIONS)
 			(
 				export API_ARGS=( -q "${API_ARGS[@]}" )
