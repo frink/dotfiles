@@ -345,7 +345,7 @@ function api() {
 			);;
 		GET|POST|PUT|DELETE|HEAD|OPTIONS)
 			(
-				export API_ARGS=( -q "${API_ARGS[@]}" )
+#export API_ARGS=( -q "${API_ARGS[@]}" )
 
 				echo api --call "$@"
 			);;
