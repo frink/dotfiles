@@ -347,8 +347,7 @@ function api() {
 			;;
 		--PARSE)
 			(
-			 	echo asdf
-				API_RTN=$(cat)
+				API_RTN=$( cat )
 
 				echo "$API_RTN" #| jq "${@:2}" 2>/dev/null || echo "$API_RTN"
 			)
