@@ -343,14 +343,13 @@ function api() {
 				export API_URL="https://httpbin.org/anything"
 
 				api --call "${@:2:2}" | bash 
-			)
+			) | api --parse "${@:3}";;
 			;;
 		--PARSE)
 			(
-				API_RTN="$(mktemp -p /dev/shm/)"
-				cat - > $API_RTN
+				API_RTN=$(cat)
 
-				jq ${@:2} 2>/dev/null || echo $API_RTN
+				echo "$API_RTN" | jq "${@:2}" 2>/dev/null || echo "$API_RTN"
 			)
 			;;
 		GET|POST|PUT|DELETE|HEAD|OPTIONS)
