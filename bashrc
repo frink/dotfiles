@@ -347,9 +347,10 @@ function api() {
 			;;
 		--PARSE)
 			(
-				API_RTN=$(cat -);
+				API_RTN="$(mktemp -p /dev/shm/)"
+				cat - > $API_RTN
 
-				echo $API_RTN | jq ${@:2} 2>/dev/null || echo $API_RTN
+				jq ${@:2} 2>/dev/null || echo $API_RTN
 			)
 			;;
 		GET|POST|PUT|DELETE|HEAD|OPTIONS)
