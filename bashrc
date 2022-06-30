@@ -341,7 +341,7 @@ function api() {
 				export API_ARGS=( -q "${API_ARGS[@]}" )
 				export API_URL="https://httpbin.org/anything"
 
-				api "${@:2}"
+				api --call "${@:2}" | bash
 			);;
 		GET|POST|PUT|DELETE|HEAD|OPTIONS)
 			(
