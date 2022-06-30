@@ -349,7 +349,7 @@ function api() {
 			(
 				API_RTN=$( cat )
 
-				echo  jq "${@:2}" 2>/dev/null #|| echo "$API_RTN"
+				echo "$API_RTN" | jq "${@:2}" 2>/dev/null #|| echo "$API_RTN"
 			)
 			;;
 		GET|POST|PUT|DELETE|HEAD|OPTIONS)
@@ -376,14 +376,6 @@ Usage: api [options] [method] [path]
 		rm -f $API_BODY;
 		unset API_BODY;
 	fi
-}
-
-jqm() {
-	(
-		API_RTN=$( cat )
-
-		echo "$API_RTN" #| jq "${@:2}" 2>/dev/null || echo "$API_RTN"
-	)
 }
 
 if [ -n "$(which quasar)" ]; then
