@@ -293,11 +293,11 @@ alias wpost="wget -qO- --body-file=- --method=POST"
 alias wput="wget -qO- --body-file=- --method=PUT"
 
 function api() {
-	umask 077
 
 	if [ ! -t 0 ] && [ -z "$API_BODY" ]; then
-		export API_BODY="$(mktemp -p /dev/shm/)";
-		cat - > $API_BODY;
+		export API_BODY="$(mktemp -p /dev/shm/)"
+		umask 077
+		cat - > $API_BODY
 	fi
 
 	case "${1^^}" in
