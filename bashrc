@@ -356,7 +356,7 @@ function api() {
 			(
 				export API_ARGS=( -q "${API_ARGS[@]}" )
 
-				echo api --call "${@:1:2}"
+				api --call "${@:1:2}" | bash
 			) | api --parse "${@:3}"
 			;;
 		*) echo "
