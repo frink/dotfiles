@@ -357,7 +357,8 @@ function api() {
 				export API_ARGS=( -q "${API_ARGS[@]}" )
 
 				api --call "${@:1:2}" | bash
-			) | api --parse "${@:3}"
+			)
+			echo api --parse "${@:3}"
 			;;
 		*) echo "
 API command line accessor via wget.
