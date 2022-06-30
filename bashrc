@@ -311,7 +311,7 @@ function api() {
 			;;
 		--CALL)
 			echo $(
-				API_URI="${API_URL%/}$([ -n "$_" ] && echo /)$(echo ${_#/} | cut -d? -f1)"
+				API_URI="${API_URL%/}$([ -n "$3" ] && echo /)$(echo ${3#/} | cut -d? -f1)"
 				API_URI+="?$([ -n "$API_QUERY" ] && echo "$API_QUERY&")"
 				API_URI+="$(echo ${3#/}? | cut -d? -f2)"
 
