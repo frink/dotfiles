@@ -342,17 +342,9 @@ function api() {
 			;;
 		--TEST)
 			(
-				export API_ARGS=( -q "${API_ARGS[@]}" )
 				export API_URL="https://httpbin.org/anything"
 
-				api --call "${@:2:2}" | bash 
-			) | api --parse "${@:4}"
-			;;
-		--PARSE)
-			(
-				API_RTN=$( cat )
-
-				echo "$API_RTN" | jq "${@:2}" #2>/dev/null #|| echo "$API_RTN"
+				api "${@:2}" 
 			)
 			;;
 		GET|POST|PUT|DELETE|HEAD|OPTIONS)
@@ -360,12 +352,17 @@ function api() {
 				export API_ARGS=( -q "${API_ARGS[@]}" )
 
 				api --call "${@:1:2}" | bash
+			) | (
+				API_RTN=$( cat )
+
+				echo "$API_RTN" | jq "${@:3}" 2>/dev/null || echo "$API_RTN"
 			)
+
 			;;
 		*) echo "
 API command line accessor via wget.
 
-Usage: api [options] [method] [path]
+Usage: api [options] [method] [path] [selection]
 
 	--set: set url endpoint and wget arguments
 	--call: show the actual wget call
