@@ -340,19 +340,19 @@ function api() {
 				export API_URL="https://httpbin.org/anything"
 
 				api --call "${@:2:2}" | bash 
-			);;
+			) | api --parse "${@:4}";;
 		--PARSE)
 			(
-				cat - | jq "${@:2}" 2>/dev/null
-					cat -
-				fi
+				API_RTN=$(cat -);
+
+				echo $API_RTN | jq ${@:2) 2>/dev/null || echo $API_RTN
 			);;
 		GET|POST|PUT|DELETE|HEAD|OPTIONS)
 			(
 				export API_ARGS=( -q "${API_ARGS[@]}" )
 
 				echo api --call "${@:1:2}"
-			) | api --parse;;
+			) | api --parse "${@:3}";;
 		*) echo "
 API command line accessor via wget.
 
