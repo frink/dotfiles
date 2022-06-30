@@ -331,10 +331,11 @@ function api() {
 				echo  "'$API_URI'"
 			);;
 		--DEBUG)
-			bash <(
+			(
 				export API_ARGS=( -vd --save-headers "${API_ARGS[@]}" )
-				api --call "${@:2}"
-			) | less; api --call "${@:2}";;
+
+				api --call "${@:2}" | bash | less
+			); api --call "${@:2}";;
 		--TEST)
 			(
 				export API_ARGS=( -q "${API_ARGS[@]}" )
@@ -343,10 +344,10 @@ function api() {
 				api "${@:2}"
 			);;
 		GET|POST|PUT|DELETE|HEAD|OPTIONS)
-			bash <(
+			(
 				export API_ARGS=( -q "${API_ARGS[@]}" )
 
-				api --call "${@:2}"
+				api --call "${@:2}" | bash
 			);;
 		*) echo "
 API command line accessor via wget.
