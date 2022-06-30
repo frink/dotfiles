@@ -358,7 +358,7 @@ function api() {
 
 				api --call "${@:1:2}" | bash
 			)
-			echo api --parse "${@:3}"
+			echo api --parse "${@}"
 			;;
 		*) echo "
 API command line accessor via wget.
