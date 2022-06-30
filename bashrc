@@ -343,7 +343,7 @@ function api() {
 				export API_URL="https://httpbin.org/anything"
 
 				api --call "${@:2:2}" | bash 
-			) | api --parse "${@:3}";;
+			) | api --parse "${@:3}"
 			;;
 		--PARSE)
 			(
@@ -357,7 +357,8 @@ function api() {
 				export API_ARGS=( -q "${API_ARGS[@]}" )
 
 				echo api --call "${@:1:2}"
-			) | api --parse "${@:3}";;
+			) | api --parse "${@:3}"
+			;;
 		*) echo "
 API command line accessor via wget.
 
@@ -367,7 +368,8 @@ Usage: api [options] [method] [path]
 	--call: show the actual wget call
 	--test: test the call you are making
 	--debug: debug wget call
-		";;
+		"
+		;;
 	esac
 
 	if [[ "${1^^}" =~ POST|PUT ]]; then
