@@ -381,7 +381,7 @@ if [ -n "$(which quasar)" ]; then
 fi
 
 function uml() {
-	uml=${1%.uml}
+	uml=${1%.*}
 	echo vim $uml.uml
 	echo plantuml $uml.uml
 	echo wl-copy < $uml.png
