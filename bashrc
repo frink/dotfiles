@@ -383,7 +383,7 @@ fi
 function uml() {
 	uml=${1%.*}
 	vim $uml.uml
-	plantuml --progress $uml.uml
+	plantuml -progress $uml.uml
 	wl-copy < $uml.png
 }
 
