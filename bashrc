@@ -383,8 +383,7 @@ fi
 function uml() {
 	uml=${1%.*}
 	vim $uml.uml
-	plantuml $uml.uml
-	wl-copy < $uml.png
+	cat $uml.uml | plantuml -p --progress | wl-copy
 }
 
 alias qdev="(g.; dtach -A /tmp/qdev quasar dev)"
