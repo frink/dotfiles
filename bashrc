@@ -381,9 +381,10 @@ if [ -n "$(which quasar)" ]; then
 fi
 
 function uml() {
-	vim ${1.uml}
-	plantuml $1.uml
-	wl-copy < $1.png
+	uml=${1#.uml}
+	vim $uml.uml
+	plantuml $uml.uml
+	wl-copy < $uml.png
 }
 
 alias qdev="(g.; dtach -A /tmp/qdev quasar dev)"
