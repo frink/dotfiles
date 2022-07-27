@@ -381,7 +381,10 @@ if [ -n "$(which quasar)" ]; then
 fi
 
 alias qdev="(g.; dtach -A /tmp/qdev quasar dev)"
+
 alias clip="wl-copy <"
+alias copy="wl-copy"
+alias paste="wl-paste"
 
 alias rm.orig="find . -type f -iname "*.orig" -exec rm {} \;"
 alias rm.swp="find . -type f -iname "*.swp" -exec rm {} \;"
