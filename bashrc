@@ -380,6 +380,12 @@ if [ -n "$(which quasar)" ]; then
 	alias qbuild="(g.;on quasar quasar build)"
 fi
 
+function uml() {
+	vim ${1.uml}
+	plantuml $1.uml
+	wl-copy < $1.png
+}
+
 alias qdev="(g.; dtach -A /tmp/qdev quasar dev)"
 
 alias clip="wl-copy <"
