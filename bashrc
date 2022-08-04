@@ -328,7 +328,6 @@ Usage: api [options] [method] [path] [selection]
 				echo wget -O- --content-on-error=on
 
 				[[ "${2^^}" =~ POST|PUT ]] && [ -n "$API_BODY" ] && echo --body-file=$API_BODY
-				fi
 
 				echo --method="${2^^}"
 
