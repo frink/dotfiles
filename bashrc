@@ -317,11 +317,11 @@ function api() {
 
 				echo wget -O- --content-on-error=on
 
-				if [[ "${2^^:-GET}" =~ POST|PUT ]]; then
+				if [[ "${2^^}" =~ POST|PUT ]]; then
 					echo --body-file=$API_BODY
 				fi
 
-				echo --method="${2^^:-GET}"
+				echo --method="${2^^}"
 
 				for x in "${API_ARGS[@]}"; do
 					echo "${x%%=*}$([ "${x%%=*}" != "${x#*=}" ] && echo  ="'${x#*=}'") "
