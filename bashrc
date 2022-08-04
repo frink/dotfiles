@@ -300,15 +300,15 @@ function api() {
 		cat - > $API_BODY
 	fi
 
+	if [ -z "$2" ]; then
+		api
+	fi
+
 	case "${1^^}" in
 		--SET)
-			if [ -z "$2" ]; then
-				api
-			else
-				export API_URL="${2%\?*}"
-				export API_QUERY="${2#*\?}"
-				export API_ARGS=( "${@:3}" )
-			fi
+			export API_URL="${2%\?*}"
+			export API_QUERY="${2#*\?}"
+			export API_ARGS=( "${@:3}" )
 			;;
 		--CALL)
 			echo $(
