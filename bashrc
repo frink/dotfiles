@@ -293,15 +293,15 @@ alias wpost="wget -qO- --body-file=- --method=POST"
 alias wput="wget -qO- --body-file=- --method=PUT"
 
 function api() {
+	if [ -z "$2" ]; then
+		api
+	fi
+
 	if [ ! -t 0 ] && [ -z "$API_BODY" ] && [ "${1^^}" != "--PARSE" ]; then
 		echo populating body;
 		export API_BODY="$(mktemp -p /dev/shm/)"
 		umask 077
 		cat - > $API_BODY
-	fi
-
-	if [ -z "$2" ]; then
-		api
 	fi
 
 	case "${1^^}" in
