@@ -294,7 +294,16 @@ alias wput="wget -qO- --body-file=- --method=PUT"
 
 function api() {
 	if [ -z "$2" ]; then
-		api
+		echo "
+API command line accessor via wget.
+
+Usage: api [options] [method] [path] [selection]
+
+	--set: set url endpoint and wget arguments
+	--call: show the actual wget call
+	--test: test the call you are making
+	--debug: debug wget call
+		"
 	fi
 
 	if [ ! -t 0 ] && [ -z "$API_BODY" ] && [ "${1^^}" != "--PARSE" ]; then
@@ -357,17 +366,9 @@ function api() {
 			)
 
 			;;
-		*) echo "
-API command line accessor via wget.
-
-Usage: api [options] [method] [path] [selection]
-
-	--set: set url endpoint and wget arguments
-	--call: show the actual wget call
-	--test: test the call you are making
-	--debug: debug wget call
-		"
-		;;
+		*)
+			api
+			;;
 	esac
 
 	if [[ "${1^^}" =~ POST|PUT ]]; then
