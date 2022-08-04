@@ -304,6 +304,7 @@ Usage: api [options] [method] [path] [selection]
 	--test: test the call you are making
 	--debug: debug wget call
 		"
+		return
 	fi
 
 	if [ ! -t 0 ] && [ -z "$API_BODY" ] && [ "${1^^}" != "--PARSE" ]; then
