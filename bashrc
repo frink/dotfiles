@@ -308,7 +308,6 @@ Usage: api [options] [method] [path] [selection]
 	fi
 
 	if [ ! -t 0 ] && [ -z "$API_BODY" ] && [ "${1^^}" != "--PARSE" ]; then
-		echo populating body;
 		export API_BODY="$(mktemp -p /dev/shm/)"
 		umask 077
 		cat - > $API_BODY
