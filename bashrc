@@ -376,8 +376,8 @@ Usage: api [options] [method] [path] [selection]
 }
 
 if [ -n "$(which quasar)" ]; then
-	alias qdev="(g.;on quasar quasar dev)"
-	alias qbuild="(g.;on quasar quasar build)"
+	alias qdev="(on quasar quasar dev)"
+	alias qbuild="(on quasar quasar build)"
 fi
 
 function uml() {
