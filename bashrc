@@ -254,7 +254,10 @@ fi
 alias drun="docker exec -it"
 
 function on() {
-	dtach -A /dev/shm/on-$1 ${@:2}
+	(
+		exe=( ${@:2} )
+		dtach -A /dev/shm/on-$1 ${exe[@]:-bash}
+	)
 }
 
 function whos() {
