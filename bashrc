@@ -387,8 +387,6 @@ function uml() {
 	wl-copy < $uml.png
 }
 
-alias qdev="(g.; dtach -A /tmp/qdev quasar dev)"
-
 alias clip="wl-copy <"
 alias copy="wl-copy"
 alias paste="wl-paste"
