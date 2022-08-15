@@ -173,8 +173,8 @@ if [ -d ~/Work ]; then
 	alias wk="mkcd ~/Work"
 fi
 
-alias rgrep="grep -r"
-alias lgrep="grep -rl"
+alias rgrep="grep -ri"
+alias lgrep="grep -lri"
 alias pgrep="ps -a | grep"
 
 function hgrep() {
