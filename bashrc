@@ -1,4 +1,4 @@
-#!/bin/bash
+e!/bin/bash
 [ -z "$PS1" ] && return
 
 set -o vi
@@ -173,8 +173,8 @@ if [ -d ~/Work ]; then
 	alias wk="mkcd ~/Work"
 fi
 
-alias rgrep="grep -ri"
-alias lgrep="grep -lri"
+alias rgrep="grep -r"
+alias lgrep="grep -lr"
 alias pgrep="ps -a | grep"
 
 function hgrep() {
