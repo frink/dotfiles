@@ -3,7 +3,6 @@
 
 set -o vi
 
-
 if [ "$PREFIX" = "/data/data/com.termux/files/usr" ]; then
 	export HOSTNAME="chromebook"
 	export USER="termux"
@@ -137,6 +136,7 @@ alias open="xdg-open"
 alias o="open"
 alias ls="ls --color=auto"
 alias ll="ls -hang"
+alias path="echo $PATH | tr : '\n'"
 
 function ff() {
 	find . -ipath "*$1*"
