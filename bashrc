@@ -210,7 +210,7 @@ function -() {
 	cd -
 }
 
-alias rm.="rm -rf"
+alias rmf="rm -rf"
 
 # vim stuff
 alias vd="vimdiff"
