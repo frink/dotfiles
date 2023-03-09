@@ -8,8 +8,6 @@ set lazyredraw
 set showmatch mat=2
 set noerrorbells novisualbell t_vb= tm=500
 set foldcolumn=1
-set autoindent
-set smartindent
 set cindent
 set mouse=a
 
@@ -37,9 +35,9 @@ highlight Folded ctermbg=17 ctermfg=NONE
 
 let g:user_emmet_leader_key='<C-m>'
 
-autocmd FileType javascript setlocal tabstop=4 softtabstop=0 expandtab shiftwidth=2 smarttab
-autocmd FileType vue setlocal tabstop=4 softtabstop=0 expandtab shiftwidth=2 smarttab
-autocmd FileType css setlocal tabstop=4 softtabstop=0 expandtab shiftwidth=2 smarttab
-autocmd FileType svg setlocal tabstop=4 softtabstop=0 expandtab shiftwidth=2 smarttab
-autocmd FileType html setlocal tabstop=4 softtabstop=0 expandtab shiftwidth=2 smarttab
-autocmd FileType php setlocal tabstop=8 softtabstop=0 expandtab shiftwidth=4 smarttab
+autocmd FileType javascript setlocal tabstop=4 softtabstop=0 expandtab shiftwidth=2 smarttab autoindent smartindent
+autocmd FileType vue setlocal tabstop=4 softtabstop=0 expandtab shiftwidth=2 smarttab autoindent smartindent
+autocmd FileType css setlocal tabstop=4 softtabstop=0 expandtab shiftwidth=2 smarttab autoindent smartindent
+autocmd FileType svg setlocal tabstop=4 softtabstop=0 expandtab shiftwidth=2 smarttab autoindent smartindent
+autocmd FileType html setlocal tabstop=4 softtabstop=0 expandtab shiftwidth=2 smarttab autoindent smartindent
+autocmd FileType php setlocal tabstop=8 softtabstop=0 expandtab shiftwidth=4 smarttab autoindent smartindent
