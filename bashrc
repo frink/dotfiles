@@ -396,3 +396,13 @@ alias paste="wl-paste"
 
 alias rm.orig="find . -type f -iname "*.orig" -exec rm {} \;"
 alias rm.swp="find . -type f -iname "*.swp" -exec rm {} \;"
+
+function words() {
+	cat $1 | tr 'A-Z' 'a-z' | \
+	egrep -o "\b[[:alpha:]]+\b" | \
+	awk '{ count[$0]++ }
+	END{
+	for(ind in count)
+	{ printf("%-14s%d\n",ind,count[ind]); }
+	}' | sort -k2 -n -r
+}
