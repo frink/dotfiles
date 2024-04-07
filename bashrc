@@ -400,7 +400,6 @@ alias paste="wl-paste"
 alias rm.orig="find . -type f -iname "*.orig" -exec rm {} \;"
 alias rm.swp="find . -type f -iname "*.swp" -exec rm {} \;"
 
-alias fringpong="echo -e 'HTTP/1.1 200\r\nContent-Type:text/html\r\n\r\nFRINKnet' | nc -lvN"
 
 function words() {
 	cat $1 | tr 'A-Z' 'a-z' | \
@@ -427,9 +426,13 @@ function chrome-setup() {
 }
 
 function fringpong() {
+	echo "A server will respond 12 times on port 1234"
+
 	local I="0"
 
 	while [ $I -lt 12 ];do
+		echo -e 'HTTP/1.1 200\r\nContent-Type:text/html\r\n\r\nFRINGPONG' | nc -lvN 1234
+
 		I=$[$I+1]
-	done
+	done &
 }
