@@ -251,6 +251,10 @@ if [ ! $OS_TERMUX ]; then
 	alias apt="sudo apt"
 fi
 
+if [ ! $OS_TERMUX ]; then
+	alias nhost="rash https://raw.githubusercontent.com/nhost/cli/main/get.sh"
+fi
+
 alias drun="docker exec -it"
 
 function on() {
