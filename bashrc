@@ -425,3 +425,11 @@ function chrome-setup() {
 	apt update
 	apt install docker-ce dnsutils 
 }
+
+function fringpong() {
+	local I="0"
+
+	while [ $I -lt 12 ];do
+		I=$[$I+1]
+	done
+}
