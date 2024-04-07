@@ -431,8 +431,8 @@ function fringpong() {
 	local I="0"
 
 	while [ $I -lt 12 ];do
-		echo -e 'HTTP/1.1 200\r\nContent-Type:text/html\r\n\r\nFRINGPONG' | nc -lvN 1234 2>/dev/null
+		echo -e 'HTTP/1.1 200\r\nContent-Type:text/html\r\n\r\nFRINGPONG' | nc -lvN 1234 2>1
 
 		I=$[$I+1]
-	done &
+	done >/dev/null &
 }
