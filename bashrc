@@ -251,9 +251,8 @@ if [ ! $OS_TERMUX ]; then
 	alias apt="sudo apt"
 fi
 
-if [ ! $OS_TERMUX ]; then
-	alias nhost="rash https://raw.githubusercontent.com/nhost/cli/main/get.sh"
-fi
+# alias if nhost not setup
+type -f nhost || alias nhost="rash https://raw.githubusercontent.com/nhost/cli/main/get.sh"
 
 alias drun="docker exec -it"
 
