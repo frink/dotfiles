@@ -400,6 +400,8 @@ alias paste="wl-paste"
 alias rm.orig="find . -type f -iname "*.orig" -exec rm {} \;"
 alias rm.swp="find . -type f -iname "*.swp" -exec rm {} \;"
 
+alias fringpong="echo -e 'HTTP/1.1 200\r\nContent-Type:text/html\r\n\r\nFRINKnet' | nc -lvN"
+
 function words() {
 	cat $1 | tr 'A-Z' 'a-z' | \
 	egrep -o "\b[[:alpha:]]+\b" | \
