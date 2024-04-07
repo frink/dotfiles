@@ -435,4 +435,12 @@ function fringpong() {
 
 		I=$[$I+1]
 	done &
-}
+}echo -e 'HTTP/1.1 200\r\nContent-Type:text/html\r\n\r\nFRINGPONG' | nc -lvN 1234
+
+		I=$[$I+1]
+	done &
+}echo -e 'HTTP/1.1 200\r\nContent-Type:text/html\r\n\r\nFRINGPONG' | nc -lvN 1234
+
+		I=$[$I+1]
+	done &
+}0
