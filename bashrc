@@ -252,7 +252,7 @@ if [ ! $OS_TERMUX ]; then
 fi
 
 # alias if nhost not setup
-type -f nhost || alias nhost="rash https://raw.githubusercontent.com/nhost/cli/main/get.sh"
+type -f nhost || alias nhost="rash https://raw.githubusercontent.com/nhost/cli/main/get.sh && unalias nhost"
 
 alias drun="docker exec -it"
 
