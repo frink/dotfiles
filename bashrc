@@ -428,11 +428,13 @@ function chrome-setup() {
 function fringpong() {
 	echo "A server will respond 12 times on port 1234"
 
-	local I="0"
+	(
+		local I="0"
 
-	while [ $I -lt 12 ];do
-		echo -e 'HTTP/1.1 200\r\nContent-Type:text/html\r\n\r\nFRINGPONG' | nc -lvN 1234 2>1
+		while [ $I -lt 12 ];do
+			echo -e 'HTTP/1.1 200\r\nContent-Type:text/html\r\n\r\nFRINGPONG' | nc -lvN 1234 2>1
 
-		I=$[$I+1]
-	done >/dev/null &
+			I=$[$I+1]
+		done >/dev/null &
+	)
 }
