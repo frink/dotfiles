@@ -45,6 +45,9 @@ export PATH="~/bin/:$PATH"
 export PS1="\n\e[33;1m<$HOSTNAME>\e[91m\$(.branch)\n\e[34m@$USER \e[32m\$(.path) \e[90m\\$\e[0m "
 export EDITOR="$(which vim) -p"
 
+type -p wslview > /dev/null && export BROWSER="wslview"
+type -p see > /dev/null || alias see="$BROWSER"
+
 function dotfiles() {
 	DOTREPO=$(dirname $(readlink ~/.bashrc))
 
