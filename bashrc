@@ -275,13 +275,13 @@ function install-docker() {
 }
 
 # alias if nhost not setup
-type -p docker > /dev/null || alias docker="install-docker && unalias docker"
+type -p docker > /dev/null || alias docker="install-docker && unalias docker && docker"
 
 alias drun="docker exec -it"
-alias dstop="docker stop"
+alias dstop="docker stop $(docker ps -aq)"
 
 # alias if nhost not setup
-type -p nhost > /dev/null || alias nhost="rash https://raw.githubusercontent.com/nhost/cli/main/get.sh && unalias nhost"
+type -p nhost > /dev/null || alias nhost="rash https://raw.githubusercontent.com/nhost/cli/main/get.sh && unalias nhost && nhost"
 
 function on() {
 	(
