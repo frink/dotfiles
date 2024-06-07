@@ -285,9 +285,9 @@ type -p nhost > /dev/null || alias nhost="rash https://raw.githubusercontent.com
 
 function nsql() {
 	if [ -z "$1" ]; then
-		psql postgres://postgres:postgres@localhost:5432/local
+		echo yes #psql postgres://postgres:postgres@localhost:5432/local
 	else
-		echo "$@;" | psql postgres://postgres:postgres@localhost:5432/local
+		echo no #"$@;" | psql postgres://postgres:postgres@localhost:5432/local
 	fi
 }
 
