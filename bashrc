@@ -282,7 +282,14 @@ alias dps="docker ps -a -q"
 
 # alias if nhost not setup
 type -p nhost > /dev/null || alias nhost="rash https://raw.githubusercontent.com/nhost/cli/main/get.sh && unalias nhost && nhost"
-alias nsql="psql postgres://postgres:postgres@localhost:5432/local"
+
+function nsql() {
+	if [ -z "$1" ]; then
+		echo $@ | psql postgres://postgres:postgres@localhost:5432/local
+	else
+		psql postgres://postgres:postgres@localhost:5432/local
+	fi
+}
 
 function on() {
 	(
