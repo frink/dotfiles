@@ -287,7 +287,7 @@ function nsql() {
 	if [ -z "$1" ]; then
 		psql postgres://postgres:postgres@localhost:5432/local
 	else
-		echo $@ | psql postgres://postgres:postgres@localhost:5432/local
+		echo "$@;" | psql postgres://postgres:postgres@localhost:5432/local
 	fi
 }
 
