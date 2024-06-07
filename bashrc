@@ -274,7 +274,7 @@ function install-docker() {
 	sudo usermod -aG docker $(whoami)
 }
 
-# alias if nhost not setup
+# alias if docker not setup
 type -p docker > /dev/null || alias docker="install-docker && unalias docker && docker"
 
 alias drun="docker exec -it"
@@ -282,6 +282,7 @@ alias dps="docker ps -a -q"
 
 # alias if nhost not setup
 type -p nhost > /dev/null || alias nhost="rash https://raw.githubusercontent.com/nhost/cli/main/get.sh && unalias nhost && nhost"
+alias nsql="psql postgres://postgres:postgres@localhost:5432/local"
 
 function on() {
 	(
