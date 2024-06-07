@@ -1,4 +1,4 @@
-#!/bin/bash
+m!/bin/bash
 [ -z "$PS1" ] && return
 
 set -o vi
@@ -434,6 +434,7 @@ alias paste="wl-paste"
 
 alias rm.orig="find . -type f -iname "*.orig" -exec rm {} \;"
 alias rm.swp="find . -type f -iname "*.swp" -exec rm {} \;"
+alias rm~="find . -type f -iname "*~" -exec rm {} \;"
 
 
 function words() {
