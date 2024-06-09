@@ -1,4 +1,4 @@
-m!/bin/bash
+n!/bin/bash
 [ -z "$PS1" ] && return
 
 set -o vi
