@@ -303,6 +303,8 @@ function sql.del() {
 	unalias sql.${1}
 }
 
+
+
 function on() {
 	(
 		exe=( ${@:2} )
