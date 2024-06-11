@@ -295,21 +295,13 @@ function sql.run() {
 	fi
 }
 
-function sql.set() {
+function sql.add() {
 	alias sql.${1}="sql.run '${2}'"
 }
 
-function sql.unset() {
+function sql.del() {
 	unalias sql.${1}
 }
-
-#function nsql() {
-#	if [ -z "$1" ]; then
-#		cat - | psql postgres://postgres:postgres@localhost:5432/local
-#	else
-#		echo "$@;" | psql postgres://postgres:postgres@localhost:5432/local
-#	fi
-#}
 
 alias nsql="sql.run postgres://postgres:postgres@localhost:5432/local"
 
