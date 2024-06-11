@@ -303,8 +303,6 @@ function sql.del() {
 	unalias sql.${1}
 }
 
-alias nsql="sql.run postgres://postgres:postgres@localhost:5432/local"
-
 function on() {
 	(
 		exe=( ${@:2} )
