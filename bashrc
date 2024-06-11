@@ -283,16 +283,20 @@ alias dps="docker ps -a -q"
 # alias if nhost not setup
 type -p nhost > /dev/null || alias nhost="rash https://raw.githubusercontent.com/nhost/cli/main/get.sh && unalias nhost && nhost"
 
-function sql() {
-	if [ -z "$1" ]; then
-		cat - | psql $SQL_CONN
+function sql.run() {
+	if [ -z "$2" ]; then
+		cat - | psql $1
 	else
-		echo "$@;" | psql $SQL_CONN
+		echo "${@:2};" | psql $1
 	fi
 }
 
-function sql.() {
-	alias sql.${1}="SQL_CONN='${2}' sql"
+function sql.set() {
+	alias sql.${1}="sql.run '${2}'"
+}
+
+function sql.unset() {
+	unalias sql.${1}
 }
 
 #function nsql() {
@@ -303,7 +307,7 @@ function sql.() {
 #	fi
 #}
 
-alias nsql="sql-run postgres://postgres:postgres@localhost:5432/local"
+alias nsql="sql.run postgres://postgres:postgres@localhost:5432/local"
 
 function on() {
 	(
