@@ -285,8 +285,14 @@ type -p nhost > /dev/null || alias nhost="rash https://raw.githubusercontent.com
 
 function sql.run() {
 	if [ -z "$2" ]; then
-		echo "Running from pipe"
-		cat - | psql $1
+		if [ ! -t 0 ]; then
+			echo "Running from pipe"
+			cat - | psql $1
+		else
+			echo "Running normal"
+			cat - | psql $1
+			psql $1
+		fi
 	else
 		echo "Running from runline"
 		echo "${@:2};" | psql $1
