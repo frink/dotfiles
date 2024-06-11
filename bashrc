@@ -290,7 +290,6 @@ function sql.run() {
 			cat - | psql $1
 		else
 			echo "Running normal"
-			cat - | psql $1
 			psql $1
 		fi
 	else
