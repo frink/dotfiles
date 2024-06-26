@@ -35,6 +35,7 @@ highlight Folded ctermbg=17 ctermfg=NONE
 let g:user_emmet_leader_key='<C-m>'
 
 autocmd FileType javascript setlocal tabstop=4 softtabstop=0 expandtab shiftwidth=2 smarttab autoindent smartindent cindent
+autocmd FileType yaml setlocal tabstop=2 softtabstop=0 expandtab shiftwidth=2 smarttab autoindent smartindent cindent
 autocmd FileType sql setlocal tabstop=2 softtabstop=0 expandtab shiftwidth=2 smarttab autoindent smartindent cindent
 autocmd FileType vue setlocal tabstop=4 softtabstop=0 expandtab shiftwidth=2 smarttab autoindent smartindent cindent
 autocmd FileType css setlocal tabstop=4 softtabstop=0 expandtab shiftwidth=2 smarttab autoindent smartindent cindent
