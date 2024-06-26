@@ -252,6 +252,7 @@ function rash() {
 
 if [ ! $OS_TERMUX ]; then
 	alias apt="sudo apt"
+	alias svc="sudo systemctl"
 fi
 
 function install-docker() {
