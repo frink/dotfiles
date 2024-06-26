@@ -217,6 +217,8 @@ alias rmf="rm -rf"
 
 # vim stuff
 alias vd="vimdiff"
+alias vim="vim -p"
+alias svim="sudo vim -p"
 
 function v() {
 	if [ -n "$1" ]; then
