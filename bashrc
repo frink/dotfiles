@@ -255,21 +255,25 @@ if [ ! $OS_TERMUX ]; then
 fi
 
 function install-docker() {
+	local ARCH=$(dpkg --print-architecture)
+	local DISTRO=$(. /etc/os-release && echo "$ID")
+	local VERSION=$(. /etc/os-release && echo "$VERSION_CODENAME")
+
 	# Add Docker's official GPG key:
 	sudo apt-get update
 	sudo apt-get install ca-certificates curl
 	sudo install -m 0755 -d /etc/apt/keyrings
-	sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+	sudo curl -fsSL https://download.docker.com/linux/$DISTRO/gpg -o /etc/apt/keyrings/docker.asc
 	sudo chmod a+r /etc/apt/keyrings/docker.asc
 
 	# Add the repository to Apt sources:
 	echo \
-		"deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
-		$(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+		"deb [arch=$ARCH signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/$DISTRO \
+		$VERSION stable" | \
 		sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
-	sudo apt-get update
-	sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+	sudo apt-get update -y
+	sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
 	sudo usermod -aG docker $(whoami)
 }
@@ -304,6 +308,47 @@ function sql.del() {
 }
 
 alias nsql="sql.run postgres://postgres:postgres@localhost:5432/local"
+
+function sqit {
+	[ ! -f "sqitch.plan" ] && echo "not a sqitch folder" && return
+
+	case ${1^^} in
+		ADD)
+			git reset
+			git status
+			sqitch add "$2" -n "Adding $2"
+			$EDITOR "deploy/$2" "verify/$2" "revert/$2" sqitch.plan
+			git add "deploy/$2" "verify/$2" "revert/$2" sqitch.plan
+			git commit -m "Adding $2"
+			;;
+		FIX)
+			git reset
+			git status
+			sqitch rework "$2" -n "Fixing $2"
+			$EDITOR "deploy/$2" "verify/$2" "revert/$2" sqitch.plan
+			git add "deploy/$2" "verify/$2" "revert/$2" sqitch.plan
+			git commit -m "Fixing $2"
+			;;
+		TAG)
+			sqitch tag "$2" -n "Tagging $2"
+			get tag "$2" -m "Tagging $2"
+			;;
+		*)
+			echo -e "Simple Quick Integration Transfer v1.0.02\n©2020 Frink & Friends - Licenced: BSD Zero
+
+  Usage:
+
+	sqit [ACTION] [name]
+
+  Actions:
+
+	add [name]
+	fix [name]
+	tag [name]
+	"
+			;;
+	esac
+}
 
 function on() {
 	(
@@ -459,20 +504,6 @@ function words() {
 	for(ind in count)
 	{ printf("%-14s%d\n",ind,count[ind]); }
 	}' | sort -k2 -n -r
-}
-
-function chrome-setup() {
-	apt update
-	apt install ca-certificates curl
-	sudo install -m 0755 -d /etc/apt/keyrings
-	sudo curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
-	sudo chmod a+r /etc/apt/keyrings/docker.asc 
-	echo \
-  		"deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian \
-		$(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
-  		sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-	apt update
-	apt install docker-ce dnsutils 
 }
 
 function fringpong() {
