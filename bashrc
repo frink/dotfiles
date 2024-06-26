@@ -509,7 +509,7 @@ function words() {
 function fringpong() {
 	echo "A server will respond 12 times on port 1234"
 
-	sudo apt install netcat
+	sudo apt install netcat -y
 
 	(
 		local I="0"
