@@ -286,8 +286,8 @@ type -p docker > /dev/null || alias docker="install-docker && unalias docker && 
 
 alias drun="docker exec -it"
 alias dps="docker ps -a -q"
-alias dcup="docker compose up -d"
-alias dcdn="docker compose down"
+alias dcu="docker compose up -d"
+alias dcd="docker compose down"
 
 # alias if nhost not setup
 type -p nhost > /dev/null || alias nhost="rash https://raw.githubusercontent.com/nhost/cli/main/get.sh && unalias nhost && nhost"
