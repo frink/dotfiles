@@ -322,16 +322,16 @@ function sqit {
 			git reset
 			git status
 			sqitch add "$2" -n "Adding $2"
-			$EDITOR "deploy/$2" "verify/$2" "revert/$2" sqitch.plan
-			git add "deploy/$2" "verify/$2" "revert/$2" sqitch.plan
+			$EDITOR "deploy/$2.sql" "verify/$2.sql" "revert/$2.sql" sqitch.plan
+			git add "deploy/$2.sql" "verify/$2.sql" "revert/$2.sql" sqitch.plan
 			git commit -m "Adding $2"
 			;;
 		FIX)
 			git reset
 			git status
 			sqitch rework "$2" -n "Fixing $2"
-			$EDITOR "deploy/$2" "verify/$2" "revert/$2" sqitch.plan
-			git add "deploy/$2" "verify/$2" "revert/$2" sqitch.plan
+			$EDITOR "deploy/$2.sql" "verify/$2.sql" "revert/$2.sql" sqitch.plan
+			git add "deploy/$2.sql" "verify/$2.sql" "revert/$2.sql" sqitch.plan
 			git commit -m "Fixing $2"
 			;;
 		TAG)
