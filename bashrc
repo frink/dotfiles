@@ -313,7 +313,6 @@ function sql.del() {
 }
 
 alias nsql="sql.run postgres://postgres:postgres@localhost:5432/local"
-alias appsql="echo `echo \$POSTGRES_PASSWORD`"
 
 function sqit {
 	[ ! -f "sqitch.plan" ] && echo "not a sqitch folder" && return
