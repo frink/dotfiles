@@ -393,7 +393,7 @@ function error() {
 }
 
 alias wcat="wget -O- --method=GET"
-alias wcall="wget -SO- --method=GET"
+alias wcall="wget -qSO- --method=GET"
 alias wbody="wget -qO- --method=GET"
 alias whead="wget -qS --method=HEAD"
 alias wpost="wget -qO- --body-file=- --method=POST"
