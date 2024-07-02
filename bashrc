@@ -292,16 +292,16 @@ function docker-clean() {
 	docker stop $(docker ps -qa)
 
 	# Remove all containers
-	docker rm -f $(docker ps -qa)
+	docker rm -qf $(docker ps -qa)
 
 	# Remove all images
-	docker rmi -f $(docker images -qa)
+	docker rmi -qf $(docker images -qa)
 
 	# Remove all volumes
-	docker volume rm -f $(docker volume ls -qf)
+	docker volume rm -qf $(docker volume ls -qf)
 
 	# Remove all networks
-	docker network rm -f $(docker network ls -q)
+	docker network rm -qf $(docker network ls -q)
 }
 
 alias drun="docker exec -it"
