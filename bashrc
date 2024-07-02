@@ -289,19 +289,19 @@ type -p docker > /dev/null || alias docker="install-docker && unalias docker && 
 
 function docker-clean() {
 	# Stop all containers
-	docker stop $(docker ps -qa)
+	docker stop -f $(docker ps -qa)
 
 	# Remove all containers
-	docker rm $(docker ps -qa)
+	docker rm -f $(docker ps -qa)
 
 	# Remove all images
 	docker rmi -f $(docker images -qa)
 
 	# Remove all volumes
-	docker volume rm $(docker volume ls -qf)
+	docker volume rm -f $(docker volume ls -qf)
 
 	# Remove all networks
-	docker network rm $(docker network ls -q)
+	docker network rm -f $(docker network ls -q)
 }
 
 alias drun="docker exec -it"
