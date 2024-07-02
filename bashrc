@@ -289,7 +289,7 @@ type -p docker > /dev/null || alias docker="install-docker && unalias docker && 
 
 function docker-clean() {
 	# Stop all containers
-	docker stop -f $(docker ps -qa)
+	docker stop $(docker ps -qa)
 
 	# Remove all containers
 	docker rm -f $(docker ps -qa)
