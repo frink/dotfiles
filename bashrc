@@ -123,6 +123,8 @@ function note() {
 	[ ! -d ~/.notes ] && mkdir ~/.notes
 
 	if [ -z "$2" ]; then
+		[ -f ~/.notes/$1 ] && cat ~/.notes/$1
+	elif [ "$2" = "sort" ]; then
 		[ -f ~/.notes/$1 ] && cat ~/.notes/$1 | sort
 	elif [ "$2" = "edit" ]; then
 		$EDITOR ~/.notes/$1
