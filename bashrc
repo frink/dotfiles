@@ -298,7 +298,7 @@ function docker-clean() {
 	docker rmi -f $(docker images -qa)
 
 	# Remove all volumes
-	docker volume rm -f $(docker volume ls -qf)
+	docker volume rm -f $(docker volume ls -q)
 
 	# Remove all networks
 	docker network rm -f $(docker network ls -q)
