@@ -134,6 +134,7 @@ function note() {
 }
 
 alias todo="note todo"
+alias idea="note ideas"
 
 alias open="xdg-open"
 alias o="open"
