@@ -287,6 +287,23 @@ function install-docker() {
 # alias if docker not setup
 type -p docker > /dev/null || alias docker="install-docker && unalias docker && docker"
 
+function docker-clean() {
+	# Stop all containers
+	docker stop $(docker ps -qa)
+
+	# Remove all containers
+	docker rm $(docker ps -qa)
+
+	# Remove all images
+	docker rmi -f $(docker images -qa)
+
+	# Remove all volumes
+	docker volume rm $(docker volume ls -qf)
+
+	# Remove all networks
+	docker network rm $(docker network ls -q)
+}
+
 alias drun="docker exec -it"
 alias dps="docker ps -a -q"
 alias dcu="docker compose up -d"
