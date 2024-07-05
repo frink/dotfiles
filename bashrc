@@ -374,6 +374,7 @@ function sqit {
 			$EDITOR "deploy/$3.sql" "verify/$3.sql" "revert/$3.sql" sqitch.plan
 			git add "deploy/$3.sql" "verify/$3.sql" "revert/$3.sql" sqitch.plan
 			git commit -m "Moving $2 $3"
+			;;
 		*)
 			echo -e "Simple Quick Integration Transfer v1.0.02\n©2020 Frink & Friends - Licenced: BSD Zero
 
