@@ -359,6 +359,21 @@ function sqit {
 			sqitch tag "$2" -n "Tagging $2"
 			get tag "$2" -m "Tagging $2"
 			;;
+		MV)
+			[ ! -f "deploy/$2.sql" ] && echo "deploy/$2.sql does not exist" && return
+			[ ! -f "verify/$2.sql" ] && echo "verify/$2.sql does not exist" && return
+			[ ! -f "revert/$2.sql" ] && echo "revert/$2.sql does not exist" && return
+			[ ! -f "deploy/$3.sql" ] && echo "deploy/$3.sql already exist" && return
+			[ ! -f "verify/$3.sql" ] && echo "verify/$3.sql already exist" && return
+			[ ! -f "revert/$3.sql" ] && echo "revert/$3.sql already exist" && return
+			
+			git mv "deploy/$2.sql" "deploy/$3.sql"
+			git mv "verify/$2.sql" "verify/$3.sql"
+			git mv "revert/$2.sql" "revert/$3.sql"
+
+			$EDITOR "deploy/$3.sql" "verify/$3.sql" "revert/$3.sql" sqitch.plan
+			git add "deploy/$3.sql" "verify/$3.sql" "revert/$3.sql" sqitch.plan
+			git commit -m "Moving $2 $3"
 		*)
 			echo -e "Simple Quick Integration Transfer v1.0.02\n©2020 Frink & Friends - Licenced: BSD Zero
 
