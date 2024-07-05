@@ -372,7 +372,6 @@ function sqit() {
 			git mv "revert/$2.sql" "revert/$3.sql"
 
 			$EDITOR "deploy/$3.sql" "verify/$3.sql" "revert/$3.sql" sqitch.plan
-			git add "deploy/$3.sql" "verify/$3.sql" "revert/$3.sql" sqitch.plan
 			git commit -m "Moving $2 $3"
 			;;
 		*)
