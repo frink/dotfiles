@@ -335,7 +335,7 @@ function sql.del() {
 
 alias nsql="sql.run postgres://postgres:postgres@localhost:5432/local"
 
-function sqit {
+function sqit() {
 	[ ! -f "sqitch.plan" ] && echo "not a sqitch folder" && return
 
 	case ${1^^} in
@@ -363,9 +363,9 @@ function sqit {
 			[ ! -f "deploy/$2.sql" ] && echo "deploy/$2.sql does not exist" && return
 			[ ! -f "verify/$2.sql" ] && echo "verify/$2.sql does not exist" && return
 			[ ! -f "revert/$2.sql" ] && echo "revert/$2.sql does not exist" && return
-			[ ! -f "deploy/$3.sql" ] && echo "deploy/$3.sql already exist" && return
-			[ ! -f "verify/$3.sql" ] && echo "verify/$3.sql already exist" && return
-			[ ! -f "revert/$3.sql" ] && echo "revert/$3.sql already exist" && return
+			[ -f "deploy/$3.sql" ] && echo "deploy/$3.sql already exist" && return
+			[ -f "verify/$3.sql" ] && echo "verify/$3.sql already exist" && return
+			[ -f "revert/$3.sql" ] && echo "revert/$3.sql already exist" && return
 			
 			git mv "deploy/$2.sql" "deploy/$3.sql"
 			git mv "verify/$2.sql" "verify/$3.sql"
