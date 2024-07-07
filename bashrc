@@ -318,7 +318,7 @@ function sql.run() {
 		else
 			psql $1
 		fi
-	elif [ "${3^^}" = "DUMP" ]; then
+	elif [ "${3^^}" == "DUMP" ]; then
 		pg_dump "$1" "${@:3}"
 	else
 		echo "${@:2};" | psql "$1"
