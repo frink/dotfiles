@@ -311,6 +311,30 @@ alias dca="dcd&&dcu"
 # alias if nhost not setup
 type -p nhost > /dev/null || alias nhost="rash https://raw.githubusercontent.com/nhost/cli/main/get.sh && unalias nhost && nhost"
 
+function install-psql() {
+	local ARCH=$(dpkg --print-architecture)
+	local DISTRO=$(. /etc/os-release && echo "$ID")
+	local VERSION=$(. /etc/os-release && echo "$VERSION_CODENAME")
+
+	# Add Docker's official GPG key:
+	sudo apt-get update
+	sudo apt-get install ca-certificates curl
+	sudo install -m 0755 -d /etc/apt/keyrings
+	sudo curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc -o /etc/apt/keyrings/postgres.asc
+	sudo chmod a+r /etc/apt/keyrings/postgres.asc
+
+	# Add the repository to Apt sources:
+	echo \
+		"deb [arch=$ARCH signed-by=/etc/apt/keyrings/postgres.asc] https://apt.postgresql.org/pub/repos/apt \
+		$VERSION-pgdg stable" | \
+		sudo tee /etc/apt/sources.list.d/postgres.list > /dev/null
+
+	sudo apt-get update -y
+	sudo apt-get install -y postgresql-client
+}
+
+type -p psql > /dev/null || alias psql="install-psql && unalias psql && psql"
+
 function sql.run() {
 	echo "$1" "$2" "$3"
 	if [ -z "$2" ]; then
