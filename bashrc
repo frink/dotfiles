@@ -188,7 +188,7 @@ function hgrep() {
 }
 
 function vgrep() {
-	$EDITOR $(lgrep $@)
+	$EDITOR $(lgrep "$@")
 }
 
 function g.() {
