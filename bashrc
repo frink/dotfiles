@@ -312,7 +312,6 @@ alias dca="dcd&&dcu"
 type -p nhost > /dev/null || alias nhost="rash https://raw.githubusercontent.com/nhost/cli/main/get.sh && unalias nhost && nhost"
 
 function install-psql() {
-	local DISTRO=$(. /etc/os-release && echo "$ID")
 	local VERSION=$(. /etc/os-release && echo "$VERSION_CODENAME")
 
 	# Add Docker's official GPG key:
@@ -325,7 +324,7 @@ function install-psql() {
 	# Add the repository to Apt sources:
 	echo \
 		"deb [signed-by=/etc/apt/keyrings/postgres.asc] https://apt.postgresql.org/pub/repos/apt \
-		$VERSION-pgdg stable" | \
+		$VERSION-pgdg main" | \
 		sudo tee /etc/apt/sources.list.d/postgres.list > /dev/null
 
 	sudo apt-get update -y
