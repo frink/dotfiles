@@ -321,12 +321,14 @@ function sql.run() {
 			echo "Run SQL console."
 			psql $1
 		fi
-	elif [ "${3^^}" == "DUMP" ]; then
-		echo "Run SQL dump."
-		pg_dump "$1" "${@:3}"
 	else
-		echo "Run SQL query."
-		echo "${@:2};" | psql "$1"
+		if [ "${3^^}" == "DUMP" ]; then
+			echo "Run SQL dump."
+			pg_dump "$1" "${@:3}"
+		else
+			echo "Run SQL query."
+			echo "${@:2};" | psql "$1"
+		fi
 	fi
 }
 
