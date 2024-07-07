@@ -315,11 +315,11 @@ function sql.run() {
 	if [ -z "$2" ]; then
 		if [ ! -t 0 ]; then
 			cat - | psql $1
+		elif [ "${3^^}" == "DUMP" ]; then
+			pg_dump "$1" "${@:3}"
 		else
 			psql $1
 		fi
-	elif [ "${3^^}" == "DUMP" ]; then
-		pg_dump "$1" "${@:3}"
 	else
 		echo "${@:2};" | psql "$1"
 	fi
