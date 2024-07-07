@@ -9,8 +9,6 @@ if [ "$PREFIX" = "/data/data/com.termux/files/usr" ]; then
 	export OS_TERMUX=1
 fi
 
-[ -f ~/.localrc ] && source ~/.localrc
-
 function .branch() {
 	#git branch 2> /dev/null | sed -e '/^[^*]/d' -e  's/.* \(.*\)/ [\1'$(.change)']/'
 	git branch -v 2> /dev/null | sed \
@@ -561,3 +559,5 @@ function fringpong() {
 		done >/dev/null &
 	)
 }
+
+[ -f ~/.localrc ] && source ~/.localrc
