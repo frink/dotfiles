@@ -334,20 +334,15 @@ function install-psql() {
 type -p psql > /dev/null || alias psql="install-psql && unalias psql && psql"
 
 function sql.run() {
-	echo "$1" "$2" "$3"
 	if [ -z "$2" ]; then
 		if [ ! -t 0 ]; then
-			echo "Run SQL pipe."
 			cat - | psql $1
 		else
-			echo "Run SQL console."
 			psql $1
 		fi
 	elif [ "${2^^}" == "DUMP" ]; then
-		echo "Run SQL dump."
 		pg_dump "$1" "${@:3}"
 	else
-		echo "Run SQL query."
 		echo "${@:2};" | psql "$1"
 	fi
 }
