@@ -312,15 +312,20 @@ alias dca="dcd&&dcu"
 type -p nhost > /dev/null || alias nhost="rash https://raw.githubusercontent.com/nhost/cli/main/get.sh && unalias nhost && nhost"
 
 function sql.run() {
+	echo "$1" "$2" "$3"
 	if [ -z "$2" ]; then
 		if [ ! -t 0 ]; then
+			echo "Run SQL pipe."
 			cat - | psql $1
-		elif [ "${3^^}" == "DUMP" ]; then
-			pg_dump "$1" "${@:3}"
 		else
+			echo "Run SQL console."
 			psql $1
 		fi
+	elif [ "${3^^}" == "DUMP" ]; then
+		echo "Run SQL dump."
+		pg_dump "$1" "${@:3}"
 	else
+		echo "Run SQL query."
 		echo "${@:2};" | psql "$1"
 	fi
 }
@@ -332,8 +337,6 @@ function sql.add() {
 function sql.del() {
 	unalias sql.${1}
 }
-
-alias nsql="sql.run postgres://postgres:postgres@localhost:5432/local"
 
 function sqit() {
 	[ ! -f "sqitch.plan" ] && echo "not a sqitch folder" && return
