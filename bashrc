@@ -601,7 +601,7 @@ completer() {
   # Call the completion function
   "$func_name"
 
-  echo COMP_CWORD
+  echo $COMP_CWORD
   echo "${COMPREPLY[@]}"
 }
 
