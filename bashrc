@@ -587,7 +587,7 @@ completer() {
     local cmd_name="${command[0]}"
     local func_name
 
-    # Fetch the primary completion function
+    # Fetch the primary completion function for the main command
     func_name=$(complete -p "$cmd_name" 2>/dev/null | awk '{print $3}')
 
     if [[ -z "$func_name" ]]; then
@@ -599,9 +599,13 @@ completer() {
     echo "Testing completion for command: ${command[*]}"
     echo "Using function: $func_name"
 
-    # Set the completion environment variables
+    # Ensure COMP_WORDS includes a placeholder for the current word being completed
     COMP_WORDS=("${command[@]}")
-    COMP_CWORD=$((${#COMP_WORDS[@]} - 1))
+    COMP_WORDS+=("")
+    COMP_CWORD=${#COMP_WORDS[@]}
+    COMP_CWORD=$((COMP_CWORD - 1))
+
+    # Set other completion environment variables
     COMP_LINE="${command[*]}"
     COMP_POINT=${#COMP_LINE}
 
@@ -622,6 +626,13 @@ completer() {
     for completion in "${COMPREPLY[@]}"; do
         echo "$completion"
     done
+
+    # Clear COMP_WORDS and COMPREPLY to prevent side effects
+    unset COMP_WORDS
+    unset COMPREPLY
+    unset COMP_CWORD
+    unset COMP_LINE
+    unset COMP_POINT
 }
 
 [ -f ~/.localrc ] && source ~/.localrc
