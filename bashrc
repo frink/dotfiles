@@ -592,25 +592,16 @@ completer() {
       return
   fi
 
-  # Preserve current COMP_* variables
-  local old_comp_wordbreaks="${COMP_WORDBREAKS:-}"
-
   # Set up the completion environment
   COMP_WORDS=("${command[@]}")
-  COMP_CWORD=${#COMP_WORDS[@]}-1
+  COMP_CWORD=${#COMP_WORDS[@]}
   COMP_LINE="${command[*]}"
   COMP_POINT=${#COMP_LINE}
 
   # Call the completion function
   "$func_name"
 
-  # Output the completions
-  for completion in "${COMPREPLY[@]}"; do
-      echo "$completion"
-  done
-
-  # Restore old COMP_* variables if they were set
-  [ -n "$old_comp_wordbreaks" ] && export COMP_WORDBREAKS="$old_comp_wordbreaks"
+  echo "${COMPREPLY[@]}"
 }
 
 
