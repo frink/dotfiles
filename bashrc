@@ -149,7 +149,7 @@ completer() {
   fi
 
   COMP_WORDS=("${command[@]}")
-  COMP_CWORD=${#COMP_WORDS[@]}
+  COMP_CWORD=${#COMP_WORDS[@]}+1
 
   "$func_name"
 
