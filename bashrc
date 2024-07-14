@@ -596,8 +596,7 @@ completer() {
     fi
 
     # Ensure COMP_WORDS includes a placeholder for the current word being completed
-    COMP_WORDS=("${command[@]}")
-    COMP_WORDS+=("")
+    COMP_WORDS=("${command[@]}" "")
     COMP_CWORD=$(( ${#COMP_WORDS[@]} - 1 ))
 
     # Set other completion environment variables
