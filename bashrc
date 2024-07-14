@@ -136,26 +136,6 @@ function note() {
 alias todo="note todo"
 alias idea="note ideas"
 
-completer() {
-  local command=("$@")
-  local cmd_name="${command[0]}"
-  local func_name
-
-  func_name=$(complete -p "$cmd_name" 2>/dev/null | awk '{print $3}')
-
-  if [[ -z "$func_name" ]]; then
-      echo "No completion function found for command: $cmd_name"
-      return
-  fi
-
-  COMP_WORDS=("${command[@]}")
-  COMP_CWORD=${#COMP_WORDS[@]}+1
-
-  "$func_name"
-
-  echo "${COMPREPLY[@]}"
-}
-
 alias open="xdg-open"
 alias o="open"
 alias ls="ls --color=auto"
@@ -600,6 +580,26 @@ function fringpong() {
 			echo -e "HTTP/1.1 200\r\nContent-Type:text/html\r\n\r\nFRINGPONG $I" | nc -lvN 1234 2>1
 		done >/dev/null &
 	)
+}
+
+completer() {
+  local command=("$@")
+  local cmd_name="${command[0]}"
+  local func_name
+
+  func_name=$(complete -p "$cmd_name" 2>/dev/null | awk '{print $3}')
+
+  if [[ -z "$func_name" ]]; then
+      echo "No completion function found for command: $cmd_name"
+      return
+  fi
+
+  COMP_WORDS=("${command[@]}")
+  COMP_CWORD=${#COMP_WORDS[@]}-1
+
+  "$func_name"
+
+  echo "${COMPREPLY[@]}"
 }
 
 [ -f ~/.localrc ] && source ~/.localrc
