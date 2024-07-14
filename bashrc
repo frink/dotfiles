@@ -598,7 +598,7 @@ completer() {
 
     # Set the completion environment variables
     COMP_WORDS=("${command[@]}")
-    COMP_CWORD=${#COMP_WORDS[@]}
+    COMP_CWORD=$((${#COMP_WORDS[@]} - 1))
     COMP_LINE="${command[*]}"
     COMP_POINT=${#COMP_LINE}
 
