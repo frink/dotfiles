@@ -595,15 +595,10 @@ completer() {
         return
     fi
 
-    # Debug info
-    echo "Testing completion for command: ${command[*]}"
-    echo "Using function: $func_name"
-
     # Ensure COMP_WORDS includes a placeholder for the current word being completed
     COMP_WORDS=("${command[@]}")
     COMP_WORDS+=("")
-    COMP_CWORD=${#COMP_WORDS[@]}
-    COMP_CWORD=$((COMP_CWORD - 1))
+    COMP_CWORD=$(( ${#COMP_WORDS[@]} - 1 ))
 
     # Set other completion environment variables
     COMP_LINE="${command[*]}"
@@ -612,20 +607,13 @@ completer() {
     # Clear COMPREPLY before invoking the completion function
     COMPREPLY=()
 
-    # Debug info
-    echo "COMP_WORDS: ${COMP_WORDS[*]}"
-    echo "COMP_CWORD: $COMP_CWORD"
-    echo "COMP_LINE: $COMP_LINE"
-    echo "COMP_POINT: $COMP_POINT"
-
     # Call the completion function
     "$func_name"
 
-    # Output the completions
-    echo "Completions:"
+    # Output and sort the completions
     for completion in "${COMPREPLY[@]}"; do
         echo "$completion"
-    done
+    done | sort
 
     # Clear COMP_WORDS and COMPREPLY to prevent side effects
     unset COMP_WORDS
