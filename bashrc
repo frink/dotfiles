@@ -585,21 +585,33 @@ function fringpong() {
 completer() {
   local command=("$@")
   local cmd_name="${command[0]}"
-  local func_name
-
-  func_name=$(complete -p "$cmd_name" 2>/dev/null | awk '{print $3}')
+  local func_name=$(complete -p "$cmd_name" 2>/dev/null | awk '{print $3}')
 
   if [[ -z "$func_name" ]]; then
       echo "No completion function found for command: $cmd_name"
       return
   fi
 
+  # Preserve current COMP_* variables
+  local old_comp_wordbreaks="${COMP_WORDBREAKS:-}"
+
+  # Set up the completion environment
   COMP_WORDS=("${command[@]}")
   COMP_CWORD=${#COMP_WORDS[@]}-1
+  COMP_LINE="${command[*]}"
+  COMP_POINT=${#COMP_LINE}
 
+  # Call the completion function
   "$func_name"
 
-  echo "${COMPREPLY[@]}"
+  # Output the completions
+  for completion in "${COMPREPLY[@]}"; do
+      echo "$completion"
+  done
+
+  # Restore old COMP_* variables if they were set
+  [ -n "$old_comp_wordbreaks" ] && export COMP_WORDBREAKS="$old_comp_wordbreaks"
 }
+
 
 [ -f ~/.localrc ] && source ~/.localrc
