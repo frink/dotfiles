@@ -583,27 +583,41 @@ function fringpong() {
 }
 
 completer() {
-  local command=("$@")
-  local cmd_name="${command[0]}"
-  local func_name=$(complete -p "$cmd_name" 2>/dev/null | awk '{print $3}')
+    local command=("$@")
+    local cmd_name="${command[0]}"
+    local func_name=$(complete -p "$cmd_name" 2>/dev/null | awk '{print $3}')
 
-  if [[ -z "$func_name" ]]; then
-      echo "No completion function found for command: $cmd_name"
-      return
-  fi
+    if [[ -z "$func_name" ]]; then
+        echo "No completion function found for command: $cmd_name"
+        return
+    fi
 
-  # Set up the completion environment
-  COMP_WORDS=("${command[@]}")
-  COMP_CWORD=3-2 #${#COMP_WORDS[@]}
-  COMP_LINE="${command[*]}"
-  COMP_POINT=${#COMP_LINE}
+    # Debug info
+    echo "Command: ${command[*]}"
+    echo "Completion Function: $func_name"
 
-  # Call the completion function
-  "$func_name"
+    # Set the completion environment variables
+    COMP_WORDS=("${command[@]}")
+    COMP_CWORD=$((${#COMP_WORDS[@]} - 1))
+    COMP_LINE="${command[*]}"
+    COMP_POINT=${#COMP_LINE}
 
-  echo $COMP_CWORD
-  echo "${COMPREPLY[@]}"
+    # Debug info
+    echo "COMP_WORDS: ${COMP_WORDS[*]}"
+    echo "COMP_CWORD: $COMP_CWORD"
+
+    # Call the completion function
+    "$func_name"
+
+    # Output the results
+    echo "Completions:"
+    for completion in "${COMPREPLY[@]}"; do
+        echo "$completion"
+    done
+
+    # Clear COMP_WORDS and COMPREPLY to prevent side effects
+    unset COMP_WORDS
+    unset COMPREPLY
 }
-
 
 [ -f ~/.localrc ] && source ~/.localrc
