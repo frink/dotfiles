@@ -603,12 +603,7 @@ completer() {
     # Clear COMPREPLY before invoking the completion function
     COMPREPLY=()
 
-    echo COMP_WORDS=\( ${COMP_WORDS[@]} \)
-    echo COMP_CWORD=$COMP_CWORD
-    echo COMP_LINE=\"$COMP_LINE\"
-    echo COMP_POINT=$COMP_POINT
-    echo $func_name
-    echo \${COMPREPLY[@]}
+    echo COMP_WORDS=\( ${COMP_WORDS[@]} \) COMP_CWORD=$COMP_CWORD COMP_LINE=\"$COMP_LINE\" COMP_POINT=$COMP_POINT $func_name\;echo \${COMPREPLY[@]}
 
     # Call the completion function
     "$func_name"
