@@ -583,12 +583,9 @@ function fringpong() {
 }
 
 completer() {
-    local command=("$@")
+    local command=( "$@" )
     local cmd_name="${command[0]}"
-    local func_name
-
-    # Fetch the primary completion function for the main command
-    func_name=$(complete -p "$cmd_name" 2>/dev/null | awk '{print $3}')
+    local func_name=$(complete -p "$cmd_name" 2>/dev/null | awk '{print $3}')
 
     if [[ -z "$func_name" ]]; then
         echo "No completion function found for command: $cmd_name"
