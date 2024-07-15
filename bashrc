@@ -607,9 +607,8 @@ completer() {
     echo COMP_CWORD=$COMP_CWORD
     echo COMP_LINE=\"$COMP_LINE\"
     echo COMP_POINT=$COMP_POINT
-    echo COMPREPLY=\(\)
     echo $func_name
-    echo
+    echo \${COMPREPLY[@]}
 
     # Call the completion function
     "$func_name"
