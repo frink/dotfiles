@@ -557,7 +557,7 @@ alias rm.swp="find . -type f -iname "*.swp" -exec rm {} \;"
 alias rm~="find . -type f -iname "*~" -exec rm {} \;"
 
 function line() {
-  sed -n "$1p" "$2"
+  sed -n "${1//-/,}p" "$2"
 }
 
 function words() {
