@@ -556,6 +556,9 @@ alias rm.orig="find . -type f -iname "*.orig" -exec rm {} \;"
 alias rm.swp="find . -type f -iname "*.swp" -exec rm {} \;"
 alias rm~="find . -type f -iname "*~" -exec rm {} \;"
 
+function line() {
+  sed -n "$1p" "$2"
+}
 
 function words() {
 	cat $1 | tr 'A-Z' 'a-z' | \
