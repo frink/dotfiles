@@ -302,6 +302,7 @@ function docker-clean() {
 	docker network rm -f $(docker network ls -q)
 }
 
+alias dbuild="docker exec -it"
 alias drun="docker exec -it"
 alias dps="docker ps -a -q"
 alias dcu="docker compose up -d"
