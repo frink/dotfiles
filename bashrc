@@ -302,7 +302,23 @@ function docker-clean() {
 	docker network rm -f $(docker network ls -q)
 }
 
-alias dtest="docker build . -t tester && docker run -it tester"
+#docker tester
+function dtest() {
+  docker build . -t tester
+
+  opt=()
+  cmd=()
+
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --) shift; cmd=("$@"); break ;;
+      *) opt+=("$1"); shift ;;
+    esac
+  done
+
+  docker run -it "${opt[@]}" tester "${cmd[@]}"
+}
+
 alias drun="docker exec -it"
 alias dps="docker ps -a -q"
 alias dcu="docker compose up -d"
