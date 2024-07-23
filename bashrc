@@ -304,6 +304,8 @@ function docker-clean() {
 
 #docker tester
 function dtest() {
+  [ ! -f Dockerfiles ] && echo "No Dockerfile!!!" && return
+
   docker build . -t tester
 
   opt=()
