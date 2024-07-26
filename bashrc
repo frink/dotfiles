@@ -245,14 +245,6 @@ alias vrc.="[ ! -f ~/.localrc ] && touch ~/.localrc && ln -s ~/.localrc $DOTREPO
 
 alias fio="rash https://raw.githubusercontent.com/boazsegev/facil.io/master/scripts/new/app"
 
-function surash() {
-	wbody $1 | sudo bash ${@:2}
-}
-
-function rash() {
-	wbody $1 | bash ${@:2}
-}
-
 if [ ! $OS_TERMUX ]; then
 	alias apt="sudo apt"
 	alias svc="sudo systemctl"
@@ -471,6 +463,14 @@ alias wbody="wget -qO- --method=GET"
 alias whead="wget -qS --method=HEAD"
 alias wpost="wget -qO- --body-file=- --method=POST"
 alias wput="wget -qO- --body-file=- --method=PUT"
+
+function surash() {
+	wbody $1 | sudo bash ${@:2}
+}
+
+function rash() {
+	wbody $1 | bash ${@:2}
+}
 
 function api() {
 	if [ -z "$2" ]; then
