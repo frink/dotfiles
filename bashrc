@@ -472,6 +472,10 @@ function rash() {
 	wbody $1 | bash ${@:2}
 }
 
+function wtgz() {
+	wbody $1 | tar xz ${@:2}
+}
+
 function api() {
 	if [ -z "$2" ]; then
 		echo "
