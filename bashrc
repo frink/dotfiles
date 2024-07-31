@@ -156,7 +156,7 @@ function x() {
     local ifs="$IFS"
     IFS='/'
     local d="$*"
-    ls -d "$d"*/ | sed 's|.*/\([^/]*\)/$|\1|'
+    echo ls -d "$d"*/ #| sed 's|.*/\([^/]*\)/$|\1|'
     IFS="$ifs"
 }
 
