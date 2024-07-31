@@ -154,7 +154,7 @@ function cdrun() {
 
 function x() {
     local ifs="$IFS" IFS='/'
-    ls -d ./"$*"*/ | sed 's|.*/\([^/]*\)/$|\1|'
+    ls -d ./"$*"?*/ | sed 's|.*/\([^/]*\)/$|\1|'
     IFS="$ifs"
 }
 
