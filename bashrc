@@ -158,10 +158,6 @@ function x() {
     IFS="$ifs"
 }
 
-function x.c() {
-  compgen -W "$(x "$@")" -- ${@:$#}
-}
-
 function cdx() {
   if [ -z "$2" ]; then
     cd "$1"
@@ -179,7 +175,7 @@ function mkcd() {
   fi
 }
 
-complete -C x.c x
+complete -W "$(x)" x
 
 alias ..="cdx .."
 alias ~="cdx ~"
