@@ -579,7 +579,7 @@ alias rm.orig="find . -type f -iname "*.orig" -exec rm {} \;"
 alias rm.swp="find . -type f -iname "*.swp" -exec rm {} \;"
 alias rm~="find . -type f -iname "*~" -exec rm {} \;"
 
-function line() {
+function lines() {
   sed -n "${1//-/,}p" "$2"
 }
 
