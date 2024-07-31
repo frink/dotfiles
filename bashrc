@@ -152,17 +152,24 @@ function cdrun() {
   cd -
 }
 
-function _cdx() {
+function x() {
+    local ifs="$IFS"
+    IFS='/'
+    local d="$*"
+    ls -d "$d"*/ | sed 's|.*/\([^/]*\)/$|\1|'
+    IFS="$ifs"
+}
+
+function x~c() {
   compgen -W "$(IFS='/';d="$*";ls -d "$d"*/ | sed -E 's/.*\/([^/]+)\//\1/')" -- ${@:$#}
 }
 
 function cdx() {
-  *) if [ -z "$2" ]; then
+  if [ -z "$2" ]; then
     cd "$1"
   else
     cdx "$1/$2" ${@:3}
-  fi;;
-  esac
+  fi
 }
 
 function mkcd() {
