@@ -24,7 +24,7 @@ function .branch() {
 }
 
 function .change() {
-  git diff-index HEAD 2> /dev/null | sed 's/.\+$/*/' | uniq
+  git diff-inde HEAD 2> /dev/null | sed 's/.\+$/*/' | uniq
 }
 
 function .path() {
@@ -153,10 +153,8 @@ function cdrun() {
 }
 
 function x() {
-    local ifs="$IFS"
-    IFS='/'
-    local d="$*"
-    ls -d ./"$d"*/ #| sed 's|.*/\([^/]*\)/$|\1|'
+    local ifs="$IFS" IFS='/'
+    ls -d ./"$*"*/ #| sed 's|.*/\([^/]*\)/$|\1|'
     IFS="$ifs"
 }
 
