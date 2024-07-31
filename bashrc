@@ -4,39 +4,39 @@
 set -o vi
 
 if [ "$PREFIX" = "/data/data/com.termux/files/usr" ]; then
-	export HOSTNAME="chromebook"
-	export USER="termux"
-	export OS_TERMUX=1
+  export HOSTNAME="chromebook"
+  export USER="termux"
+  export OS_TERMUX=1
 fi
 
 function .branch() {
-	#git branch 2> /dev/null | sed -e '/^[^*]/d' -e  's/.* \(.*\)/ [\1'$(.change)']/'
-	git branch -v 2> /dev/null | sed \
-		-e '/^[^*]/d' \
-		-e 's/^..(*\([^ ]*\)[^\[]*/\1/' \
-		-e 's/\].*$//' \
-		-e 's/\[\|$/'$(.change)' /' \
-		-e 's/ahead /+/' \
-		-e 's/behind /-/' \
-		-e 's/\( .*\)$/\1/' \
-		-e 's/^/ [/' \
-		-e 's/ *$/]/'
+  #git branch 2> /dev/null | sed -e '/^[^*]/d' -e  's/.* \(.*\)/ [\1'$(.change)']/'
+  git branch -v 2> /dev/null | sed \
+    -e '/^[^*]/d' \
+    -e 's/^..(*\([^ ]*\)[^\[]*/\1/' \
+    -e 's/\].*$//' \
+    -e 's/\[\|$/'$(.change)' /' \
+    -e 's/ahead /+/' \
+    -e 's/behind /-/' \
+    -e 's/\( .*\)$/\1/' \
+    -e 's/^/ [/' \
+    -e 's/ *$/]/'
 }
 
 function .change() {
-	git diff-index HEAD 2> /dev/null | sed 's/.\+$/*/' | uniq
+  git diff-index HEAD 2> /dev/null | sed 's/.\+$/*/' | uniq
 }
 
 function .path() {
-	groot=$(git rev-parse --show-toplevel 2>/dev/null || echo '@@@')
+  groot=$(git rev-parse --show-toplevel 2>/dev/null || echo '@@@')
 
-	case $PWD in
-		$HOME) echo "~/";;
-		$HOME/${PWD##*/}) echo "~/${PWD##*/}";;
-		$groot*) echo "git:${groot##*/}${PWD##$groot}/";;
-		"/") echo "/";;
-		*) echo "../${PWD##*/}/";;
-	esac
+  case $PWD in
+    $HOME) echo "~/";;
+    $HOME/${PWD##*/}) echo "~/${PWD##*/}";;
+    $groot*) echo "git:${groot##*/}${PWD##$groot}/";;
+    "/") echo "/";;
+    *) echo "../${PWD##*/}/";;
+  esac
 }
 
 export PATH="~/bin/:$PATH"
@@ -47,90 +47,90 @@ type -p wslview > /dev/null && export BROWSER="wslview"
 type -p see > /dev/null || alias see="$BROWSER"
 
 function dotfiles() {
-	DOTREPO=$(dirname $(readlink ~/.bashrc))
+  DOTREPO=$(dirname $(readlink ~/.bashrc))
 
-	case "$1" in
-		repo)
-			cd $DOTREPO
-			;;
-		list|install|uninstall|status|sync)
-			if [ -z "$2" ]; then 
-				make -sC $DOTREPO $1
-			else
-				make -sC $DOTREPO $1 FILE="$2"
-			fi
+  case "$1" in
+    repo)
+      cd $DOTREPO
+      ;;
+    list|install|uninstall|status|sync)
+      if [ -z "$2" ]; then 
+        make -sC $DOTREPO $1
+      else
+        make -sC $DOTREPO $1 FILE="$2"
+      fi
 
-			if [ "$1" = "sync" ]; then
-				source ~/.bashrc
-			fi
-			;;
-		track|untrack|link|unlink|edit)
-			if [ -z "$2" ]; then 
-				dotfiles
+      if [ "$1" = "sync" ]; then
+        source ~/.bashrc
+      fi
+      ;;
+    track|untrack|link|unlink|edit)
+      if [ -z "$2" ]; then 
+        dotfiles
 
-				return
-			fi
+        return
+      fi
 
-			make -sC $DOTREPO $1 FILE="$2"
+      make -sC $DOTREPO $1 FILE="$2"
 
-			case $2 in
-				bashrc|localrc)
-					echo "RELOADING ~./.$2"
-					source ~/.bashrc
-					;;
-			esac
-			;;
-		*)
-			echo -e "FRINKnet Dotfile Management System v1.13.02\n© 2020 Frink & Friends - Licenced: BSD Zero
+      case $2 in
+        bashrc|localrc)
+          echo "RELOADING ~./.$2"
+          source ~/.bashrc
+          ;;
+      esac
+      ;;
+    *)
+      echo -e "FRINKnet Dotfile Management System v1.13.02\n© 2020 Frink & Friends - Licenced: BSD Zero
 
   Usage:
 
-	dotfiles [ACTION] [FILE]
+  dotfiles [ACTION] [FILE]
 
   Actions:
 
-	install
-	unistall
+  install
+  unistall
 
-	link [FILE]
-	unlink [FILE]
-	track [FILE]
-	untrack [FILE]
-	edit [FILE]
+  link [FILE]
+  unlink [FILE]
+  track [FILE]
+  untrack [FILE]
+  edit [FILE]
 
-	repo
-	list
-	status
-	sync"
-			;;
-	esac
+  repo
+  list
+  status
+  sync"
+      ;;
+  esac
 }
 
 dotfiles status
 
 function note() {
-	[ -z "$1" ] && echo -e "
+  [ -z "$1" ] && echo -e "
 
   Usage:
 
-	note [LIST] [NOTE]
+  note [LIST] [NOTE]
 
-	" && return
+  " && return
 
 
-	[ ! -d ~/.notes ] && mkdir ~/.notes
+  [ ! -d ~/.notes ] && mkdir ~/.notes
 
-	if [ -z "$2" ]; then
-		[ -f ~/.notes/$1 ] && cat ~/.notes/$1
-	elif [ "$2" = "sort" ]; then
-		[ -f ~/.notes/$1 ] && cat ~/.notes/$1 | sort
-	elif [ "$2" = "edit" ]; then
-		$EDITOR ~/.notes/$1
-	elif [ "$2" = "clear" ]; then
-		rm -rf ~/.notes/$1
-	else
-		echo ${@:2} >> ~/.notes/$1
-	fi
+  if [ -z "$2" ]; then
+    [ -f ~/.notes/$1 ] && cat ~/.notes/$1
+  elif [ "$2" = "sort" ]; then
+    [ -f ~/.notes/$1 ] && cat ~/.notes/$1 | sort
+  elif [ "$2" = "edit" ]; then
+    $EDITOR ~/.notes/$1
+  elif [ "$2" = "clear" ]; then
+    rm -rf ~/.notes/$1
+  else
+    echo ${@:2} >> ~/.notes/$1
+  fi
 }
 
 alias todo="note todo"
@@ -143,38 +143,40 @@ alias ll="ls -hang"
 alias path="echo $PATH | tr : '\n'"
 
 function ff() {
-	find . -ipath "*$1*"
+  find . -ipath "*$1*"
 }
 
 function cdx() {
-	if [ -z "$2" ]; then
-		cd "$1"
-	else
-		cdx "$1/$2" ${@:3}
-	fi
+  if [ -z "$2" ]; then
+    cd "$1"
+  else
+    cdx "$1/$2" ${@:3}
+  fi
 }
 
 function cdrun() {
-	cd $1
-	${@:2}
-	cd -
+  cd $1
+  ${@:2}
+  cd -
 }
 
 function mkcd() {
-	if [ -z "$2" ]; then
-		mkdir -p "$1"
-		cd "$1"
-	else
-		mkcd "$1/$2"
-		${@:3}
-	fi
+  case $1 in
+    $'\t') ;;
+    *) if [ -z "$2" ]; then
+      mkdir -p "$1"
+      cd "$1"
+    else
+      mkcd "$1/$2" ${@:3}
+    fi;;
+  esac
 }
 
 alias ..="cdx .."
 alias ~="cdx ~"
 
 if [ -d ~/Work ]; then
-	alias wk="mkcd ~/Work"
+  alias wk="mkcd ~/Work"
 fi
 
 alias rgrep="grep -r"
@@ -182,35 +184,35 @@ alias lgrep="grep -lr"
 alias pgrep="ps -a | grep"
 
 function hgrep() {
-	history | grep -i "$(echo $@)"
+  history | grep -i "$(echo $@)"
 }
 
 function vgrep() {
-	$EDITOR $(lgrep "$@")
+  $EDITOR $(lgrep "$@")
 }
 
 function g.() {
-	cdx "$(git rev-parse --show-toplevel 2>/dev/null || echo '.')" $@
+  cdx "$(git rev-parse --show-toplevel 2>/dev/null || echo '.')" $@
 
-	unalias $(alias|grep "alias g\."|cut -d"=" -f1|cut -d" " -f2) &> /dev/null
+  unalias $(alias|grep "alias g\."|cut -d"=" -f1|cut -d" " -f2) &> /dev/null
 
-	for x in $(ls -d */ 2>/dev/null); do
-		alias g.${x%/}="cdx $PWD/$x";
-		echo g.${x%/}
-	done
+  for x in $(ls -d */ 2>/dev/null); do
+    alias g.${x%/}="cdx $PWD/$x";
+    echo g.${x%/}
+  done
 }
 
 function v.() {
-	unalias $(alias|grep "alias v\."|cut -d"=" -f1|cut -d" " -f2) &> /dev/null
+  unalias $(alias|grep "alias v\."|cut -d"=" -f1|cut -d" " -f2) &> /dev/null
 
-	for x in $(ls -d */ 2>/dev/null); do
-		alias v.${x%/}="unset VFILES;cdrun '$PWD/$x' v";
-		echo v.${x%/}
-	done
+  for x in $(ls -d */ 2>/dev/null); do
+    alias v.${x%/}="unset VFILES;cdrun '$PWD/$x' v";
+    echo v.${x%/}
+  done
 }
 
 function -() {
-	cd -
+  cd -
 }
 
 alias rmf="rm -rf"
@@ -221,21 +223,21 @@ alias vim="vim -p"
 alias svim="sudo vim -p"
 
 function v() {
-	if [ -n "$1" ]; then
-		export VFILES=$(
-			for x in "$@"; do
-				for x in $(find . -ipath "*$x*"); do
-					echo $PWD${x/.};
-				done
-			done
-		)
-	fi
+  if [ -n "$1" ]; then
+    export VFILES=$(
+      for x in "$@"; do
+        for x in $(find . -ipath "*$x*"); do
+          echo $PWD${x/.};
+        done
+      done
+    )
+  fi
 
-	if [ -n "$VFILES" ]; then
-		$EDITOR $VFILES
-	else
-		$EDITOR $PWD
-	fi
+  if [ -n "$VFILES" ]; then
+    $EDITOR $VFILES
+  else
+    $EDITOR $PWD
+  fi
 }
 
 alias vrc="dotfiles edit bashrc"
@@ -245,52 +247,52 @@ alias vrc.="[ ! -f ~/.localrc ] && touch ~/.localrc && ln -s ~/.localrc $DOTREPO
 alias fio="rash https://raw.githubusercontent.com/boazsegev/facil.io/master/scripts/new/app"
 
 if [ ! $OS_TERMUX ]; then
-	alias apt="sudo apt"
-	alias svc="sudo systemctl"
+  alias apt="sudo apt"
+  alias svc="sudo systemctl"
 fi
 
 function install-docker() {
-	local ARCH=$(dpkg --print-architecture)
-	local DISTRO=$(. /etc/os-release && echo "$ID")
-	local VERSION=$(. /etc/os-release && echo "$VERSION_CODENAME")
+  local ARCH=$(dpkg --print-architecture)
+  local DISTRO=$(. /etc/os-release && echo "$ID")
+  local VERSION=$(. /etc/os-release && echo "$VERSION_CODENAME")
 
-	# Add Docker's official GPG key:
-	sudo apt-get update
-	sudo apt-get install ca-certificates curl
-	sudo install -m 0755 -d /etc/apt/keyrings
-	sudo curl -fsSL https://download.docker.com/linux/$DISTRO/gpg -o /etc/apt/keyrings/docker.asc
-	sudo chmod a+r /etc/apt/keyrings/docker.asc
+  # Add Docker's official GPG key:
+  sudo apt-get update
+  sudo apt-get install ca-certificates curl
+  sudo install -m 0755 -d /etc/apt/keyrings
+  sudo curl -fsSL https://download.docker.com/linux/$DISTRO/gpg -o /etc/apt/keyrings/docker.asc
+  sudo chmod a+r /etc/apt/keyrings/docker.asc
 
-	# Add the repository to Apt sources:
-	echo \
-		"deb [arch=$ARCH signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/$DISTRO \
-		$VERSION stable" | \
-		sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+  # Add the repository to Apt sources:
+  echo \
+    "deb [arch=$ARCH signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/$DISTRO \
+    $VERSION stable" | \
+    sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
-	sudo apt-get update -y
-	sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+  sudo apt-get update -y
+  sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
-	sudo usermod -aG docker $(whoami)
+  sudo usermod -aG docker $(whoami)
 }
 
 # alias if docker not setup
 type -p docker > /dev/null || alias docker="install-docker && unalias docker && docker"
 
 function docker-clean() {
-	# Stop all containers
-	docker stop $(docker ps -qa)
+  # Stop all containers
+  docker stop $(docker ps -qa)
 
-	# Remove all containers
-	docker rm -f $(docker ps -qa)
+  # Remove all containers
+  docker rm -f $(docker ps -qa)
 
-	# Remove all images
-	docker rmi -f $(docker images -qa)
+  # Remove all images
+  docker rmi -f $(docker images -qa)
 
-	# Remove all volumes
-	docker volume rm -f $(docker volume ls -q)
+  # Remove all volumes
+  docker volume rm -f $(docker volume ls -q)
 
-	# Remove all networks
-	docker network rm -f $(docker network ls -q)
+  # Remove all networks
+  docker network rm -f $(docker network ls -q)
 }
 
 #docker tester
@@ -322,139 +324,139 @@ alias dca="dcd&&dcu"
 type -p nhost > /dev/null || alias nhost="rash https://raw.githubusercontent.com/nhost/cli/main/get.sh && unalias nhost && nhost"
 
 function install-psql() {
-	local VERSION=$(. /etc/os-release && echo "$VERSION_CODENAME")
+  local VERSION=$(. /etc/os-release && echo "$VERSION_CODENAME")
 
-	# Add Docker's official GPG key:
-	sudo apt-get update
-	sudo apt-get install ca-certificates curl
-	sudo install -m 0755 -d /etc/apt/keyrings
-	sudo curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc -o /etc/apt/keyrings/postgres.asc
-	sudo chmod a+r /etc/apt/keyrings/postgres.asc
+  # Add Docker's official GPG key:
+  sudo apt-get update
+  sudo apt-get install ca-certificates curl
+  sudo install -m 0755 -d /etc/apt/keyrings
+  sudo curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc -o /etc/apt/keyrings/postgres.asc
+  sudo chmod a+r /etc/apt/keyrings/postgres.asc
 
-	# Add the repository to Apt sources:
-	echo \
-		"deb [signed-by=/etc/apt/keyrings/postgres.asc] https://apt.postgresql.org/pub/repos/apt \
-		$VERSION-pgdg main" | \
-		sudo tee /etc/apt/sources.list.d/postgres.list > /dev/null
+  # Add the repository to Apt sources:
+  echo \
+    "deb [signed-by=/etc/apt/keyrings/postgres.asc] https://apt.postgresql.org/pub/repos/apt \
+    $VERSION-pgdg main" | \
+    sudo tee /etc/apt/sources.list.d/postgres.list > /dev/null
 
-	sudo apt-get update -y
-	sudo apt-get install -y postgresql-client
+  sudo apt-get update -y
+  sudo apt-get install -y postgresql-client
 }
 
 type -p psql > /dev/null || alias psql="install-psql && unalias psql && psql"
 
 function sql.run() {
-	if [ -z "$2" ]; then
-		if [ ! -t 0 ]; then
-			cat - | psql $1
-		else
-			psql $1
-		fi
-	elif [ "${2^^}" == "DUMP" ]; then
-		pg_dump "$1" "${@:3}"
-	else
-		echo "${@:2};" | psql "$1"
-	fi
+  if [ -z "$2" ]; then
+    if [ ! -t 0 ]; then
+      cat - | psql $1
+    else
+      psql $1
+    fi
+  elif [ "${2^^}" == "DUMP" ]; then
+    pg_dump "$1" "${@:3}"
+  else
+    echo "${@:2};" | psql "$1"
+  fi
 }
 
 function sql.add() {
-	alias sql.${1}="sql.run '${2}'"
+  alias sql.${1}="sql.run '${2}'"
 }
 
 function sql.del() {
-	unalias sql.${1}
+  unalias sql.${1}
 }
 
 function sqit() {
-	[ ! -f "sqitch.plan" ] && echo "not a sqitch folder" && return
+  [ ! -f "sqitch.plan" ] && echo "not a sqitch folder" && return
 
-	case ${1^^} in
-		ADD)
-			git reset
-			git status
-			sqitch add "$2" -n "Adding $2"
-			$EDITOR "deploy/$2.sql" "verify/$2.sql" "revert/$2.sql" sqitch.plan
-			git add "deploy/$2.sql" "verify/$2.sql" "revert/$2.sql" sqitch.plan
-			git commit -m "Adding $2"
-			;;
-		FIX)
-			git reset
-			git status
-			sqitch rework "$2" -n "Fixing $2"
-			$EDITOR "deploy/$2.sql" "verify/$2.sql" "revert/$2.sql" sqitch.plan
-			git add "deploy/$2.sql" "verify/$2.sql" "revert/$2.sql" sqitch.plan
-			git commit -m "Fixing $2"
-			;;
-		TAG)
-			sqitch tag "$2" -n "Tagging $2"
-			get tag "$2" -m "Tagging $2"
-			;;
-		MV)
-			[ ! -f "deploy/$2.sql" ] && echo "deploy/$2.sql does not exist" && return
-			[ ! -f "verify/$2.sql" ] && echo "verify/$2.sql does not exist" && return
-			[ ! -f "revert/$2.sql" ] && echo "revert/$2.sql does not exist" && return
-			[ -f "deploy/$3.sql" ] && echo "deploy/$3.sql already exist" && return
-			[ -f "verify/$3.sql" ] && echo "verify/$3.sql already exist" && return
-			[ -f "revert/$3.sql" ] && echo "revert/$3.sql already exist" && return
-			
-			git mv "deploy/$2.sql" "deploy/$3.sql"
-			git mv "verify/$2.sql" "verify/$3.sql"
-			git mv "revert/$2.sql" "revert/$3.sql"
+  case ${1^^} in
+    ADD)
+      git reset
+      git status
+      sqitch add "$2" -n "Adding $2"
+      $EDITOR "deploy/$2.sql" "verify/$2.sql" "revert/$2.sql" sqitch.plan
+      git add "deploy/$2.sql" "verify/$2.sql" "revert/$2.sql" sqitch.plan
+      git commit -m "Adding $2"
+      ;;
+    FIX)
+      git reset
+      git status
+      sqitch rework "$2" -n "Fixing $2"
+      $EDITOR "deploy/$2.sql" "verify/$2.sql" "revert/$2.sql" sqitch.plan
+      git add "deploy/$2.sql" "verify/$2.sql" "revert/$2.sql" sqitch.plan
+      git commit -m "Fixing $2"
+      ;;
+    TAG)
+      sqitch tag "$2" -n "Tagging $2"
+      get tag "$2" -m "Tagging $2"
+      ;;
+    MV)
+      [ ! -f "deploy/$2.sql" ] && echo "deploy/$2.sql does not exist" && return
+      [ ! -f "verify/$2.sql" ] && echo "verify/$2.sql does not exist" && return
+      [ ! -f "revert/$2.sql" ] && echo "revert/$2.sql does not exist" && return
+      [ -f "deploy/$3.sql" ] && echo "deploy/$3.sql already exist" && return
+      [ -f "verify/$3.sql" ] && echo "verify/$3.sql already exist" && return
+      [ -f "revert/$3.sql" ] && echo "revert/$3.sql already exist" && return
+      
+      git mv "deploy/$2.sql" "deploy/$3.sql"
+      git mv "verify/$2.sql" "verify/$3.sql"
+      git mv "revert/$2.sql" "revert/$3.sql"
 
-			$EDITOR "deploy/$3.sql" "verify/$3.sql" "revert/$3.sql" sqitch.plan
-			git commit -m "Moving $2 $3"
-			;;
-		*)
-			echo -e "Simple Quick Integration Transfer v1.0.02\n©2020 Frink & Friends - Licenced: BSD Zero
+      $EDITOR "deploy/$3.sql" "verify/$3.sql" "revert/$3.sql" sqitch.plan
+      git commit -m "Moving $2 $3"
+      ;;
+    *)
+      echo -e "Simple Quick Integration Transfer v1.0.02\n©2020 Frink & Friends - Licenced: BSD Zero
 
   Usage:
 
-	sqit [ACTION] [name]
+  sqit [ACTION] [name]
 
   Actions:
 
-	add [name]
-	fix [name]
-	tag [name]
-	"
-			;;
-	esac
+  add [name]
+  fix [name]
+  tag [name]
+  "
+      ;;
+  esac
 }
 
 function on() {
-	(
-		exe=( ${@:2} )
-		dtach -A /dev/shm/on-$1 ${exe[@]:-bash}
-	)
+  (
+    exe=( ${@:2} )
+    dtach -A /dev/shm/on-$1 ${exe[@]:-bash}
+  )
 }
 
 function whos() {
-	local tld=${1#*.}
-	local dns=$(whois -h whois.iana.org $tld|grep whois:|sed 's/whois:\s\+//')
+  local tld=${1#*.}
+  local dns=$(whois -h whois.iana.org $tld|grep whois:|sed 's/whois:\s\+//')
 
-	if [ -z "$dns" ]; then
-		echo "No Whois Sever found for .$tld!"
-		return
-	else
-		echo "Server: $dns"
-	fi
+  if [ -z "$dns" ]; then
+    echo "No Whois Sever found for .$tld!"
+    return
+  else
+    echo "Server: $dns"
+  fi
 
-	whois -h $dns $@
+  whois -h $dns $@
 }
 
 function dns() {
-	dig +nocmd hinfo +multiline +noall +answer $1
-	dig +nocmd ns +multiline +noall +answer $1
-	dig +nocmd soa +multiline +noall +answer $1
-	dig +nocmd srv +multiline +noall +answer $1
-	dig +nocmd mx +multiline +noall +answer $1
-	dig +nocmd cname +multiline +noall +answer $1
-	dig +nocmd a +multiline +noall +answer $1
-	dig +nocmd txt +multiline +noall +answer $1
+  dig +nocmd hinfo +multiline +noall +answer $1
+  dig +nocmd ns +multiline +noall +answer $1
+  dig +nocmd soa +multiline +noall +answer $1
+  dig +nocmd srv +multiline +noall +answer $1
+  dig +nocmd mx +multiline +noall +answer $1
+  dig +nocmd cname +multiline +noall +answer $1
+  dig +nocmd a +multiline +noall +answer $1
+  dig +nocmd txt +multiline +noall +answer $1
 }
 
 function error() {
-	echo $@ >&2;
+  echo $@ >&2;
 }
 
 alias wcat="wget -qSO- --method=GET"
@@ -464,110 +466,110 @@ alias wpost="wget -qO- --body-file=- --method=POST"
 alias wput="wget -qO- --body-file=- --method=PUT"
 
 function surash() {
-	wbody $1 | sudo bash ${@:2}
+  wbody $1 | sudo bash ${@:2}
 }
 
 function rash() {
-	wbody $1 | bash ${@:2}
+  wbody $1 | bash ${@:2}
 }
 
 function wtgz() {
-	wbody $1 | tar xz ${@:2}
+  wbody $1 | tar xz ${@:2}
 }
 
 function api() {
-	if [ -z "$2" ]; then
-		echo "
+  if [ -z "$2" ]; then
+    echo "
 API command line accessor via wget.
 
 Usage: api [options] [method] [path] [selection]
 
-	--set: set url endpoint and wget arguments
-	--call: show the actual wget call
-	--test: test the call you are making
-	--debug: debug wget call
-		"
-		return
-	fi
+  --set: set url endpoint and wget arguments
+  --call: show the actual wget call
+  --test: test the call you are making
+  --debug: debug wget call
+    "
+    return
+  fi
 
-	if [ ! -t 0 ] && [ -z "$API_BODY" ] && [ "${1^^}" != "--PARSE" ]; then
-		export API_BODY="$(mktemp -p /dev/shm/)"
-		umask 077
-		cat - > $API_BODY
-	fi
+  if [ ! -t 0 ] && [ -z "$API_BODY" ] && [ "${1^^}" != "--PARSE" ]; then
+    export API_BODY="$(mktemp -p /dev/shm/)"
+    umask 077
+    cat - > $API_BODY
+  fi
 
-	case "${1^^}" in
-		--SET)
-			export API_URL="${2%\?*}"
-			export API_QUERY="${2#*\?}"
-			export API_ARGS=( "${@:3}" )
-			;;
-		--CALL)
-			echo $(
-				API_URI="${API_URL%/}$([ -n "$3" ] && echo /)$(echo ${3#/} | cut -d? -f1)"
-				API_URI+="?$([ -n "$API_QUERY" ] && echo "$API_QUERY&")$(echo ${3#/}? | cut -d? -f2)"
+  case "${1^^}" in
+    --SET)
+      export API_URL="${2%\?*}"
+      export API_QUERY="${2#*\?}"
+      export API_ARGS=( "${@:3}" )
+      ;;
+    --CALL)
+      echo $(
+        API_URI="${API_URL%/}$([ -n "$3" ] && echo /)$(echo ${3#/} | cut -d? -f1)"
+        API_URI+="?$([ -n "$API_QUERY" ] && echo "$API_QUERY&")$(echo ${3#/}? | cut -d? -f2)"
 
-				echo wget -O- --content-on-error=on
+        echo wget -O- --content-on-error=on
 
-				[[ "${2^^}" =~ POST|PUT ]] && [ -n "$API_BODY" ] && echo --body-file=$API_BODY
+        [[ "${2^^}" =~ POST|PUT ]] && [ -n "$API_BODY" ] && echo --body-file=$API_BODY
 
-				echo --method="${2^^}"
+        echo --method="${2^^}"
 
-				for x in "${API_ARGS[@]}"; do
-					echo "${x%%=*}$([ "${x%%=*}" != "${x#*=}" ] && echo  ="'${x#*=}'") "
-				done
+        for x in "${API_ARGS[@]}"; do
+          echo "${x%%=*}$([ "${x%%=*}" != "${x#*=}" ] && echo  ="'${x#*=}'") "
+        done
 
-				echo  "'$API_URI'"
-			)
-			;;
-		--DEBUG)
-			(
-				export API_ARGS=( -vd --save-headers "${API_ARGS[@]}" )
+        echo  "'$API_URI'"
+      )
+      ;;
+    --DEBUG)
+      (
+        export API_ARGS=( -vd --save-headers "${API_ARGS[@]}" )
 
-				api --call "${@:2:2}" | bash | less
-			)
-			api --call "${@:2:2}"
-			;;
-		--TEST)
-			(
-				export API_URL="https://httpbin.org/anything"
+        api --call "${@:2:2}" | bash | less
+      )
+      api --call "${@:2:2}"
+      ;;
+    --TEST)
+      (
+        export API_URL="https://httpbin.org/anything"
 
-				api "${@:2}" 
-			)
-			;;
-		GET|POST|PUT|DELETE|HEAD|OPTIONS)
-			(
-				export API_ARGS=( -q "${API_ARGS[@]}" )
+        api "${@:2}" 
+      )
+      ;;
+    GET|POST|PUT|DELETE|HEAD|OPTIONS)
+      (
+        export API_ARGS=( -q "${API_ARGS[@]}" )
 
-				api --call "${@:1:2}" | bash
-			) | (
-				API_RTN=$( cat )
+        api --call "${@:1:2}" | bash
+      ) | (
+        API_RTN=$( cat )
 
-				echo "$API_RTN" | jq "${@:3}" 2>/dev/null || echo "$API_RTN"
-			)
+        echo "$API_RTN" | jq "${@:3}" 2>/dev/null || echo "$API_RTN"
+      )
 
-			;;
-		*)
-			api
-			;;
-	esac
+      ;;
+    *)
+      api
+      ;;
+  esac
 
-	if [[ "${1^^}" =~ POST|PUT ]]; then
-		rm -f $API_BODY;
-		unset API_BODY;
-	fi
+  if [[ "${1^^}" =~ POST|PUT ]]; then
+    rm -f $API_BODY;
+    unset API_BODY;
+  fi
 }
 
 if [ -n "$(which quasar)" ]; then
-	alias qdev="(on quasar quasar dev)"
-	alias qbuild="(on quasar quasar build)"
+  alias qdev="(on quasar quasar dev)"
+  alias qbuild="(on quasar quasar build)"
 fi
 
 function uml() {
-	uml=${1%.*}
-	vim $uml.uml
-	plantuml -progress $uml.uml
-	wl-copy < $uml.png
+  uml=${1%.*}
+  vim $uml.uml
+  plantuml -progress $uml.uml
+  wl-copy < $uml.png
 }
 
 alias clip="wl-copy <"
@@ -583,28 +585,28 @@ function lines() {
 }
 
 function words() {
-	cat $1 | tr 'A-Z' 'a-z' | \
-	egrep -o "\b[[:alpha:]]+\b" | \
-	awk '{ count[$0]++ }
-	END{
-	for(ind in count)
-	{ printf("%-14s%d\n",ind,count[ind]); }
-	}' | sort -k2 -n -r
+  cat $1 | tr 'A-Z' 'a-z' | \
+  egrep -o "\b[[:alpha:]]+\b" | \
+  awk '{ count[$0]++ }
+  END{
+  for(ind in count)
+  { printf("%-14s%d\n",ind,count[ind]); }
+  }' | sort -k2 -n -r
 }
 
 function fringpong() {
-	echo "A server will respond 12 times on port 1234"
+  echo "A server will respond 12 times on port 1234"
 
-	sudo apt install netcat -y
+  sudo apt install netcat -y
 
-	(
-		local I="0"
+  (
+    local I="0"
 
-		while [ $I -lt 12 ];do
-			I=$[$I+1]
-			echo -e "HTTP/1.1 200\r\nContent-Type:text/html\r\n\r\nFRINGPONG $I" | nc -lvN 1234 2>1
-		done >/dev/null &
-	)
+    while [ $I -lt 12 ];do
+      I=$[$I+1]
+      echo -e "HTTP/1.1 200\r\nContent-Type:text/html\r\n\r\nFRINGPONG $I" | nc -lvN 1234 2>1
+    done >/dev/null &
+  )
 }
 
 completer() {
