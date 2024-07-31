@@ -162,7 +162,7 @@ function cdrun() {
 
 function mkcd() {
   case $1 in
-    $'\t') compgen -W "$(set "$@"; ls -d ./*/ | sed -E 's/.*\/([^/]+)\//\1/')" -- $2;;
+    $'\t') compgen -W "$(IFS='/';d="$*";ls -d "$d"*/ | sed -E 's/.*\/([^/]+)\//\1/')" -- ${@:$#};;
     *) if [ -z "$2" ]; then
       mkdir -p "$1"
       cd "$1"
