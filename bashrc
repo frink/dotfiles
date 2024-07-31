@@ -146,31 +146,32 @@ function ff() {
   find . -ipath "*$1*"
 }
 
-function cdx() {
-  if [ -z "$2" ]; then
-    cd "$1"
-  else
-    cdx "$1/$2" ${@:3}
-  fi
-}
-
 function cdrun() {
   cd $1
   ${@:2}
   cd -
 }
 
-function mkcd() {
+function cdx() {
   case $1 in
     $'\t') compgen -W "$(IFS='/';d="$*";ls -d "$d"*/ | sed -E 's/.*\/([^/]+)\//\1/')" -- ${@:$#};;
     *) if [ -z "$2" ]; then
-      mkdir -p "$1"
       cd "$1"
     else
-      mkcd "$1/$2" ${@:3}
+      cdx "$1/$2" ${@:3}
     fi;;
   esac
 }
+
+function mkcd() {
+  if [ -z "$2" ]; then
+    mkdir -p "$1"
+    cd "$1"
+  else
+    mkcd "$1/$2" ${@:3}
+  fi
+}
+
 
 alias ..="cdx .."
 alias ~="cdx ~"
