@@ -172,6 +172,8 @@ function mkcd() {
   fi
 }
 
+complete -C "cdx $'\t'" cdx
+complete -C "cdx $'\t'" mkcd
 
 alias ..="cdx .."
 alias ~="cdx ~"
