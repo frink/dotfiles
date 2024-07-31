@@ -179,7 +179,7 @@ function mkcd() {
   fi
 }
 
-complete -C "x~c" x
+complete -C x~c x
 
 alias ..="cdx .."
 alias ~="cdx ~"
