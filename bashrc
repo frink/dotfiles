@@ -162,7 +162,7 @@ function cdrun() {
 
 function mkcd() {
   case $1 in
-    $'\t') ;;
+    $'\t') compgen -W "$(ls "$1"/"$2")";;
     *) if [ -z "$2" ]; then
       mkdir -p "$1"
       cd "$1"
