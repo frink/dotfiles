@@ -159,7 +159,7 @@ function x() {
 }
 
 function x~c() {
-  compgen -W "$(IFS='/';d="$*";ls -d "$d"*/ | sed -E 's/.*\/([^/]+)\//\1/')" -- ${@:$#}
+  compgen -W "$(x "$@")" -- ${@:$#}
 }
 
 function cdx() {
@@ -179,8 +179,7 @@ function mkcd() {
   fi
 }
 
-complete -C "cdx $'\t'" cdx
-complete -C "cdx $'\t'" mkcd
+complete -C "x~c" x
 
 alias ..="cdx .."
 alias ~="cdx ~"
