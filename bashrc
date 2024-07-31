@@ -158,7 +158,7 @@ function x() {
     IFS="$ifs"
 }
 
-function x~c() {
+function x.c() {
   compgen -W "$(x "$@")" -- ${@:$#}
 }
 
@@ -179,7 +179,7 @@ function mkcd() {
   fi
 }
 
-complete -C x~c x
+complete -C x.c x
 
 alias ..="cdx .."
 alias ~="cdx ~"
