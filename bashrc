@@ -157,11 +157,11 @@ function x() {
     local dir="${1%/*}"
     set "${1##*/}" "${@:2}"
 
-    echo -n "$(
+    echo "$(
       IFS='/'
       echo 'cd "'${dir#/.\/\//\/}'" 2>/dev/null'
       echo 'ls -d "'$*'"*/ 2>/dev/null'
-    )\n"
+    )"
 
     local list=( $(
       compgen -W ".. $(
