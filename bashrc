@@ -199,7 +199,7 @@ complete -F x x
 complete -F x cdx
 complete -F x mkcd
 
-mkx xx echo .
+mkx xx x .
 mkx wk mkcd ~/Work
 mkx .. cdx ..
 mkx ~ cdx ~
