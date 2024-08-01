@@ -178,7 +178,7 @@ function cdx() {
   IFS="$ifs"
 }
 
-function cdmk() {
+function mkcd() {
   local ifs="$IFS"
   IFS='/'
   mkdir -p "$*"
@@ -197,7 +197,7 @@ function mkx() {
 
 complete -F x x
 complete -F x cdx
-complete -F x cdmk
+complete -F x mkcd
 
 mkx wk mkcd ~/Work
 mkx .. cdx ..
