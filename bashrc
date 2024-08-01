@@ -187,8 +187,12 @@ function cdmk() {
 }
 
 function mkx() {
-    eval 'function '$1'(){ $([ -n "$COMP_CWORD" ] && echo '$2' || echo x) "'$3'" "${@}"; }'
-    complete -F '$1' '$1'
+  eval 'function '$1'(){ 
+    local cmd='$2'
+    [ -n "$COMP_CWORD" ] && cmd=x
+    $cmd"'$3'" "${@}"
+  }'
+  complete -F '$1' '$1'
 }
 
 complete -F x x
