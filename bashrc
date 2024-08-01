@@ -184,7 +184,9 @@ function mkcd() {
 function mkx() {
   eval 'function '$1'(){ 
     [ -z "$COMP_CWORD" ] && '$2' "'$3'" "${@}" && return
-    
+
+    echo "${COMP_WORDS[@]}"
+
     ((COMP_CWORD++))
     COMP_WORDS=( "'$3'" "${@:2}" )
 
