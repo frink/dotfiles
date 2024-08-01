@@ -166,7 +166,7 @@ function x() {
       ls -d "${*%..}"*/ 2>/dev/null
       #ls -d "${*%..}"*/ 2>/dev/null | sed 's|^\(.*/\)\?\([^/]\+\)/\?|\2|'
     ) )
-    echo "${word[@]}"
+    echo -e "${word[@]}"
 
     #COMPREPLY=( $(compgen -W ".. ${words[@]}"  -- "${@:$#}") )
 
