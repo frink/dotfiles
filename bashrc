@@ -169,7 +169,7 @@ function x() {
     echo ls -d "$*"*/ 2>/dev/null 
 
     local list=( $(
-      echo compgen -W "$(
+      compgen -W "$(
         IFS='/'
         cd "$dir" 2>/dev/null
         ls -d "$*"*/ 2>/dev/null | sed 's|^\(.*/\)\?\([^/]\+\)/\?|\2|'
