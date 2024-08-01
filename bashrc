@@ -157,7 +157,7 @@ function x() {
     local dir="./${1%/*}"
     set "${1##*/}" "${@:2}"
 
-    local word=( $(
+    local words=$(
       echo 'cd "'${dir#/.\/\//\/}'" 2>/dev/null'
       cd "${dir#/.\/\//\/}" 2>/dev/null
       IFS='/'
@@ -165,10 +165,10 @@ function x() {
       echo 'ls -d '${*%..}'*/ 2>/dev/null'
       ls -d "${*%..}"*/ 2>/dev/null
       #ls -d "${*%..}"*/ 2>/dev/null | sed 's|^\(.*/\)\?\([^/]\+\)/\?|\2|'
-    ) )
-    echo -e "${word[@]}"
+    )
+    echo "${words}"
 
-    #COMPREPLY=( $(compgen -W ".. ${words[@]}"  -- "${@:$#}") )
+    #COMPREPLY=( $(compgen -W ".. ${words}"  -- "${@:$#}") )
 
     [ -z "$COMP_CWORD" ] && echo "${COMPREPLY[@]}"
 }
