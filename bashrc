@@ -156,7 +156,7 @@ function x() {
 
     local dir="./${1}"
     dir="${dir%/*}"
-#dir="${dir#/.\/\//\/}"
+    dir="${dir#/.\/\//\/}"
     set "${1##*/}" "${@:2}"
     echo cd "$dir"
     echo ls -d "$(IFS=/;echo "$*")*/"
