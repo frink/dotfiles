@@ -183,9 +183,12 @@ function mkcd() {
 
 function mkx() {
   eval 'function '$1'(){ 
-    local cmd='$2'
-    [ -n "$COMP_CWORD" ] && cmd=x && unset COMP_CWORD
-    $cmd "'$3'" "${@}"
+    [ -z "$COMP_CWORD" ] && '$2' "'$3'" "${@}" && return
+    
+    ((COMP_CWORD++))
+    COMP_WORDS=( "'$3'" "${@:2}" )
+
+    x
   }'
 }
 
