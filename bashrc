@@ -163,7 +163,7 @@ function x() {
     set "${1%/*}" "${@:2}"
 
     local list=( $(
-      compgen -W "$(
+      echo compgen -W "$(
         IFS='/'
         cd "$dir" 2>/dev/null
         ls -d "$*"*/ 2>/dev/null | sed 's|^\(.*/\)\?\([^/]\+\)/\?|\2|'
