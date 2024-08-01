@@ -155,10 +155,11 @@ function x() {
     [ -n "$COMP_CWORD" ] && set "${COMP_WORDS[@]:1:$COMP_CWORD}"
 
     local dir="./${1%/*}"
-    set "${1##*/}" "${@:2:$#-1}" "./${@[$#]}"
+    set "${1##*/}" "${@:2:$#-1}" "./${!#}"
 
     local words=$(
       set -x
+      echo x "$@"
       IFS='/'
       cd "${dir#/.\/\//\/}" 2>/dev/null
       pwd
