@@ -159,8 +159,8 @@ function x() {
 
     (
       IFS='/'
-      echo cd "${dir#/.\/\//\/}" 2>/dev/null
-      echo ls -d "$*"*/ 2>/dev/null
+      echo 'cd "'${dir#/.\/\//\/}'" 2>/dev/null'
+      echo 'ls -d "'$*'"*/ 2>/dev/null'
     ) | cat
 
     local list=( $(
