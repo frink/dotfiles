@@ -154,6 +154,8 @@ function cdrun() {
 function x() {
     [ -n "$COMP_CWORD" ] && set "${COMP_WORDS[@]:1:$COMP_CWORD}"
 
+    echo $1
+
     local dir="${1##*/}"
     dir="./${dir#/\~/$HOME}"
     dir="${dir#/.\/\//\/}"
