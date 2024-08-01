@@ -1,4 +1,4 @@
-#!/bin/bash
+!/bin/bash
 [ -z "$PS1" ] && return
 
 set -o vi
@@ -158,6 +158,8 @@ function x() {
     local list=( $(
       compgen -W "$(
         IFS='/'
+        cd "$1"
+        shift
         ls -d ./"$*"*/ 2>/dev/null | sed 's|.*/\([^/]*\)/$|\1|'
       )"  -- "${@:$#}"
     ) )
