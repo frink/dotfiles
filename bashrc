@@ -190,7 +190,7 @@ function mkx() {
   eval 'function '$1'(){ 
     local cmd='$2'
     [ -n "$COMP_CWORD" ] && cmd=x
-    $cmd"'$3'" "${@}"
+    $cmd "'$3'" "${@}"
   }'
   complete -F '$1' '$1'
 }
