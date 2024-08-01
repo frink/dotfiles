@@ -154,20 +154,9 @@ function cdrun() {
 function x() {
     [ -n "$COMP_CWORD" ] && set "${COMP_WORDS[@]:1:$COMP_CWORD}"
 
-    local dir="$(echo "$1" | sed 's')"
-    dir="${dir%/*}"
-    dir="${dir#/.\/\//\/}"
-    set "${1##*/}" "${@:2}"
-    echo cd "$dir"
-    echo ls -d "$(IFS=/;echo "$*")*/"
-    return 
 
     local words=$(
-      IFS='/'
-      cd "$dir" 2>/dev/null
-      pwd
-      ls -d "$*"*/ 2>/dev/null
-      #ls -d "${*%..}"*/ 2>/dev/null | sed 's|^\(.*/\)\?\([^/]\+\)/\?|\2|'
+      $(IFS=/;echo "$*" | sed -E 's|^(/)?(.*/)?(.*)$|ls -d \1./\2/\3*/|')| sed 's|^\(.*/\)\?\([^/]\+\)/\?|\2|'
     )
     echo "${words}"
 
