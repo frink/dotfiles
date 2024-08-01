@@ -187,7 +187,7 @@ function cdmk() {
 }
 
 function mkx() {
-    eval 'function '$1'(){ $([ -n "$COMP_CWORD" ] && echo echo '$2' || echo x) "'$3'" "${@}"; }'
+    eval 'function '$1'(){ $([ -n "$COMP_CWORD" ] && echo '$2' || echo x) "'$3'" "${@}"; }'
     complete -F $1 $1
 }
 
@@ -195,7 +195,7 @@ complete -F x x
 complete -F x cdx
 complete -F x cdmk
 
-mkx wk cdx ~/Work
+mkx wk mkcd ~/Work
 mkx .. cdx ..
 mkx ~ cdx ~
 
