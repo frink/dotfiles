@@ -155,10 +155,6 @@ function cdrun() {
 function x() {
     [ -n "$COMP_CWORD" ] && set "${COMP_WORDS[@]:1:$COMP_CWORD}"
 
-
-}
-
-function____() {
     local list=( $(
       compgen -W "$(
         IFS='/'
