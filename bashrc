@@ -157,7 +157,7 @@ function x() {
     echo $1
 
     local dir="${1##*/}"
-    dir="./${dir#/\~/$HOME}"
+#dir="./${dir#/\~/$HOME}"
     dir="${dir#/.\/\//\/}"
 
     echo $dir
