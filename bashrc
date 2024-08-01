@@ -164,7 +164,7 @@ function x() {
       compgen -W "$(
         IFS='/'
         cd "$dir" 2>/dev/null
-        ls -d "$*"*/ 2>/dev/null | sed -e 's|^.*/\([^/]+\)$|\1|' -e's|/$||'
+        ls -d "$*"*/ 2>/dev/null | sed -e 's|^.*/||' -e's|/$||'
       )"  -- "${@:$#}"
     ) )
 
