@@ -160,6 +160,7 @@ function x() {
     echo 'cd "'${dir#/.\/\//\/}'" 2>/dev/null'
     local test=( $(
       IFS='/'
+      echo 'ls -d "'$*'"*/' 2>/dev/null
       echo ls -d "$*"*/ 2>/dev/null
     ) )
     echo "${test[@]}"
