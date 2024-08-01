@@ -164,8 +164,8 @@ function x() {
     local list=( $(
       compgen -W "$(
         IFS='/'
-        cd "$dir"
-        ls -d "$*"*/ | sed 's|.*/\([^/]*\)/$|\1|'
+        cd "$dir" 2>/dev/null
+        ls -d "$*"*/ 2>/dev/null | sed 's|.*/\([^/]*\)/$|\1|'
       )"  -- "${@:$#}"
     ) )
 
