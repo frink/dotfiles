@@ -154,24 +154,12 @@ function cdrun() {
 function x() {
     [ -n "$COMP_CWORD" ] && set "${COMP_WORDS[@]:1:$COMP_CWORD}"
 
-    echo $1
-
     local dir="${1%/*}"
-    dir="${dir#/.\/\//\/}"
-
-    echo dir="$dir"
-
     set "${1##*/}" "${@:2}"
-
-    echo @="$@"
-
-    echo cd "$dir" 2>/dev/null
-    echo ls -d "$*"*/ 2>/dev/null 
-
     local list=( $(
       compgen -W "$(
         IFS='/'
-        cd "$dir" 2>/dev/null
+        cd "${dir#/.\/\//\/}" 2>/dev/null
         ls -d "$*"*/ 2>/dev/null | sed 's|^\(.*/\)\?\([^/]\+\)/\?|\2|'
       )"  -- "${@:$#}"
     ) )
