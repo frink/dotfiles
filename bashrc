@@ -160,7 +160,11 @@ function x() {
     dir="./${dir#/\~/$HOME}"
     dir="${dir#/.\/\//\/}"
 
+    echo $dir
+
     set "${1%/*}" "${@:2}"
+
+    echo "$@"
 
     local list=( $(
       echo compgen -W "$(
