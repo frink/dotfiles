@@ -153,8 +153,16 @@ function cdrun() {
 }
 
 function x() {
+    [ -n "$COMP_CWORD" ] && set "${COMP_WORDS[@]:1:$COMP_CWORD}"
 
-    local list="$(compgen -W "$(IFS='/'; ls -d ./"$*"*/ | sed 's|.*/\([^/]*\)/$|\1|')"  -- "${@:$#}")
+    local list=( $(
+      compgen -W "$(
+        IFS='/'
+        ls -d ./"$*"*/ | sed 's|.*/\([^/]*\)/$|\1|'
+      )"  -- "${@:$#}"
+    ) )
+
+    [ -n "$COMP_CWORD" ] && COMPREPLY=( "${list[@]}" ) || echo "${list[@]}"
 }
 
 function cdx() {
@@ -174,7 +182,7 @@ function mkcd() {
   fi
 }
 
-complete -W "$(x)" x
+complete -F x x
 
 alias ..="cdx .."
 alias ~="cdx ~"
