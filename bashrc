@@ -187,7 +187,6 @@ function mkx() {
     [ -n "$COMP_CWORD" ] && cmd=x && unset COMP_CWORD
     $cmd "'$3'" "${@}"
   }'
-  complete -F '$1' '$1'
 }
 
 complete -F x x
@@ -198,6 +197,11 @@ mkx xx x ./
 mkx wk mkcd ~/Work/
 mkx .. cdx ../
 mkx ~ cdx ~/
+
+complete -F xx xx
+complete -F wk wk
+complete -F '..' '..'
+complete -F '~' '~'
 
 alias rgrep="grep -r"
 alias lgrep="grep -lr"
