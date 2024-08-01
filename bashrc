@@ -157,23 +157,19 @@ function x() {
     local dir="./${1%/*}"
     set "${1##*/}" "${@:2}"
 
-    echo 'cd "'${dir#/.\/\//\/}'" 2>/dev/null'
-    local test=( $(
+    local word=( $(
       IFS='/'
-      echo 'ls -d '${*%..}'*/' 2>/dev/null
+      echo 'cd "'${dir#/.\/\//\/}'" 2>/dev/null'
+      cd "${dir#/.\/\//\/}" 2>/dev/null
+      echo 'ls -d '${*%..}'*/ 2>/dev/null'
       ls -d "${*%..}"*/ 2>/dev/null
+      ls -d "${*%..}"*/ 2>/dev/null | sed 's|^\(.*/\)\?\([^/]\+\)/\?|\2|'
     ) )
-    echo "${test[@]}"
+    echo "${word[@]}"
 
-    local list=( $(
-      compgen -W ".. $(
-        IFS='/'
-        cd "${dir#/.\/\//\/}" 2>/dev/null
-        echo ls -d "${*%..}"*/ 2>/dev/null | sed 's|^\(.*/\)\?\([^/]\+\)/\?|\2|'
-      )"  -- "${@:$#}"
-    ) )
+    #COMPREPLY=( $(compgen -W ".. ${words[@]}"  -- "${@:$#}") )
 
-    [ -n "$COMP_CWORD" ] && COMPREPLY=( "${list[@]}" ) || echo "${list[@]}"
+    [ -z "$COMP_CWORD" ] && echo "${COMPREPLY[@]}"
 }
 
 function cdx() {
