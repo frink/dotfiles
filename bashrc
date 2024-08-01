@@ -188,7 +188,7 @@ function mkx() {
     ((COMP_CWORD++))
     COMP_WORDS=( "'$3'" "${@:2}" )
 
-    echo "${COMP_WORDS[@}}"
+    echo "${COMP_WORDS[@]}"
   }'
 }
 
