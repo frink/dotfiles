@@ -10,7 +10,6 @@ if [ "$PREFIX" = "/data/data/com.termux/files/usr" ]; then
 fi
 
 function .branch() {
-  #git branch 2> /dev/null | sed -e '/^[^*]/d' -e  's/.* \(.*\)/ [\1'$(.change)']/'
   git branch -v 2> /dev/null | sed \
     -e '/^[^*]/d' \
     -e 's/^..(*\([^ ]*\)[^\[]*/\1/' \
@@ -165,7 +164,7 @@ function x() {
       compgen -W "$(
         IFS='/'
         cd "$dir" 2>/dev/null
-        ls -d "$*"*/ 2>/dev/null | sed 's|.*/?\([^/]+\)/$|\1|'
+        ls -d "$*"*/ 2>/dev/null | sed -e 's|^.*/\([^/]+\)$|\1| s|/$||'
       )"  -- "${@:$#}"
     ) )
 
