@@ -1,4 +1,4 @@
-!/bin/bash
+#!/bin/bash
 [ -z "$PS1" ] && return
 
 set -o vi
@@ -157,7 +157,7 @@ function x() {
 
     local list=( $(
       compgen -W "$(
-        if [ -n "$2 ]; then
+        if [ -n "$2" ]; then
           cd "${1/\~/$HOME}"
           shift
         fi
