@@ -160,15 +160,15 @@ function x() {
     echo 'cd "'${dir#/.\/\//\/}'" 2>/dev/null'
     local test=( $(
       IFS='/'
-      echo 'ls -d "'${*%..}'"*/' 2>/dev/null
+      echo 'ls -d ${*%..}'*/' 2>/dev/null
     ) )
     echo "${test[@]}"
 
     local list=( $(
+      IFS='/'
+      cd "${dir#/.\/\//\/}" 2>/dev/null
       compgen -W ".. $(
-        IFS='/'
-        cd "${dir#/.\/\//\/}" 2>/dev/null
-        ls -d "${*%..}"*/ 2>/dev/null | sed 's|^\(.*/\)\?\([^/]\+\)/\?|\2|'
+        echo ls -d "${*%..}"*/ 2>/dev/null | sed 's|^\(.*/\)\?\([^/]\+\)/\?|\2|'
       )"  -- "${@:$#}"
     ) )
 
