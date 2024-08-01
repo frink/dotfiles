@@ -154,7 +154,7 @@ function cdrun() {
 function x() {
     [ -n "$COMP_CWORD" ] && set "${COMP_WORDS[@]:1:$COMP_CWORD}"
 
-    local dir="$(echo "$1" | sed 's)"
+    local dir="$(echo "$1" | sed 's')"
     dir="${dir%/*}"
     dir="${dir#/.\/\//\/}"
     set "${1##*/}" "${@:2}"
