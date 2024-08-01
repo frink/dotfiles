@@ -165,9 +165,9 @@ function x() {
     echo "${test[@]}"
 
     local list=( $(
-      IFS='/'
-      cd "${dir#/.\/\//\/}" 2>/dev/null
       compgen -W ".. $(
+        IFS='/'
+        cd "${dir#/.\/\//\/}" 2>/dev/null
         echo ls -d "${*%..}"*/ 2>/dev/null | sed 's|^\(.*/\)\?\([^/]\+\)/\?|\2|'
       )"  -- "${@:$#}"
     ) )
