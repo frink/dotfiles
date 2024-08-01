@@ -154,16 +154,13 @@ function cdrun() {
 function x() {
     [ -n "$COMP_CWORD" ] && set "${COMP_WORDS[@]:1:$COMP_CWORD}"
 
-    local words=$(
+    COMPREPLY=( $(compgen -W ".. $(
       $(
         IFS=/;
         echo "$*" | \
         sed -E 's|^(/)?(.*/)?(.*)$|ls -d \1./\2/\3*/|'
       ) | sed 's|^\(.*/\)\?\([^/]\+\)/\?|\2|'
-    )
-    echo "${words}"
-
-    #COMPREPLY=( $(compgen -W ".. ${words}"  -- "${@:$#}") )
+    )"  -- "${@:$#}") )
 
     [ -z "$COMP_CWORD" ] && echo "${COMPREPLY[@]}"
 }
