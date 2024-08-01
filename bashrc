@@ -159,7 +159,7 @@ function x() {
     dir="${dir#/.\/\//\/}"
     set "${1##*/}" "${@:2:$#-1}" "./${!#}"
     echo cd "$dir"
-    echo ls -d "$(IFS=/;echo $*)*/"
+    echo ls -d "$(IFS=/;echo "$*")*/"
     return 
 
     local words=$(
