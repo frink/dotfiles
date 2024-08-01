@@ -157,7 +157,7 @@ function x() {
     local dir="${1%/*}"
     set "${1##*/}" "${@:2}"
     local list=( $(
-      compgen -W "$(
+      compgen -W ".. $(
         IFS='/'
         cd "${dir#/.\/\//\/}" 2>/dev/null
         ls -d "$*"*/ 2>/dev/null | sed 's|^\(.*/\)\?\([^/]\+\)/\?|\2|'
