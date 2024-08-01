@@ -155,8 +155,8 @@ function x() {
     [ -n "$COMP_CWORD" ] && set "${COMP_WORDS[@]:1:$COMP_CWORD}"
 
     local dir="${1##*/}"
-    dir="./${dirs#/\~/$HOME}"
-    dir="${dirs#/.\/\//\/}"
+    dir="./${dir#/\~/$HOME}"
+    dir="${dir#/.\/\//\/}"
 
     set "${1%/*}" "${@:2}"
 
