@@ -157,9 +157,12 @@ function x() {
 
     local list=( $(
       compgen -W "$(
+        if [ -n "$2 ]; then
+          cd "${1/\~/$HOME}"
+          shift
+        fi
+
         IFS='/'
-        cd "${1/\~/$HOME}"
-        shift
         ls -d ./"$*"*/ | sed 's|.*/\([^/]*\)/$|\1|'
       )"  -- "${@:$#}"
     ) )
