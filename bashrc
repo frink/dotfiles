@@ -188,7 +188,7 @@ function cdmk() {
 
 function mkx() {
     eval 'function '$1'(){ $([ -n "$COMP_CWORD" ] && echo '$2' || echo x) "'$3'" "${@}"; }'
-    complete -F $1 $1
+    complete -F '$1' '$1'
 }
 
 complete -F x x
