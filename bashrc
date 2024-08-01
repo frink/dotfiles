@@ -137,7 +137,7 @@ alias idea="note ideas"
 
 alias open="xdg-open"
 alias o="open"
-alias ls="ls --color=auto --classify --group-directories-first"
+alias ls="ls --color=auto --file-type --group-directories-first --literal"
 alias ll="ls -hang"
 alias path="echo $PATH | tr : '\n'"
 
