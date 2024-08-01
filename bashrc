@@ -161,6 +161,9 @@ function x() {
       set -x
       IFS='/'
       cd "${dir#/.\/\//\/}" 2>/dev/null
+      pwd
+      echo "${*%..}*/" 2>/dev/null
+      echo "${*%..}"*/ 2>/dev/null
       ls -d "${*%..}"*/ 2>/dev/null
       #ls -d "${*%..}"*/ 2>/dev/null | sed 's|^\(.*/\)\?\([^/]\+\)/\?|\2|'
     )
