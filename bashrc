@@ -203,11 +203,6 @@ mkx wk mkcd ~/Work/
 mkx .. cdx ../
 mkx ~ cdx ~/
 
-complete -F xx xx
-complete -F wk wk
-complete -F '..' '..'
-complete -F '~' '~'
-
 alias rgrep="grep -r"
 alias lgrep="grep -lr"
 alias pgrep="ps -a | grep"
