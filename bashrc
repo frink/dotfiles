@@ -161,6 +161,7 @@ function x() {
     local test=( $(
       IFS='/'
       echo 'ls -d "'$*'"*/' 2>/dev/null
+      echo
       echo ls -d "$*"*/ 2>/dev/null
     ) )
     echo "${test[@]}"
