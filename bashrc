@@ -186,16 +186,18 @@ function cdmk() {
   IFS="$ifs"
 }
 
+function mkx() {
+    eval 'function '$1'(){ $([ -n "$COMP_CWORD" ] && echo '$2' || echo x) "'$3'" "${@}" }'
+    complete -F $1 $1
+}
+
 complete -F x x
 complete -F x cdx
 complete -F x cdmk
 
-alias ..="cdx .."
-alias ~="cdx ~"
-
-if [ -d ~/Work ]; then
-  alias wk="cdmk ~/Work"
-fi
+mkx wk cdx ~/Work
+mkx .. cdx ..
+mkx ~ cdx ~
 
 alias rgrep="grep -r"
 alias lgrep="grep -lr"
