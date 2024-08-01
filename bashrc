@@ -199,10 +199,10 @@ complete -F x x
 complete -F x cdx
 complete -F x mkcd
 
-mkx xx x .
-mkx wk mkcd ~/Work
-mkx .. cdx ..
-mkx ~ cdx ~
+mkx xx x ./
+mkx wk mkcd ~/Work/
+mkx .. cdx ../
+mkx ~ cdx ~/
 
 alias rgrep="grep -r"
 alias lgrep="grep -lr"
