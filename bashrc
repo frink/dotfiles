@@ -171,31 +171,29 @@ function x() {
 }
 
 function cdx() {
-  if [ -z "$2" ]; then
-    cd "$1"
-  else
-    cdx "$1/$2" ${@:3}
-  fi
+  local ifs="$IFS"
+  IFS='/'
+  cd "$*"
+  IFS="$ifs"
 }
 
-function mkcd() {
-  if [ -z "$2" ]; then
-    mkdir -p "$1"
-    cd "$1"
-  else
-    mkcd "$1/$2" ${@:3}
-  fi
+function cdmk() {
+  local ifs="$IFS"
+  IFS='/'
+  mkdir -p "$*"
+  cd "$*"
+  IFS="$ifs"
 }
 
 complete -F x x
 complete -F x cdx
-complete -F x mkcd
+complete -F x cdmk
 
 alias ..="cdx .."
 alias ~="cdx ~"
 
 if [ -d ~/Work ]; then
-  alias wk="mkcd ~/Work"
+  alias wk="cdmk ~/Work"
 fi
 
 alias rgrep="grep -r"
