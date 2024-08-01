@@ -158,12 +158,13 @@ function x() {
     set "${1##*/}" "${@:2}"
 
     local word=( $(
-      IFS='/'
       echo 'cd "'${dir#/.\/\//\/}'" 2>/dev/null'
       cd "${dir#/.\/\//\/}" 2>/dev/null
+      IFS='/'
+      echo joined "$*"
       echo 'ls -d '${*%..}'*/ 2>/dev/null'
       ls -d "${*%..}"*/ 2>/dev/null
-      ls -d "${*%..}"*/ 2>/dev/null | sed 's|^\(.*/\)\?\([^/]\+\)/\?|\2|'
+      #ls -d "${*%..}"*/ 2>/dev/null | sed 's|^\(.*/\)\?\([^/]\+\)/\?|\2|'
     ) )
     echo "${word[@]}"
 
