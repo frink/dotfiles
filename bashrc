@@ -155,10 +155,14 @@ function cdrun() {
 function x() {
     [ -n "$COMP_CWORD" ] && set "${COMP_WORDS[@]:1:$COMP_CWORD}"
 
+
+}
+
+function____() {
     local list=( $(
       compgen -W "$(
         IFS='/'
-        cd "$1"
+        cd "${1/~/$HOME}"
         shift
         ls -d ./"$*"*/ | sed 's|.*/\([^/]*\)/$|\1|'
       )"  -- "${@:$#}"
