@@ -161,8 +161,7 @@ function x() {
       IFS='/'
       echo 'cd "'${dir#/.\/\//\/}'" 2>/dev/null'
       echo 'ls -d "'$*'"*/ 2>/dev/null'
-      echo
-    )"
+    )\n"
 
     local list=( $(
       compgen -W ".. $(
