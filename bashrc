@@ -154,7 +154,7 @@ function cdrun() {
 
 function x() {
     local ifs="$IFS" IFS='/'
-    compgen -G ./"$*"*/ -- ${@:$#} | sed 's|.*/\([^/]*\)/$|\1|'
+    compgen -G ./"$*"*/ -- "${@:$#}" | sed 's|.*/\([^/]*\)/$|\1|'
     IFS="$ifs"
 }
 
