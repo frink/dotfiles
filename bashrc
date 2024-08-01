@@ -157,18 +157,16 @@ function x() {
     local dir="./${1}"
     dir="${dir%/*}"
     dir="${dir#/.\/\//\/}"
-    set "./${1##*/}" "${@:2:$#-1}" "./${!#}"
+    set "${1##*/}" "${@:2:$#-1}" "./${!#}"
     echo cd "$dir"
-    echo x "$@"
-}
+    echo ls -d "$(IFS=/;echo ${*%..})*/"
     return 
 
     local words=$(
       set -x
       IFS='/'
-      cd "${dir#/.\/\//\/}" 2>/dev/null
+      cd "${dir}" 2>/dev/null
       pwd
-      echo "${*%..}*/" 2>/dev/null
       ls -d "${*%..}"*/ 2>/dev/null
       #ls -d "${*%..}"*/ 2>/dev/null | sed 's|^\(.*/\)\?\([^/]\+\)/\?|\2|'
     )
