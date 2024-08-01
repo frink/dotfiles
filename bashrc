@@ -183,6 +183,8 @@ function mkcd() {
 }
 
 complete -F x x
+complete -F x cdx
+complete -F x mkcd
 
 alias ..="cdx .."
 alias ~="cdx ~"
