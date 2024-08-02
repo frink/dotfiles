@@ -186,8 +186,13 @@ mkx ()
     eval 'function '$1'(){
         [ -z "$COMP_CWORD" ] && '$2' "'$3'" "${@}" && return
 
+
+        echo "before ${COMP_WORDS[@]}"
+
         ((COMP_CWORD++))
-        COMP_WORDS=( "'$3'" "${COMP_WORDS[@]:2}" )
+        COMP_WORDS=( "'$3'" "${COMP_WORDS[@]}" )
+
+        echo "modified ${COMP_WORDS[@]}"
 
         x
     }'
