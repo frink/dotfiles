@@ -154,8 +154,6 @@ function cdrun() {
 function x() {
     [ -n "$COMP_CWORD" ] && set "${COMP_WORDS[@]:1:$COMP_CWORD}"
 
-    echo "inside ${#COMP_WORDS[@]} ${COMP_WORDS[@]}"
-
     COMPREPLY=( $(compgen -W ".. $(
       $(
         IFS=/;
@@ -172,12 +170,8 @@ function mkx() {
   eval 'function '$1'(){
     [ -z "$COMP_CWORD" ] && '$2' "'$3'" "${@}" && return
 
-    echo "before ${#COMP_WORDS[@]} ${COMP_WORDS[@]}"
-
     ((COMP_CWORD++))
     COMP_WORDS=( x "'$3'" "${COMP_WORDS[@]:2}" )
-
-    echo "modified ${#COMP_WORDS[@]} ${COMP_WORDS[@]}"
 
     x
   }'
