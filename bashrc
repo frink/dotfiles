@@ -187,12 +187,12 @@ mkx ()
         [ -z "$COMP_CWORD" ] && '$2' "'$3'" "${@}" && return
 
 
-        echo "before ${COMP_WORDS[@]}"
+        echo "before ${#COMP_WORDS[@]} ${COMP_WORDS[@]}"
 
         ((COMP_CWORD++))
         COMP_WORDS=( "'$3'" "${COMP_WORDS[@]}" )
 
-        echo "modified ${COMP_WORDS[@]}"
+        echo "modified ${#COMP_WORDS[@]} ${COMP_WORDS[@]}"
 
         x
     }'
