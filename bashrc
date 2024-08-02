@@ -187,7 +187,7 @@ mkx ()
         [ -z "$COMP_CWORD" ] && '$2' "'$3'" "${@}" && return
 
         ((COMP_CWORD++))
-        COMP_WORDS=( "'$3'" "${COMP_WORDS[@]}" )
+        COMP_WORDS=( "'$3'" "${COMP_WORDS[@]:2}" )
 
         x
     }'
