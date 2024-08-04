@@ -172,6 +172,7 @@ function x() {
     )"  -- "${@:$#}") )
 
     [ -z "$COMP_CWORD" ] && echo "${COMPREPLY[@]}"
+    [ -n "$COMP_CWORD" ] && echo "unexpected"
 }
 
 function mkx() {
