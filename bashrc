@@ -154,12 +154,11 @@ function cdrun() {
 function x() {
     [ -n "$COMP_CWORD" ] && set "${COMP_WORDS[@]:1:$COMP_CWORD}"
 
-    echo "${COMP_WORDS[@]}"
-
     COMPREPLY=( $(compgen -W ".. $(
       $(
         IFS=/;
         set "${1/#~/$HOME}" "${@:2}"
+    echo "${COMP_WORDS[@]}"
         echo "$*" | \
         sed -E 's|^(/)?(.*/)?(.*)$|ls -d \1./\2/\3*/|; s|\.\.\*/$|..|'
       ) | sed 's|^\(.*/\)\?\([^/]\+\)/\?|\2|'
