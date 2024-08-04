@@ -205,9 +205,21 @@ function mkcd() {
   IFS="$ifs"
 }
 
+function ..g() {
+  local dir="$(git rev-parse --show-toplevel 2>/dev/null || echo '.')"
+
+  [ -z "$COMP_CWORD" ] && cdx "$dir" "${@}" && return
+
+  ((COMP_CWORD++))
+  COMP_WORDS=( x "$dir" "${COMP_WORDS[@]:1}" )
+
+  xtest
+}
+
 complete -F x x
 complete -F x cdx
 complete -F x mkcd
+complete -F ..g ..g
 
 mkx xx x ./
 mkx wk mkcd ~/Work/
