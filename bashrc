@@ -152,7 +152,11 @@ function cdrun() {
 }
 
 function xtest() {
-  COMPREPLY=( "${COMP_WORDS[@]}" )
+  COMPREPLY=()
+
+  for x in "${COMP_WORDS[@]}"; do
+    COMPREPLY+=( "\"$x\"" )
+  done
 }
 
 function x() {
