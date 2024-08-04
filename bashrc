@@ -158,7 +158,7 @@ function x() {
       $(
         IFS=/;
         set "${1/#~/$HOME}" "${@:2}"
-        echo "$*" | \
+        echo "$*" 2>/de/null | \
         sed -E 's|^(/)?(.*/)?(.*)$|ls -d \1./\2/\3*/|; s|\.\.\*/$|..|'
       ) | sed 's|^\(.*/\)\?\([^/]\+\)/\?|\2|'
     )"  -- "${@:$#}") )
@@ -204,6 +204,10 @@ function ..g() {
   x
 }
 
+function -() {
+  cd - 2>/dev/null
+}
+
 complete -F x x
 complete -F x cdx
 complete -F x mkcd
@@ -244,10 +248,6 @@ function v.() {
     alias v.${x%/}="unset VFILES;cdrun '$PWD/$x' v";
     echo v.${x%/}
   done
-}
-
-function -() {
-  cd -
 }
 
 alias rmf="rm -rf"
