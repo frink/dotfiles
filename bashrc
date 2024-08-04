@@ -180,8 +180,8 @@ function mkx() {
   eval 'function '$1'(){
     [ -z "$COMP_CWORD" ] && '$2' "'$3'" "${@}" && return
 
-#((COMP_CWORD++))
-COMP_WORDS=( "'$1'" "'$3'" "${COMP_WORDS[@]:1}" )
+    ((COMP_CWORD++))
+    COMP_WORDS=( "'$1'" "'$3'" "${COMP_WORDS[@]:1}" )
 
     xtest
   }'
