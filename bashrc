@@ -183,7 +183,7 @@ function mkx() {
     ((COMP_CWORD++))
     COMP_WORDS=( "'$1'" "'$3'" "${COMP_WORDS[@]:1}" )
 
-    xtest
+    x
   }'
   complete -F "$1" "$1"
 }
