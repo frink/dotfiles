@@ -152,11 +152,11 @@ function cdrun() {
 }
 
 function xtest() {
-  COMPREPLY=()
-
-  for x in "${COMP_WORDS[@]}"; do
-    COMPREPLY+=( "\"$x\"" )
-  done
+  echo
+  echo "COMP_WORDS: ${COMP_WORDS[@]}"
+  echo "COMP_CWORD: $COMP_CWORD"
+  echo "COMP_LINE: $COMP_LINE"
+  echo "COMP_POINT: $COMP_POINT"
 }
 
 function x() {
