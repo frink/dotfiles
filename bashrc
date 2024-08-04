@@ -174,6 +174,8 @@ function xtest() {
   echo "COMP_POINT: $COMP_POINT"
 
   x
+
+  echo "${COMPREPLY[@]}"
 }
 
 function mkx() {
