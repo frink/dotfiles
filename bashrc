@@ -158,7 +158,7 @@ function xtest() {
   echo "COMP_LINE: $COMP_LINE"
   echo "COMP_POINT: $COMP_POINT"
 
-  COMPREPLY=( )
+  COMPREPLY=( "" )
 }
 
 function x() {
