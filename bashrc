@@ -181,7 +181,7 @@ function mkx() {
     [ -z "$COMP_CWORD" ] && '$2' "'$3'" "${@}" && return
 
 #((COMP_CWORD++))
-#COMP_WORDS=( "'$2'" "'$3'" "${COMP_WORDS[@]:2}" )
+COMP_WORDS=( "'$1'" "'$3'" "${COMP_WORDS[@]:1}" )
 
     xtest
   }'
