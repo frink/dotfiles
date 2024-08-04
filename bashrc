@@ -171,8 +171,7 @@ function x() {
       ) | sed 's|^\(.*/\)\?\([^/]\+\)/\?|\2|'
     )"  -- "${@:$#}") )
 
-    [ -z "$COMP_CWORD" ] && echo "something ${COMPREPLY[@]}"
-    [ -n "$COMP_CWORD" ] && echo "unexpected"
+    [ -z "$COMP_CWORD" ] && echo "${COMPREPLY[@]}"
 }
 
 function mkx() {
