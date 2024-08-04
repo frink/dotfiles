@@ -181,9 +181,9 @@ function mkx() {
     [ -z "$COMP_CWORD" ] && '$2' "'$3'" "${@}" && return
 
     ((COMP_CWORD++))
-    COMP_WORDS=( "'2'" "'$3'" "${COMP_WORDS[@]:2}" )
+    COMP_WORDS=( "'$2'" "'$3'" "${COMP_WORDS[@]:2}" )
 
-    x
+    xtest
   }'
   complete -F "$1" "$1"
 }
