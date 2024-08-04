@@ -151,16 +151,6 @@ function cdrun() {
   cd -
 }
 
-function xtest() {
-  echo
-  echo "COMP_WORDS: ${COMP_WORDS[@]}"
-  echo "COMP_CWORD: $COMP_CWORD"
-  echo "COMP_LINE: $COMP_LINE"
-  echo "COMP_POINT: $COMP_POINT"
-
-  COMPREPLY=( "" )
-}
-
 function x() {
     [ -n "$COMP_CWORD" ] && set "${COMP_WORDS[@]:1:$COMP_CWORD}"
 
@@ -174,6 +164,16 @@ function x() {
     )"  -- "${@:$#}") )
 
     [ -z "$COMP_CWORD" ] && echo "${COMPREPLY[@]}"
+}
+
+function xtest() {
+  echo
+  echo "COMP_WORDS: ${COMP_WORDS[@]}"
+  echo "COMP_CWORD: $COMP_CWORD"
+  echo "COMP_LINE: $COMP_LINE"
+  echo "COMP_POINT: $COMP_POINT"
+
+  x
 }
 
 function mkx() {
