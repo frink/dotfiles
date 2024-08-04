@@ -166,18 +166,6 @@ function x() {
     [ -z "$COMP_CWORD" ] && echo "${COMPREPLY[@]}"
 }
 
-function xtest() {
-  echo
-  echo "COMP_WORDS[${#COMP_WORDS[@]}]: ${COMP_WORDS[@]}"
-  echo "COMP_CWORD: $COMP_CWORD"
-  echo "COMP_LINE[${#COMP_LINE}]: $COMP_LINE"
-  echo "COMP_POINT: $COMP_POINT"
-
-  x
-
-  echo "${COMPREPLY[@]}"
-}
-
 function mkx() {
   eval 'function '$1'(){
     [ -z "$COMP_CWORD" ] && '$2' "'$3'" "${@}" && return
@@ -213,7 +201,7 @@ function ..g() {
   ((COMP_CWORD++))
   COMP_WORDS=( x "$dir" "${COMP_WORDS[@]:1}" )
 
-  xtest
+  x
 }
 
 complete -F x x
