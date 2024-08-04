@@ -154,7 +154,7 @@ function cdrun() {
 function x() {
     [ -n "$COMP_CWORD" ] && set "${COMP_WORDS[@]:1:$COMP_CWORD}"
 
-    echo "${COMP_CWORD[@]}"
+    echo "${COMP_WORDS[@]}"
 
     COMPREPLY=( $(compgen -W ".. $(
       $(
