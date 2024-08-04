@@ -203,7 +203,7 @@ function mkcd() {
   IFS="$ifs"
 }
 
-complete -F xtest x
+complete -F x x
 complete -F x cdx
 complete -F x mkcd
 
