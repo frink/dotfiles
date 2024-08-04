@@ -148,7 +148,7 @@ function ff() {
 function cdrun() {
   cd $1
   ${@:2}
-  cd -
+  cd - >/dev/null
 }
 
 function x() {
@@ -205,7 +205,7 @@ function ..g() {
 }
 
 function -() {
-  cd - 2>/dev/null
+  cd - >/dev/null
 }
 
 complete -F x x
@@ -213,7 +213,6 @@ complete -F x cdx
 complete -F x mkcd
 complete -F ..g ..g
 
-mkx xx x ./
 mkx wk mkcd ~/Work/
 mkx .. cdx ../
 mkx ... cdx ~/
