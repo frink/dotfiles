@@ -238,6 +238,8 @@ function g.() {
     alias g.${x%/}="cdx $PWD/$x";
     echo g.${x%/}
   done
+
+  cd -
 }
 
 function v.() {
