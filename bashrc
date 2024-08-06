@@ -234,7 +234,7 @@ function g.() {
 
   unalias $(alias|grep "alias g\."|cut -d"=" -f1|cut -d" " -f2) &> /dev/null
 
-  for x in $(ls -d */ 2>/dev/null); do
+  for x in $(\ls -d */ 2>/dev/null); do
     alias g.${x%/}="cdx $PWD/$x";
     echo g.${x%/}
   done
@@ -243,7 +243,7 @@ function g.() {
 function v.() {
   unalias $(alias|grep "alias v\."|cut -d"=" -f1|cut -d" " -f2) &> /dev/null
 
-  for x in $(ls -d */ 2>/dev/null); do
+  for x in $(\ls -d */ 2>/dev/null); do
     alias v.${x%/}="unset VFILES;cdrun '$PWD/$x' v";
     echo v.${x%/}
   done
