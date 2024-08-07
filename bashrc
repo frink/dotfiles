@@ -212,29 +212,28 @@ function -() {
   dirs -v | tail -n+2
 }
 
+# Declare an associative array to store the directory bookmarks
 declare -A BOOKMARKS
 
-function -.() {
-  echo marked
+--() {
+  case "$1" in
+    "")
+      for i in "${!BOOKMARKS[@]}"; do
+        echo "$i: ${BOOKMARKS[$i]}"
+      done
+      ;;
+    [0-9]*)
+      cd "${BOOKMARKS[$1]}" 2>/dev/null
+      ;;
+    -[0-9]*)
+      unset BOOKMARKS[${1#-}] 2>/dev/null
+      BOOKMARKS=( "${BOOKMARKS[@]}" )
+      ;;
+    *)
+      BOOKMARKS+=( "${PWD}" )
+      ;;
+  esac
 }
-
-function --() {
-  [ -n "$1" ] && BOOKMARKS[$1]="$PWD"
-
-  for i in {1..9}; do
-    if [ -n "${BOOKMARKS[${i}]}" ]; then
-      echo "${i}: ${BOOKMARKS[${i}]}"
-    else
-      echo "${i}:"
-    fi
-  done
-}
-
-for i in {1..9}; do
-  eval "function -${i}() {
-   cd \"\${BOOKMARKS[${i}]:-.}\" 2>/dev/null
-  }"
-done
 
 complete -F x x
 complete -F x cdx
