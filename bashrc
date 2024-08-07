@@ -219,6 +219,8 @@ function --() {
     [[ " ${BOOKMARKS[@]} " =~ " ${dir} " ]] || [ -d "$dir" ] && BOOKMARKS+=( "${dir}" );
   done
 
+  echo "${BOOLMARKS[@]}"
+
   for i in "${!BOOKMARKS[@]}"; do
 #echo "$((i + 1)): ${BOOKMARKS[$i]/#$HOME/\~}"
     :
