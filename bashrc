@@ -234,7 +234,7 @@ function --() {
 }
 
 for i in {1..9}; do
-  alias "\-$i"="-- $i"
+  eval "function -$i(){ -- $i; }"
 done
 
 complete -F x x
