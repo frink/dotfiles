@@ -210,7 +210,7 @@ function -() {
   dirs -p | tail -n +2
 }
 
-declare -A BOOKMARKS
+export BOOKMARKS=()
 
 function --() {
   for i in "$@"; do
