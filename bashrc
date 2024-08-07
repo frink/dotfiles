@@ -213,9 +213,11 @@ function -() {
 declare -A BOOKMARKS
 
 function --() {
-  local dir="$(realpath "$1" 2>/dev/null)"
+  for i in "$@"; do
+    local dir="$(realpath "$i" 2>/dev/null)"
 
-  [[ " ${BOOKMARKS[@]} " =~ " ${dir} " ]] || BOOKMARKS+=( "${dir}" );
+    [[ " ${BOOKMARKS[@]} " =~ " ${dir} " ]] || BOOKMARKS+=( "${dir}" );
+  done
 
   for i in "${!BOOKMARKS[@]}"; do
     echo "$((i + 1)): ${BOOKMARKS[$i]/#$HOME/\~}"
