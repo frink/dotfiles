@@ -215,7 +215,7 @@ function -() {
 # Declare an associative array to store the directory bookmarks
 declare -A BOOKMARKS
 
---() {
+function --() {
   case "$1" in
     "") ;;
     [0-9]*)
