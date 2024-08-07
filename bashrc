@@ -214,6 +214,10 @@ function -() {
 
 declare -A BOOKMARKS
 
+function -+() {
+  echo
+}
+
 function --() {
   [ -n "$1" ] && BOOKMARKS[$1]="$PWD"
 
