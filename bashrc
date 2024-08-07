@@ -212,7 +212,6 @@ function -() {
   dirs -v | tail -n+2
 }
 
-# Declare an associative array to store the directory bookmarks
 declare -A BOOKMARKS
 
 function --() {
@@ -233,8 +232,13 @@ function --() {
   done
 }
 
+function -.() {
+  -- .
+}
+
 for i in {1..9}; do
   eval "function -$i(){ -- $i; }"
+  eval "function --$i(){ -- -$i; }"
 done
 
 complete -F x x
