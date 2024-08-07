@@ -229,7 +229,7 @@ declare -A BOOKMARKS
   esac
 
   for i in "${!BOOKMARKS[@]}"; do
-    echo "$((i + 1)): ${BOOKMARKS[$i]/#$HOME/~}"
+    echo "$((i + 1)): ${BOOKMARKS[$i]/$HOME/~}"
   done
 }
 
