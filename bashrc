@@ -216,7 +216,8 @@ function --() {
   for i in "$@"; do
     local dir="$(realpath "$i" 2>/dev/null)"
 
-    [[ " ${BOOKMARKS[@]} " =~ " ${dir} " ]] || [ -d "$dir" ] && BOOKMARKS+=( "${dir}" );
+#[[ " ${BOOKMARKS[@]} " =~ " ${dir} " ]] || [ -d "$dir" ] &&
+    BOOKMARKS+=( "${dir}" )
   done
 
   echo "${BOOLMARKS[@]}"
