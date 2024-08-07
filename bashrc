@@ -216,6 +216,7 @@ complete -F g.. g..
 mkx wk mkcd ~/Work/
 mkx .. cdx ../
 mkx ... cdx ~/
+mkx , cdx ./
 
 alias rgrep="grep -r"
 alias lgrep="grep -lr"
