@@ -224,7 +224,7 @@ declare -A BOOKMARKS
       unset BOOKMARKS[$(( ${1#-} - 1 ))] 2>/dev/null
       BOOKMARKS=( "${BOOKMARKS[@]}" );;
     *)
-      [[ " ${BOOKMARKS[@]} " =~ " $PWD " ]] || BOOKMARKS+=( "${PWD}" );;
+      [[ " ${BOOKMARKS[@]} " =~ " $(realpath $1) " ]] || BOOKMARKS+=( "${PWD}" );;
   esac
 
   for i in "${!BOOKMARKS[@]}"; do
