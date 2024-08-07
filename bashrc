@@ -205,27 +205,16 @@ function g..() {
 }
 
 function -() {
-  [ -n "$1" ] && pushd $1 &>/dev/null && return 
-
-  cd - >/dev/null
-
-  dirs -v | tail -n+2
+  [ -n "$1" ] && pushd "$1" && return
+  dirs -p | grep -q '^/' && popd || cd -
+  dirs -p | tail -n +2
 }
 
 declare -A BOOKMARKS
 
 function --() {
-  case "$1" in
-    "") ;;
-    [0-9]*)
-      cd "${BOOKMARKS[$(( $1 - 1 ))]}" 2>/dev/null && return;;
-    -[0-9]*)
-      unset BOOKMARKS[$(( ${1#-} - 1 ))] 2>/dev/null
-      BOOKMARKS=( "${BOOKMARKS[@]}" );;
-    *)
-      local dir=$(realpath "$1")
-      [[ " ${BOOKMARKS[@]} " =~ " ${dir} " ]] || BOOKMARKS+=( "${dir}" );;
-  esac
+  local dir="$(realpath "$1"))"
+  [[ " ${BOOKMARKS[@]} " =~ " ${dir} " ]] || BOOKMARKS+=( "${dir}" );
 
   for i in "${!BOOKMARKS[@]}"; do
     echo "$((i + 1)): ${BOOKMARKS[$i]/#$HOME/\~}"
@@ -233,12 +222,12 @@ function --() {
 }
 
 function -.() {
-  -- .
+  [[ " ${BOOKMARKS[@]} " =~ " ${PWD} " ]] || BOOKMARKS+=( "${PWD}" );
 }
 
 for i in {1..9}; do
-  eval "function -$i(){ -- $i; }"
-  eval "function --$i(){ -- -$i; }"
+  eval "function -$i(){ cd "\${BOOKMARKS[\$(( $1 - 1 ))]}" 2>/dev/null; }"
+  eval "function --$i(){ unset BOOKMARKS[\$(( $1 - 1 ))] 2>/dev/null;BOOKMARKS=( "\${BOOKMARKS[@]}" ); }"
 done
 
 complete -F x x
