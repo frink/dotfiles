@@ -219,7 +219,7 @@ declare -A BOOKMARKS
   case "$1" in
     "")
       for i in "${!BOOKMARKS[@]}"; do
-        echo "$i: ${BOOKMARKS[$i]}"
+        echo "$((i + 1)): ${BOOKMARKS[$i]}"
       done
       ;;
     [0-9]*)
