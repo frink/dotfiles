@@ -210,7 +210,7 @@ function -() {
   dirs -p | tail -n +2
 }
 
-export BOOKMARKS=()
+declare -A BOOKMARKS
 
 function --() {
   for i in "$@"; do
@@ -225,8 +225,7 @@ function --() {
   echo "${BOOKMARKS[@]}"
 
   for i in "${!BOOKMARKS[@]}"; do
-#echo "$((i + 1)): ${BOOKMARKS[$i]/#$HOME/\~}"
-    :
+    echo "$((i + 1)): ${BOOKMARKS[$i]/#$HOME/\~}"
   done
 }
 
