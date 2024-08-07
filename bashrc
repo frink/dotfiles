@@ -217,22 +217,19 @@ declare -A BOOKMARKS
 
 --() {
   case "$1" in
-    "")
-      for i in "${!BOOKMARKS[@]}"; do
-        echo "$((i + 1)): ${BOOKMARKS[$i]}"
-      done
-      ;;
+    "") ;;
     [0-9]*)
-      cd "${BOOKMARKS[$1]}" 2>/dev/null
-      ;;
+      cd "${BOOKMARKS[$(( $1 - 1 ))]}" 2>/dev/null;;
     -[0-9]*)
-      unset BOOKMARKS[${1#-}] 2>/dev/null
-      BOOKMARKS=( "${BOOKMARKS[@]}" )
-      ;;
+      unset BOOKMARKS[$(( ${1#-} - 1 ))] 2>/dev/null
+      BOOKMARKS=( "${BOOKMARKS[@]}" );;
     *)
-      BOOKMARKS+=( "${PWD}" )
-      ;;
+      [[ " ${BOOKMARKS[@]} " =~ " $PWD " ]] || BOOKMARKS+=( "${PWD}" );;
   esac
+
+  for i in "${!BOOKMARKS[@]}"; do
+    echo "$((i + 1)): ${BOOKMARKS[$i]}"
+  done
 }
 
 complete -F x x
