@@ -233,6 +233,10 @@ function --() {
   done
 }
 
+for i in {1..9}; do
+  alias "-$i"="-- $i"
+done
+
 complete -F x x
 complete -F x cdx
 complete -F x mkcd
