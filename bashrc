@@ -205,10 +205,32 @@ function g..() {
 }
 
 function -() {
+  [ -n "$1" ] && popd -$1 2>/dev/null && return 
+
   cd - >/dev/null
 
   dirs -v | tail -n+2
 }
+
+declare -A BOOKMARKS
+
+function --() {
+  [ -n "$1" ] && BOOKMARKS[$1]="$PWD"
+
+  for i in {1..9}; do
+    if [ -n "${BOOKMARKS[${i}]}" ]; then
+      echo "${i}: ${BOOKMARKS[${i}]}"
+    else
+      echo "${i}:"
+    fi
+  done
+}
+
+for i in {1..9}; do
+  eval "-${i}() {
+   cd \"\${BOOKMARKS[${i}]:-.}\" 2>/dev/null
+  }"
+done
 
 complete -F x x
 complete -F x cdx
