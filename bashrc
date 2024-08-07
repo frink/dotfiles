@@ -219,7 +219,7 @@ function --() {
   case "$1" in
     "") ;;
     [0-9]*)
-      cd "${BOOKMARKS[$(( $1 - 1 ))]}" 2>/dev/null;;
+      cd "${BOOKMARKS[$(( $1 - 1 ))]}" 2>/dev/null && return;;
     -[0-9]*)
       unset BOOKMARKS[$(( ${1#-} - 1 ))] 2>/dev/null
       BOOKMARKS=( "${BOOKMARKS[@]}" );;
