@@ -206,6 +206,8 @@ function g..() {
 
 function -() {
   cd - >/dev/null
+
+  dirs -v | tail -n+2
 }
 
 complete -F x x
