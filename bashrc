@@ -216,13 +216,8 @@ function --() {
   for i in "$@"; do
     local dir="$(realpath "$i" 2>/dev/null)"
 
-      echo "$dir"
-
     [[ " ${BOOKMARKS[@]} " =~ " ${dir} " ]] || [ -d "$dir" ] && BOOKMARKS+=( "${dir}" )
   done
-
-  echo "${#BOOKMARKS[@]}"
-  echo "${BOOKMARKS[@]}"
 
   for i in "${!BOOKMARKS[@]}"; do
     echo "$((i + 1)): ${BOOKMARKS[$i]/#$HOME/\~}"
