@@ -205,7 +205,7 @@ function g..() {
 }
 
 function -() {
-  [ -n "$1" ] && popd -$1 2>/dev/null && return 
+  [ -n "$1" ] && pushd $1 &>/dev/null && return 
 
   cd - >/dev/null
 
