@@ -227,7 +227,7 @@ function --() {
 }
 
 for i in {1..9}; do
-  eval "-${i}() {
+  eval "function -${i}() {
    cd \"\${BOOKMARKS[${i}]:-.}\" 2>/dev/null
   }"
 done
