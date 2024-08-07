@@ -229,8 +229,9 @@ function -.() {
 }
 
 for i in {1..9}; do
-  eval "function -$i(){ cd \"\${BOOKMARKS[\$(( $1 - 1 ))]}\" 2>/dev/null; }"
-  eval "function --$i(){ unset BOOKMARKS[\$(( $1 - 1 ))] 2>/dev/null;BOOKMARKS=( \"\${BOOKMARKS[@]}\" ); }"
+  local num="$(( $1 - 1 ))
+  eval "function -$i(){ cd \"\${BOOKMARKS[$num]}\" 2>/dev/null; }"
+  eval "function --$i(){ unset BOOKMARKS[\$num] 2>/dev/null;BOOKMARKS=( \"\${BOOKMARKS[@]}\" ); }"
 done
 
 complete -F x x
