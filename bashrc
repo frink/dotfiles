@@ -222,8 +222,8 @@ function --() {
     BOOKMARKS+=( "${dir}" )
   done
 
-  echo "${#BOOLMARKS[@]}"
-  echo "${BOOLMARKS[@]}"
+  echo "${#BOOKMARKS[@]}"
+  echo "${BOOKMARKS[@]}"
 
   for i in "${!BOOKMARKS[@]}"; do
 #echo "$((i + 1)): ${BOOKMARKS[$i]/#$HOME/\~}"
