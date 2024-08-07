@@ -223,7 +223,7 @@ function --() {
 }
 
 function -.() {
-  [[ " ${BOOKMARKS[@]} " =~ " ${PWD} " ]] || BOOKMARKS+=( "${PWD}" );
+  -- "$PWD"
 }
 
 for i in {1..9}; do
