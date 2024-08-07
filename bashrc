@@ -220,10 +220,9 @@ function --() {
 
 #[[ " ${BOOKMARKS[@]} " =~ " ${dir} " ]] || [ -d "$dir" ] &&
     BOOKMARKS+=( "${dir}" )
-
-    echo "${BOOKMARKS[@]}"
   done
 
+  echo "${#BOOLMARKS[@]}"
   echo "${BOOLMARKS[@]}"
 
   for i in "${!BOOKMARKS[@]}"; do
