@@ -43,3 +43,4 @@ autocmd FileType svg setlocal tabstop=2 softtabstop=0 expandtab shiftwidth=2 sma
 autocmd FileType html setlocal tabstop=2 softtabstop=0 expandtab shiftwidth=2 smarttab autoindent smartindent cindent
 autocmd FileType php setlocal tabstop=2 softtabstop=0 expandtab shiftwidth=2 smarttab autoindent smartindent cindent
 autocmd FileType sh setlocal tabstop=2 softtabstop=0 expandtab shiftwidth=2 smarttab autoindent smartindent cindent
+autocmd FileType md setlocal columns=100 wrap
