@@ -665,7 +665,7 @@ function fringpong() {
 
     while [ $I -lt 12 ];do
       I=$[$I+1]
-      echo -e "HTTP/1.1 200\r\nContent-Type:text/html\r\n\r\nFRINGPONG $I" | nc -lvN 1234 2>1
+      echo -e "HTTP/1.1 200\r\nContent-Type:text/html\r\n\r\nFRINGPONG $I" | nc -lvN 1234 2>&1
     done >/dev/null &
   )
 }
