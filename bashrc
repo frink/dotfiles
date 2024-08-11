@@ -372,7 +372,7 @@ function dtest() {
     esac
   done
 
-  docker rm -f tester
+  docker rm -f tester > /dev/null
   docker run -it "${opt[@]}" --name tester tester "${cmd[@]}"
 }
 
