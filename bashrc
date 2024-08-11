@@ -372,7 +372,7 @@ function dtest() {
     esac
   done
 
-  docker run -it "${opt[@]}" tester "${cmd[@]}"
+  docker run -it "${opt[@]}" --name tester tester "${cmd[@]}"
 }
 
 alias drun="docker exec -it"
