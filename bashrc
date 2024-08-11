@@ -360,7 +360,7 @@ function docker-clean() {
 function dtest() {
   [ ! -f Dockerfile ] && echo "No Dockerfile." && return
 
-  docker build . -t tester
+  docker build -t tester .
 
   opt=()
   cmd=()
