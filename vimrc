@@ -34,6 +34,8 @@ highlight Folded ctermbg=17 ctermfg=NONE
 
 let g:user_emmet_leader_key='<C-m>'
 
+autocmd InsertLeave * retab!
+
 augroup caddyfile_syntax
     autocmd!
     autocmd BufNewFile,BufRead Caddyfile,*.Caddyfile,Caddyfile.* set filetype=caddyfile
