@@ -46,6 +46,7 @@ autocmd FileType sh setlocal tabstop=2 softtabstop=0 expandtab shiftwidth=2 smar
 autocmd FileType markdown setlocal columns=100 wrap
 autocmd FileType caddyfile setlocal noexpandtab tabstop=4 shiftwidth=4 autoindent smartindent cindent
 
+" Basic syntax highlighting for Caddyfile
 augroup caddyfile_syntax
     autocmd!
     autocmd BufRead,BufNewFile Caddyfile set filetype=caddyfile
@@ -54,10 +55,12 @@ augroup caddyfile_syntax
         finish
     endif
 
+    " Define Caddyfile syntax keywords
     syntax keyword caddyfileKeywords import root route handle handle_errors matcher
     syntax keyword caddyfileDirectives rewrite file_server try_files
-    syntax keyword caddyfileCurlies { }
-    
+    syntax match caddyfileCurlies "[{}]"
+
+    " Link syntax keywords to highlight groups
     highlight link caddyfileKeywords Keyword
     highlight link caddyfileDirectives Statement
     highlight link caddyfileCurlies Delimiter
