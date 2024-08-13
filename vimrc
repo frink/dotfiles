@@ -44,12 +44,10 @@ endfunction
 
 autocmd InsertLeave * call FIXretab()
 
-function! YankCopy()
-    normal! y
-    call system('echo ' . shellescape(getreg('"')) . ' | copy')
-endfunction
-
-vnoremap <silent> y :<C-u>call YankCopy()<CR>
+augroup yank_copy
+    autocmd!
+    autocmd TextYankPost * silent! call system('echo ' . shellescape(getreg('"')) . ' | copy')
+augroup END
 
 augroup caddyfile_syntax
     autocmd!
