@@ -44,22 +44,18 @@ endfunction
 
 autocmd InsertLeave * call FIXretab()
 
-function! YankToFileAndCopy()
+function! YankToClipboard()
     let l:yanked_text = getreg('"')
-    call writefile([l:yanked_text], expand('~/.vimyank'), 'a')
     let l:escaped_text = shellescape(l:yanked_text)
     let l:command = 'echo ' . l:escaped_text . ' | wl-copy'
-    echom "Running command: " . l:command
-    
-    " Execute the system call
+
     call system(l:command)
 endfunction
 
-augroup YankToFileAndCopy
+augroup YankToClipboard
     autocmd!
-    autocmd TextYankPost * silent! call YankToFileAndCopy()
+    autocmd TextYankPost * call YankToClipboard()
 augroup END
-
 
 
 augroup caddyfile_syntax
