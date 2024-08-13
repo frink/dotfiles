@@ -44,25 +44,9 @@ endfunction
 
 autocmd InsertLeave * call FIXretab()
 
-function! YankToClipboard()
-    call system('copy', getreg('"'))
-endfunction
-
-function! YankToFile()
-    call writefile([getreg('"')], expand('~/.vimyank'), 'a')
-endfunction
-
-function! YankToCopyAndFile()
-    call system('echo ' . shellescape(getreg('"')) . ' | tee ~/.vimyank | copy')
-endfunction
-
-augroup YankProcess
-    autocmd!
-    autocmd TextYankPost * silent! call YankToCopyAndFile()
-augroup END
-
 function! TestCopyCommand()
-    call system('echo "test" | copy')
+    let result = system('echo "test" | copy')
+    echom "Result: " . result
 endfunction
 
 augroup TestCopy
