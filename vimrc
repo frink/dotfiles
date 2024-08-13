@@ -49,7 +49,7 @@ function! YankToClipboard()
 endfunction
 
 function! YankToFile()
-    call writefile([getreg('"')], expand('~/.vimyank'))
+    call writefile([getreg('"')], expand('~/.vimyank'), 'a')
 endfunction
 
 function! YankToCopyAndFile()
