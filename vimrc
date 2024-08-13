@@ -34,7 +34,15 @@ highlight Folded ctermbg=17 ctermfg=NONE
 
 let g:user_emmet_leader_key='<C-m>'
 
-autocmd InsertLeave * retab!
+function! FIXretab()
+    if &expandtab
+        retab
+    else
+        retab!
+    endif
+endfunction
+
+autocmd InsertLeave * call FIXretab()
 
 augroup caddyfile_syntax
     autocmd!
