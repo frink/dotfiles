@@ -44,9 +44,13 @@ endfunction
 
 autocmd InsertLeave * call FIXretab()
 
-augroup yank_copy
+function! YankToClipboard()
+    call system('copy', getreg('"'))
+endfunction
+
+augroup YankToClipboard
     autocmd!
-    autocmd TextYankPost * silent! call system('echo ' . shellescape(getreg('"')) . ' | copy')
+    autocmd TextYankPost * silent! call YankToClipboard()
 augroup END
 
 augroup caddyfile_syntax
