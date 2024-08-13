@@ -52,10 +52,13 @@ function! YankToFile()
     call writefile([getreg('"')], expand('~/.vimyank'))
 endfunction
 
+function! YankToCopyAndFile()
+    call system('echo ' . shellescape(getreg('"')) . ' | tee ~/.vimyank | copy')
+endfunction
 
-augroup YankToFile
+augroup YankProcess
     autocmd!
-    autocmd TextYankPost * silent! call YankToFile()
+    autocmd TextYankPost * silent! call YankToCopyAndFile()
 augroup END
 
 augroup caddyfile_syntax
