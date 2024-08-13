@@ -42,6 +42,20 @@ function! FIXretab()
     endif
 endfunction
 
+function! VisualPipeCopy()
+    if mode() =~# 'v'
+        let l:save_reg = @"
+        normal! "zy
+        call system('copy', @z)
+        let @" = l:save_reg
+    endif
+endfunction
+
+augroup VisualCopy
+    autocmd!
+    autocmd CursorHold * call VisualPipeCopy()
+augroup END
+
 autocmd InsertLeave * call FIXretab()
 
 augroup caddyfile_syntax
