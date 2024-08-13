@@ -59,7 +59,7 @@ augroup caddyfile_syntax
         endif
 
         " Define Caddyfile syntax keywords
-        syntax keyword caddyfileKeywords import root route handle handle_errors matcher
+        syntax keyword caddyfileKeywords import encode root route handle handle_errors matcher
         syntax keyword caddyfileDirectives rewrite file_server try_files
         syntax match caddyfileCurlies "[{}]"
 
