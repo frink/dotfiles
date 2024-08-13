@@ -47,11 +47,7 @@ autocmd InsertLeave * call FIXretab()
 function! YankToFileAndCopy()
     let l:yanked_text = getreg('"')
     call writefile([l:yanked_text], expand('~/.vimyank'), 'a')
-    
-    " Properly Handle and Escape Yanked Text
     let l:escaped_text = shellescape(l:yanked_text)
-    
-    " Print command to :messages for debugging
     let l:command = 'echo ' . l:escaped_text . ' | wl-copy'
     echom "Running command: " . l:command
     
@@ -63,6 +59,7 @@ augroup YankToFileAndCopy
     autocmd!
     autocmd TextYankPost * silent! call YankToFileAndCopy()
 augroup END
+
 
 
 augroup caddyfile_syntax
