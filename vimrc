@@ -44,15 +44,26 @@ endfunction
 
 autocmd InsertLeave * call FIXretab()
 
-function! TestCopyCommand()
-    let result = system('echo "test" | copy')
-    echom "Result: " . result
+function! YankToFileAndCopy()
+    let l:yanked_text = getreg('"')
+    call writefile([l:yanked_text], expand('~/.vimyank'), 'a')
+    
+    " Properly Handle and Escape Yanked Text
+    let l:escaped_text = shellescape(l:yanked_text)
+    
+    " Print command to :messages for debugging
+    let l:command = 'echo ' . l:escaped_text . ' | wl-copy'
+    echom "Running command: " . l:command
+    
+    " Execute the system call
+    call system(l:command)
 endfunction
 
-augroup TestCopy
+augroup YankToFileAndCopy
     autocmd!
-    autocmd VimEnter * call TestCopyCommand()
+    autocmd TextYankPost * silent! call YankToFileAndCopy()
 augroup END
+
 
 augroup caddyfile_syntax
     autocmd!
