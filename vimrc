@@ -48,9 +48,14 @@ function! YankToClipboard()
     call system('copy', getreg('"'))
 endfunction
 
-augroup YankToClipboard
+function! YankToFile()
+    call writefile([getreg('"')], expand('~/.vimyank'))
+endfunction
+
+
+augroup YankToFile
     autocmd!
-    autocmd TextYankPost * silent! call YankToClipboard()
+    autocmd TextYankPost * silent! call YankToFile()
 augroup END
 
 augroup caddyfile_syntax
