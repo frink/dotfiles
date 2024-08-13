@@ -61,6 +61,15 @@ augroup YankProcess
     autocmd TextYankPost * silent! call YankToCopyAndFile()
 augroup END
 
+function! TestCopyCommand()
+    call system('echo "test" | copy')
+endfunction
+
+augroup TestCopy
+    autocmd!
+    autocmd VimEnter * call TestCopyCommand()
+augroup END
+
 augroup caddyfile_syntax
     autocmd!
     autocmd BufNewFile,BufRead Caddyfile,*.Caddyfile,Caddyfile.* set filetype=caddyfile
