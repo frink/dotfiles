@@ -49,7 +49,7 @@ function! YankCopy()
     call system('copy', getreg('"'))
 endfunction
 
-vnoremap <silent> y :<C-u>call YankAndPipe()<CR>
+vnoremap <silent> y :<C-u>call YankCopy()<CR>
 
 augroup caddyfile_syntax
     autocmd!
