@@ -51,10 +51,6 @@ augroup caddyfile_syntax
     autocmd!
     autocmd BufRead,BufNewFile Caddyfile set filetype=caddyfile
 
-    if exists("b:current_syntax")
-        finish
-    endif
-
     " Define Caddyfile syntax keywords
     syntax keyword caddyfileKeywords import root route handle handle_errors matcher
     syntax keyword caddyfileDirectives rewrite file_server try_files
