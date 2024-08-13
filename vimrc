@@ -44,21 +44,23 @@ autocmd FileType html setlocal tabstop=2 softtabstop=0 expandtab shiftwidth=2 sm
 autocmd FileType php setlocal tabstop=2 softtabstop=0 expandtab shiftwidth=2 smarttab autoindent smartindent cindent
 autocmd FileType sh setlocal tabstop=2 softtabstop=0 expandtab shiftwidth=2 smarttab autoindent smartindent cindent
 autocmd FileType markdown setlocal columns=100 wrap
-autocmd FileType caddyfile setlocal tabstop=2 softtabstop=0 expandtab shiftwidth=2 smarttab autoindent smartindent cindent
+autocmd FileType caddyfile setlocal noexpandtab tabstop=4 shiftwidth=4 autoindent smartindent cindent
 
 augroup caddyfile_syntax
-  autocmd!
-  autocmd BufRead,BufNewFile Caddyfile set filetype=caddyfile
+    autocmd!
+    autocmd BufRead,BufNewFile Caddyfile set filetype=caddyfile
 
-  if exists("b:current_syntax")
-    finish
-  endif
+    if exists("b:current_syntax")
+        finish
+    endif
 
-  syntax keyword caddyfileKeywords import root handle handle_errors matcher
-  syntax keyword caddyfileDirectives rewrite file_server try_files
+    syntax keyword caddyfileKeywords import root route handle handle_errors matcher
+    syntax keyword caddyfileDirectives rewrite file_server try_files
+    syntax keyword caddyfileCurlies { }
+    
+    highlight link caddyfileKeywords Keyword
+    highlight link caddyfileDirectives Statement
+    highlight link caddyfileCurlies Delimiter
 
-  highlight link caddyfileKeywords Keyword
-  highlight link caddyfileDirectives Statement
-
-  let b:current_syntax = "caddyfile"
+    let b:current_syntax = "caddyfile"
 augroup END
