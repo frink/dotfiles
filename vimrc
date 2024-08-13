@@ -42,21 +42,14 @@ function! FIXretab()
     endif
 endfunction
 
-function! VisualPipeCopy()
-    if mode() =~# 'v'
-        let l:save_reg = @"
-        normal! "zy
-        call system('copy', @z)
-        let @" = l:save_reg
-    endif
+autocmd InsertLeave * call FIXretab()
+
+function! YankCopy()
+    normal! y
+    call system('copy', getreg('"'))
 endfunction
 
-augroup VisualCopy
-    autocmd!
-    autocmd CursorHold * call VisualPipeCopy()
-augroup END
-
-autocmd InsertLeave * call FIXretab()
+vnoremap <silent> y :<C-u>call YankAndPipe()<CR>
 
 augroup caddyfile_syntax
     autocmd!
