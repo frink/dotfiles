@@ -57,7 +57,6 @@ augroup YankToClipboard
     autocmd TextYankPost * call YankToClipboard()
 augroup END
 
-
 augroup caddyfile_syntax
     autocmd!
     autocmd BufNewFile,BufRead Caddyfile,*.Caddyfile,Caddyfile.* set filetype=caddyfile
