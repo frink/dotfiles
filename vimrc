@@ -46,7 +46,7 @@ autocmd InsertLeave * call FIXretab()
 
 function! YankCopy()
     normal! y
-    call system('copy', getreg('"'))
+    call system('echo ' . shellescape(getreg('"')) . ' | copy')
 endfunction
 
 vnoremap <silent> y :<C-u>call YankCopy()<CR>
