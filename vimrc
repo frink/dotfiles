@@ -87,6 +87,8 @@ augroup caddyfile_syntax
     endfunction
 augroup END
 
+autocmd FileType vim setlocal tabstop=4 softtabstop=0 expandtab shiftwidth=4 smarttab autoindent smartindent cindent
+autocmd FileType markdown setlocal columns=100 wrap
 autocmd FileType javascript setlocal tabstop=2 softtabstop=0 expandtab shiftwidth=2 smarttab autoindent smartindent cindent
 autocmd FileType yaml setlocal tabstop=2 softtabstop=0 expandtab shiftwidth=2 smarttab autoindent smartindent cindent
 autocmd FileType sql setlocal tabstop=2 softtabstop=0 expandtab shiftwidth=2 smarttab autoindent smartindent cindent
@@ -96,6 +98,4 @@ autocmd FileType svg setlocal tabstop=2 softtabstop=0 expandtab shiftwidth=2 sma
 autocmd FileType html setlocal tabstop=2 softtabstop=0 expandtab shiftwidth=2 smarttab autoindent smartindent cindent
 autocmd FileType php setlocal tabstop=2 softtabstop=0 expandtab shiftwidth=2 smarttab autoindent smartindent cindent
 autocmd FileType sh setlocal tabstop=2 softtabstop=0 expandtab shiftwidth=2 smarttab autoindent smartindent cindent
-autocmd FileType markdown setlocal columns=100 wrap
 autocmd FileType caddyfile setlocal noexpandtab tabstop=4 shiftwidth=4 autoindent smartindent cindent
-autocmd FileType vim setlocal tabstop=4 softtabstop=0 expandtab shiftwidth=4 smarttab autoindent smartindent cindent
