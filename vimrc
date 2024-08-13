@@ -51,15 +51,23 @@ augroup caddyfile_syntax
     autocmd!
     autocmd BufRead,BufNewFile Caddyfile set filetype=caddyfile
 
-    " Define Caddyfile syntax keywords
-    syntax keyword caddyfileKeywords import root route handle handle_errors matcher
-    syntax keyword caddyfileDirectives rewrite file_server try_files
-    syntax match caddyfileCurlies "[{}]"
+    autocmd FileType caddyfile call s:caddyfile_syntax()
 
-    " Link syntax keywords to highlight groups
-    highlight link caddyfileKeywords Keyword
-    highlight link caddyfileDirectives Statement
-    highlight link caddyfileCurlies Delimiter
+    function! s:caddyfile_syntax()
+        if exists("b:current_syntax")
+            return
+        endif
 
-    let b:current_syntax = "caddyfile"
+        " Define Caddyfile syntax keywords
+        syntax keyword caddyfileKeywords import root route handle handle_errors matcher
+        syntax keyword caddyfileDirectives rewrite file_server try_files
+        syntax match caddyfileCurlies "[{}]"
+
+        " Link syntax keywords to highlight groups
+        highlight link caddyfileKeywords Keyword
+        highlight link caddyfileDirectives Statement
+        highlight link caddyfileCurlies Delimiter
+
+        let b:current_syntax = "caddyfile"
+    endfunction
 augroup END
