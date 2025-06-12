@@ -853,7 +853,7 @@ ssh.as() {
   ssh -i "$HOME/.ssh/$nickname" -o IdentitiesOnly=yes "$@"
 }
 
-localrc() {
+localalias() {
   local nickname="$1"
   shift
 
