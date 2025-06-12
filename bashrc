@@ -847,28 +847,26 @@ git() {
   git.as "$(basename "$pubfile" .pub)" "$@"
 }
 
-ssh.alias() {
+ssh.as() {
   local nickname="$1"
   shift
-  local alias_cmd="alias $nickname='ssh $*'"
+  ssh -i "$HOME/.ssh/$nickname" -o IdentitiesOnly=yes "$@"
+}
 
-  # Path to your aliases file
+localrc() {
+  local nickname="$1"
+  shift
+
+  local alias_cmd="alias $nickname='$*'"
   local rcfile="$HOME/.localrc"
 
-  # Remove any existing alias for this nickname
   grep -v "^alias $nickname=" "$rcfile" 2>/dev/null > "$rcfile.tmp" || true
-
-  # Append the new alias
   echo "$alias_cmd" >> "$rcfile.tmp"
-
-  # Move the temp file back
   mv "$rcfile.tmp" "$rcfile"
-
-  # Source the updated rc file
-  # shellcheck source=/dev/null
   source "$rcfile"
 
   echo "Alias '$nickname' updated: $alias_cmd"
 }
+
 
 [ -f ~/.localrc ] && source ~/.localrc
