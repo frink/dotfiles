@@ -8,6 +8,7 @@ set lazyredraw
 set showmatch mat=2
 set noerrorbells novisualbell t_vb= tm=500
 set foldcolumn=1
+set foldlevel=1
 set mouse=a
 
 syntax enable
@@ -122,3 +123,4 @@ autocmd FileType html setlocal tabstop=2 softtabstop=0 expandtab shiftwidth=2 sm
 autocmd FileType php setlocal tabstop=2 softtabstop=0 expandtab shiftwidth=2 smarttab autoindent smartindent cindent
 autocmd FileType sh setlocal tabstop=2 softtabstop=0 expandtab shiftwidth=2 smarttab autoindent smartindent cindent
 autocmd FileType caddyfile setlocal noexpandtab tabstop=4 shiftwidth=4 autoindent smartindent cindent
+autocmd FileType template setlocal tabstop=2 softtabstop=0 expandtab shiftwidth=2 smarttab autoindent smartindent cindent

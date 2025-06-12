@@ -38,7 +38,7 @@ function .path() {
   esac
 }
 
-export PATH="~/bin/:$PATH"
+export PATH="~/.local/bin/:$PATH"
 export PS1="\n\e[33;1m<$HOSTNAME>\e[91m\$(.branch)\n\e[34m@$USER \e[32m\$(.path) \e[90m\\$\e[0m "
 export EDITOR="$(which vim) -p"
 
@@ -267,6 +267,32 @@ function g.() {
   cd -
 }
 
+function git_fix() {
+  if [ $# -lt 1 ]; then
+    echo "Usage: g.fix <old-email>"
+    return 1
+  fi
+  local old_email="$1"
+  local current_name=$(git config user.name)
+  local current_email=$(git config user.email)
+
+  echo "Beginning replacement of '$old_email'  to '$current_name <$current_email>'."
+
+  git filter-branch --env-filter '
+    if [ "$GIT_AUTHOR_EMAIL" = "'"$old_email"'" ]; then
+      export GIT_AUTHOR_NAME="'"$current_name"'"
+      export GIT_AUTHOR_EMAIL="'"$current_email"'"
+    fi
+    if [ "$GIT_COMMITTER_EMAIL" = "'"$old_email"'" ]; then
+      export GIT_COMMITTER_NAME="'"$current_name"'"
+      export GIT_COMMITTER_EMAIL="'"$current_email"'"
+    fi
+  ' --tag-name-filter cat -- --all >/dev/null 2>&1
+
+  echo "Done! All commits with email '$old_email' have been changed to '$current_name <$current_email>'."
+}
+
+
 function v.() {
   unalias $(alias|grep "alias v\."|cut -d"=" -f1|cut -d" " -f2) &> /dev/null
 
@@ -312,33 +338,6 @@ if [ ! $OS_TERMUX ]; then
   alias svc="sudo systemctl"
 fi
 
-function install-docker() {
-  local ARCH=$(dpkg --print-architecture)
-  local DISTRO=$(. /etc/os-release && echo "$ID")
-  local VERSION=$(. /etc/os-release && echo "$VERSION_CODENAME")
-
-  # Add Docker's official GPG key:
-  sudo apt-get update
-  sudo apt-get install ca-certificates curl
-  sudo install -m 0755 -d /etc/apt/keyrings
-  sudo curl -fsSL https://download.docker.com/linux/$DISTRO/gpg -o /etc/apt/keyrings/docker.asc
-  sudo chmod a+r /etc/apt/keyrings/docker.asc
-
-  # Add the repository to Apt sources:
-  echo \
-    "deb [arch=$ARCH signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/$DISTRO \
-    $VERSION stable" | \
-    sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-
-  sudo apt-get update -y
-  sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-
-  sudo usermod -aG docker $(whoami)
-}
-
-# alias if docker not setup
-type -p docker > /dev/null || alias docker="install-docker && unalias docker && docker"
-
 function docker-clean() {
   # Stop all containers
   docker stop $(docker ps -qa)
@@ -376,19 +375,56 @@ function dtest() {
   docker run -it "${opt[@]}" --name tester tester "${cmd[@]}"
 }
 
-alias drun="docker exec -it"
 alias dps="docker ps -a -q"
 alias dcu="docker compose up -d"
 alias dcd="docker compose down"
+alias dcr="docker compose run -it"
+alias dcl="docker compose logs"
 alias dca="dcd&&dcu"
 
 # alias if nhost not setup
 type -p nhost > /dev/null || alias nhost="rash https://raw.githubusercontent.com/nhost/cli/main/get.sh && unalias nhost && nhost"
 
-function install-psql() {
+function run-or-install () {
+  local prog=$1
+
+  type -p $prog > /dev/null || alias $prog="install-$prog && unalias $prog && $prog"
+
+  if [ -z "$(type -t install-$prog)" ]; then
+    alias inatall-$prog="apt install $prog -y"
+  fi
+}
+
+function install-docker() {
+  local ARCH=$(dpkg --print-architecture)
+  local DISTRO=$(. /etc/os-release && echo "$ID")
   local VERSION=$(. /etc/os-release && echo "$VERSION_CODENAME")
 
   # Add Docker's official GPG key:
+  sudo apt-get update
+  sudo apt-get install ca-certificates curl
+  sudo install -m 0755 -d /etc/apt/keyrings
+  sudo curl -fsSL https://download.docker.com/linux/$DISTRO/gpg -o /etc/apt/keyrings/docker.asc
+  sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+  # Add the repository to Apt sources:
+  echo \
+    "deb [arch=$ARCH signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/$DISTRO \
+    $VERSION stable" | \
+    sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+  sudo apt-get update -y
+  sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+  sudo groupadd -f docker
+  sudo usermod -aG docker $USER
+  newgrp docker
+}
+
+function install-psql() {
+  local VERSION=$(. /etc/os-release && echo "$VERSION_CODENAME")
+
+  # Add PostgreSQL's official GPG key:
   sudo apt-get update
   sudo apt-get install ca-certificates curl
   sudo install -m 0755 -d /etc/apt/keyrings
@@ -405,7 +441,11 @@ function install-psql() {
   sudo apt-get install -y postgresql-client
 }
 
-type -p psql > /dev/null || alias psql="install-psql && unalias psql && psql"
+run-or-install psql
+run-or-install docker
+run-or-install jq
+run-or-install whois
+run-or-install ncat
 
 function sql.run() {
   if [ -z "$2" ]; then
@@ -484,7 +524,6 @@ function sqit() {
       ;;
   esac
 }
-
 function on() {
   (
     exe=( ${@:2} )
@@ -520,6 +559,7 @@ function dns() {
 function error() {
   echo $@ >&2;
 }
+
 
 alias wcat="wget -qSO- --method=GET"
 alias wbody="wget -qO- --method=GET"
@@ -659,19 +699,19 @@ function words() {
 function fringpong() {
   echo "A server will respond 12 times on port 1234"
 
-  sudo apt install netcat -y
+  sudo apt install ncat -y
 
   (
     local I="0"
 
     while [ $I -lt 12 ];do
       I=$[$I+1]
-      echo -e "HTTP/1.1 200\r\nContent-Type:text/html\r\n\r\nFRINGPONG $I" | nc -lvN 1234 2>&1
+      echo -e "HTTP/1.1 200\r\nContent-Type:text/html\r\n\r\nFRINGPONG $I" | ncat -lv 1234 2>&1
     done >/dev/null &
   )
 }
 
-completer() {
+function completer() {
     local command=( "$@" )
     local cmd_name="${command[0]}"
     local func_name=$(complete -p "$cmd_name" 2>/dev/null | awk '{print $3}')
@@ -708,6 +748,103 @@ completer() {
     unset COMP_CWORD
     unset COMP_LINE
     unset COMP_POINT
+}
+
+git.id() {
+  local usage="Usage: git.id [nickname] [email] [name]"
+  local nickname="$1"
+  local email="$2"
+  local name="${@:3}"
+  local keyfile="$HOME/.ssh/$nickname"
+  local pubfile="$keyfile.pub"
+
+  if [[ -z "$nickname" ]]; then
+    echo "$usage"
+    return 1
+  fi
+
+  if [[ -f "$pubfile" ]]; then
+    local existing_comment=$(sed 's/^[^ ]* [^ ]* //' "$pubfile")
+
+    if [[ -n "$email" && -n "$name" ]]; then
+      local new_comment="$name <$email>"
+
+      if [[ "$existing_comment" != "$new_comment" ]]; then
+        echo "Updating comment on existing key $nickname..."
+        ssh-keygen -c -C "$new_comment" -f "$keyfile"
+      fi
+    fi
+  elif [[ -n "$email" && -n "$name" ]]; then
+    ssh-keygen -t ed25519 -C "$name <$email>" -f "$keyfile"
+  else
+    echo "$usage"
+    return 1
+  fi
+
+  if command git rev-parse --show-toplevel &>/dev/null; then
+    local comment=$(sed 's/^[^ ]* [^ ]* //' "$pubfile")
+    local config_email=$(echo "$comment" | sed -n 's/.*<\(.*\)>.*/\1/p')
+    local config_name=$(echo "$comment" | sed -n 's/\(.*\) <.*>/\1/p')
+
+    if [[ -n "$config_email" && -n "$config_name" ]]; then
+      command git config user.email "$config_email"
+      command git config user.name "$config_name"
+    else
+      echo "Malformed Public Key run: git.id $nickname email name"
+      return 1
+    fi
+  fi
+
+  cat "$pubfile"
+}
+
+git.as() {
+  local nickname="$1"
+  shift
+
+  if [[ "$1" == "clone" ]]; then
+    local repo_url="$2"
+    local dir_name="$3"
+
+    # Use 'command git' to avoid recursion
+    GIT_SSH_COMMAND="ssh -i $HOME/.ssh/$nickname -o IdentitiesOnly=yes" command git clone "$repo_url" $dir_name
+
+    local target_dir
+    if [[ -n "$dir_name" ]]; then
+      target_dir="$dir_name"
+    else
+      target_dir=$(basename "$repo_url" .git)
+    fi
+
+    if [[ -d "$target_dir/.git" ]]; then
+      (
+        cd "$target_dir"
+        git.id "$nickname"
+      )
+    else
+      echo "Target directory not found: $target_dir"
+      return 1
+    fi
+  else
+    GIT_SSH_COMMAND="ssh -i $HOME/.ssh/$nickname -o IdentitiesOnly=yes" command git "$@"
+  fi
+}
+
+git() {
+  local email=$(command git config user.email)
+  if [[ -z "$email" ]]; then
+    echo "git.id not set. Use git.id to configure this repository."
+    return 1
+  fi
+
+  # Find the SSH key nickname by grepping .ssh/*.pub for the email
+  local pubfile=$(grep -l "$email" ~/.ssh/*.pub 2>/dev/null | head -n1)
+  if [[ -z "$pubfile" ]]; then
+    echo "git.id misconfigured. Use git.id to fix this repository."
+    return 1
+  fi
+
+  git.as "$(basename "$pubfile" .pub)" "$@"
 }
 
 [ -f ~/.localrc ] && source ~/.localrc
