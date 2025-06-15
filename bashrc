@@ -181,18 +181,23 @@ list() {
 
     define)
       local new_headers="$*"
+
       if [[ -z "$new_headers" ]]; then
-        echo "Please provide fields..."
+        echo "Please provide fields in your definition..."
         return 1
       fi
+
       if [[ ! -f "$file" ]]; then
         echo "$new_headers" > "$file"
       else
         local old_headers
         old_headers=$(head -n1 "$file")
+
         IFS=',' read -r -a old_fields <<< "$old_headers"
         IFS=',' read -r -a new_fields <<< "$new_headers"
+
         declare -A field_map
+
         for i in "${!new_fields[@]}"; do
           field_map[$i]=-1
           for j in "${!old_fields[@]}"; do
@@ -202,9 +207,12 @@ list() {
             fi
           done
         done
+
         echo "$new_headers" > "$file.tmp"
+
         tail -n +2 "$file" | while IFS=',' read -r -a row; do
           out=()
+
           for i in "${!new_fields[@]}"; do
             if [[ ${field_map[$i]} -ge 0 ]]; then
               out+=("${row[${field_map[$i]}]}")
@@ -212,8 +220,10 @@ list() {
               out+=("")
             fi
           done
+
           (IFS=','; echo "${out[*]}")
         done >> "$file.tmp"
+
         mv "$file.tmp" "$file"
       fi
       ;;
@@ -230,13 +240,17 @@ list() {
       ;&
 
     update)
-      local input="$*"
-      local key="${input%%,*}"
-      # Remove any existing row(s) with this key
+      local input key
+
+      input="$*"
+      key="${input%%,*}"
+
       sed -i.bak "/^${key//\//\\/}\(,\|$\)/d" "$file"
       rm -f "$file.bak"
-      # Append new row
+
       echo "$input" >> "$file"
+
+      list "$name" sort
       ;;
 
     remove)
@@ -292,15 +306,15 @@ list() {
       ;;
 
     export)
-      local header
-      header=$(head -n1 "$file")
-      local data
-      data=$(tail -n +2 "$file")
-      local IFS=','
+      local header data first
       local -a fields
+
+      header=$(head -n1 "$file")
+      data=$(tail -n +2 "$file")
+
       IFS=',' read -r -a fields <<< "$header"
       echo "["
-      local first=1
+
       while IFS=',' read -r -a row; do
         if [[ $first -eq 0 ]]; then
           echo ","
@@ -308,12 +322,17 @@ list() {
         first=0
         echo "  {"
         for i in "${!fields[@]}"; do
-          local key=${fields[i]}
-          local val=${row[i]//\"/\\\"}
+          local key val
+
+          key=${fields[i]}
+          val=${row[i]//\"/\\\"}
+
           echo "    \"$key\": \"$val\""$( [[ $i -lt $((${#fields[@]} - 1)) ]] && echo "," )
         done
+
         echo "  }"
       done <<< "$data"
+
       echo "]"
       ;;
 
