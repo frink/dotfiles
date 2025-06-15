@@ -141,7 +141,6 @@ function note() {
 
 alias todo="note todo"
 alias idea="note ideas"
-alias domains="note domains"
 
 
 function list() {
@@ -311,6 +310,8 @@ function list() {
       ;;
   esac
 }
+
+alias domains="list domains"
 
 alias open="xdg-open"
 alias o="open"
