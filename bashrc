@@ -381,6 +381,8 @@ list() {
   esac
 }
 
+list domains alias
+
 alias open="xdg-open"
 alias o="open"
 alias ls="ls --color=auto --file-type --group-directories-first --literal"
