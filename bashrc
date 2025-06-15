@@ -142,7 +142,7 @@ function note() {
 alias todo="note todo"
 alias idea="note ideas"
 
-function list() {
+list() {
   local name="$1"
   shift
   local cmd="$1"
@@ -157,9 +157,23 @@ function list() {
   local file="$HOME/.lists/$name.csv"
 
   case "$cmd" in
+    alias)
+      eval "
+      ${name}() {
+        if [[ \"\$1\" == \"edit\" ]]; then
+          list $name \"\$@\"
+        else
+          list $name \"\$@\" 2>&1 | sed 's/^  Usage: list name/  Usage: $name/'
+        fi
+      }
+      "
+      echo "Function '$name' created. You can now use '$name' as a command."
+      ;;
+
     edit)
       $EDITOR "$file"
       ;;
+
     define)
       local new_headers="$*"
       if [[ -z "$new_headers" ]]; then
@@ -198,6 +212,7 @@ function list() {
         mv "$file.tmp" "$file"
       fi
       ;;
+
     add)
       if [[ ! -f "$file" ]]; then
         echo "List '$name' does not exist. Define fields... first."
@@ -225,6 +240,7 @@ function list() {
       # Append new row
       echo "$input" >> "$file"
       ;;
+
     remove)
       if [[ ! -f "$file" ]]; then
         echo "List '$name' does not exist."
@@ -232,6 +248,7 @@ function list() {
       fi
       grep -vF -- "$*" "$file" > "$file.tmp" && mv "$file.tmp" "$file"
       ;;
+
     show)
       if [[ -f "$file" ]]; then
         {
@@ -242,6 +259,7 @@ function list() {
         echo "List '$name' does not exist."
       fi
       ;;
+
     sort)
       local field="$1"
       if [[ -z "$field" ]]; then
@@ -268,6 +286,7 @@ function list() {
         echo "List '$name' does not exist."
       fi
       ;;
+
     find)
       if [[ -f "$file" ]]; then
         {
@@ -278,6 +297,7 @@ function list() {
         echo "List '$name' does not exist."
       fi
       ;;
+
     fields)
       if [[ -f "$file" ]]; then
         head -n1 "$file"
@@ -285,6 +305,7 @@ function list() {
         echo "List '$name' does not exist."
       fi
       ;;
+
     export)
       if [[ -f "$file" ]]; then
         local header
@@ -314,6 +335,7 @@ function list() {
         echo "List '$name' does not exist."
       fi
       ;;
+
     import)
       local import_file="$1"
       if [[ -z "$import_file" ]]; then
@@ -326,6 +348,7 @@ function list() {
         echo "Import file '$import_file' does not exist."
       fi
       ;;
+
     clear)
       if [[ -f "$file" ]]; then
         head -n1 "$file" > "$file.tmp" && mv "$file.tmp" "$file"
@@ -333,6 +356,7 @@ function list() {
         echo "List '$name' does not exist."
       fi
       ;;
+
     help|*)
       echo "
   Usage: list name command [fields...]
@@ -347,21 +371,14 @@ function list() {
     edit                    Edit the list CSV directly
     sort [field]            Sort list by specified field
     find pattern            Find entries containing pattern
+    clear                   Remove all entries
     export                  Export the list to JSON
     import file             Import entries from CSV
-    clear                   Remove all entries
+    alias                   Create an alias for 'list name'
     help                    Show this help message
       "
       ;;
   esac
-}
-
-domains() {
-    if [[ "$1" == "edit" ]]; then
-        list domains "$@"
-    else
-        list domains "$@" 2>&1 | sed 's/^  Usage: list name/  Usage: domains/'
-    fi
 }
 
 alias open="xdg-open"
