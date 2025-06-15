@@ -158,8 +158,7 @@ function list() {
 
   case "$cmd" in
     edit)
-      : "${EDITOR:=nano}"
-      echo "$EDITOR" "$file"
+      $EDITOR "$file"
       ;;
     define)
       local new_headers="$*"
