@@ -361,6 +361,7 @@ list() {
   Usage: list name command [fields...]
 
   Commands:
+
     define fields...        Define or redefine list columns
     fields                  Show list columns
     add fields...           Add a new entry (fails if key exists)
