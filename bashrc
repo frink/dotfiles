@@ -356,8 +356,12 @@ function list() {
   esac
 }
 
-function domains() {
-  list domains "$@" 2>&1 | sed 's/^  Usage: list name/  Usage: domains/'
+domains() {
+    if [[ "$1" == "edit" ]]; then
+        list domains "$@"
+    else
+        list domains "$@" 2>&1 | sed 's/^  Usage: list name/  Usage: domains/'
+    fi
 }
 
 alias open="xdg-open"
