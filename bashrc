@@ -197,7 +197,7 @@ list() {
         old_headers=$(head -n1 "$file")
 
 
-        IFS=',' read -r -a old_fields <<< "${old_header//↓/}"
+        IFS=',' read -r -a old_fields <<< "${old_headers//↓/}"
         IFS=',' read -r -a new_fields <<< "$new_headers"
 
         for i in "${!new_fields[@]}"; do
