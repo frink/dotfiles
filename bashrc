@@ -167,7 +167,6 @@ list() {
         fi
       }
       "
-      echo "Function '$name' created. You can now use '$name' as a command."
       ;;
 
     edit)
