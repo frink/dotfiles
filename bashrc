@@ -112,8 +112,15 @@ function note() {
 
   Usage:
 
+  note [LIST]
+  note [LIST] [COMMAND]
   note [LIST] [NOTE]
 
+  Commands:
+
+  edit - Edit in ${EDITOR}
+  clear - Clear everything in the list
+  sort - Sort the list A-Z
   " && return
 
 
