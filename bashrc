@@ -149,6 +149,7 @@ function list() {
   local cmd="$1"
   shift
 
+  # If missing arguments, show help
   if [[ -z "$name" || -z "$cmd" ]]; then
     cmd="help"
   fi
@@ -164,7 +165,7 @@ function list() {
     define)
       local new_headers="$*"
       if [[ -z "$new_headers" ]]; then
-        echo "Please provide headers to define."
+        echo "Please provide fields..."
         return 1
       fi
       if [[ ! -f "$file" ]]; then
@@ -201,7 +202,7 @@ function list() {
       ;;
     add)
       if [[ ! -f "$file" ]]; then
-        echo "List '$name' does not exist. Define headers first."
+        echo "List '$name' does not exist. Define fields... first."
         return 1
       fi
       echo "$*" >> "$file"
@@ -213,26 +214,19 @@ function list() {
       fi
       local new_row="$*"
       if [[ -z "$new_row" ]]; then
-        echo "Usage: list $name update field1_value,field2_value,..."
+        echo "Usage: list $name update fields..."
         return 1
       fi
       local key="${new_row%%,*}"
-      {
-        head -n1 "$file"
-        updated=0
-        tail -n +2 "$file" | while IFS=',' read -r -a row; do
-          if [[ $updated -eq 0 && "${row[0]}" == "$key" ]]; then
-            echo "$new_row"
-            updated=1
-          else
-            (IFS=','; echo "${row[*]}")
-          fi
-        done
-        if [[ $updated -eq 0 ]]; then
-          echo "$new_row"
-        fi
-      } > "$file.tmp"
-      mv "$file.tmp" "$file"
+      # Escape special characters in key for sed
+      local key_escaped
+      key_escaped=$(printf '%s\n' "$key" | sed 's/[][\.*^$/]/\\&/g')
+      if grep -q "^$key_escaped," "$file"; then
+        sed -i.bak "/^$key_escaped,/c\\$new_row" "$file"
+        rm -f "$file.bak"
+      else
+        echo "$new_row" >> "$file"
+      fi
       ;;
     remove)
       if [[ ! -f "$file" ]]; then
@@ -326,7 +320,7 @@ function list() {
     import)
       local import_file="$1"
       if [[ -z "$import_file" ]]; then
-        echo "Usage: list $name import [file]"
+        echo "Usage: list $name import file"
         return 1
       fi
       if [[ -f "$import_file" ]]; then
@@ -344,22 +338,22 @@ function list() {
       ;;
     help|*)
       echo "
-  Usage: list [name] command [options]
+  Usage: list name command [fields...]
 
   Commands:
-    define fields...            Define or redefine list columns
-    fields                      Show list columns
-    add fields...               Add a new entry
-    update fields...            Update (or add) entry by key (field1)
-    remove pattern              Remove entries matching pattern
-    show                        Show the list sorted by first field
-    edit                        Edit the list CSV directly
-    sort [field]                Sort list by specified field
-    find pattern                Find entries containing pattern
-    export                      Export the list to JSON
-    import file                 Import entries from CSV
-    clear                       Remove all entries
-    help                        Show this help message
+    define fields...        Define or redefine list columns
+    fields                  Show list columns
+    add fields...           Add a new entry
+    update fields...        Update (or add) entry by key (first field)
+    remove pattern          Remove entries matching pattern
+    show                    Show the list sorted by first field
+    edit                    Edit the list CSV directly
+    sort [field]            Sort list by specified field
+    find pattern            Find entries containing pattern
+    export                  Export the list to JSON
+    import file             Import entries from CSV
+    clear                   Remove all entries
+    help                    Show this help message
       "
       ;;
   esac
