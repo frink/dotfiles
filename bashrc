@@ -200,14 +200,7 @@ function list() {
         mv "$file.tmp" "$file"
       fi
       ;;
-    add)
-      if [[ ! -f "$file" ]]; then
-        echo "List '$name' does not exist. Define fields... first."
-        return 1
-      fi
-      echo "$*" >> "$file"
-      ;;
-    update)
+    add|update)
       if [[ ! -f "$file" ]]; then
         echo "List '$name' does not exist."
         return 1
