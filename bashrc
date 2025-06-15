@@ -141,6 +141,7 @@ function note() {
 
 alias todo="note todo"
 alias idea="note ideas"
+alias domains="note domains"
 
 alias open="xdg-open"
 alias o="open"
