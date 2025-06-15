@@ -156,6 +156,12 @@ list() {
   mkdir -p "$HOME/.lists"
   local file="$HOME/.lists/$name.csv"
 
+  # Only allow 'alias', 'help', and 'define' if the file does not exist
+  if [[ ! -f "$file" && "$cmd" != "alias" && "$cmd" != "help" && "$cmd" != "define" ]]; then
+    echo "List '$name' does not exist. Use 'define' to create it."
+    return 1
+  fi
+
   case "$cmd" in
     alias)
       eval "
@@ -213,10 +219,6 @@ list() {
       ;;
 
     add)
-      if [[ ! -f "$file" ]]; then
-        echo "List '$name' does not exist. Define fields... first."
-        return 1
-      fi
       local input="$*"
       local key="${input%%,*}"
       # Check if key exists
@@ -227,10 +229,6 @@ list() {
       # Fall through to update logic
       ;&
     update)
-      if [[ ! -f "$file" ]]; then
-        echo "List '$name' does not exist."
-        return 1
-      fi
       local input="$*"
       local key="${input%%,*}"
       # Remove any existing row(s) with this key
@@ -241,22 +239,11 @@ list() {
       ;;
 
     remove)
-      if [[ ! -f "$file" ]]; then
-        echo "List '$name' does not exist."
-        return 1
-      fi
       grep -vF -- "$*" "$file" > "$file.tmp" && mv "$file.tmp" "$file"
       ;;
 
     show)
-      if [[ -f "$file" ]]; then
-        {
-          head -n1 "$file"
-          tail -n +2 "$file" | sort -t, -k1,1
-        } | column -t -s,
-      else
-        echo "List '$name' does not exist."
-      fi
+      column -t -s, "$file"
       ;;
 
     sort)
@@ -264,75 +251,58 @@ list() {
       if [[ -z "$field" ]]; then
         field=1
       else
-        if [[ -f "$file" ]]; then
-          local header
-          header=$(head -n1 "$file")
-          IFS=',' read -r -a fields <<< "$header"
-          for i in "${!fields[@]}"; do
-            if [[ "${fields[i]}" == "$field" ]]; then
-              field=$((i+1))
-              break
-            fi
-          done
-        fi
+        local header
+        header=$(head -n1 "$file")
+        IFS=',' read -r -a fields <<< "$header"
+        for i in "${!fields[@]}"; do
+          if [[ "${fields[i]}" == "$field" ]]; then
+            field=$((i+1))
+            break
+          fi
+        done
       fi
-      if [[ -f "$file" ]]; then
-        {
-          head -n1 "$file"
-          tail -n +2 "$file" | sort -t, -k${field},${field}
-        } | column -t -s,
-      else
-        echo "List '$name' does not exist."
-      fi
+      # Save sorted data back to file (except header)
+      head -n1 "$file" > "$file.tmp"
+      tail -n +2 "$file" | sort -t, -k${field},${field} >> "$file.tmp"
+      mv "$file.tmp" "$file"
+      column -t -s, "$file"
       ;;
 
     find)
-      if [[ -f "$file" ]]; then
-        {
-          head -n1 "$file"
-          grep -F -- "$*" "$file" | grep -vF -- "$(head -n1 "$file")"
-        } | column -t -s,
-      else
-        echo "List '$name' does not exist."
-      fi
+      {
+        head -n1 "$file"
+        grep -F -- "$*" "$file" | grep -vF -- "$(head -n1 "$file")"
+      } | column -t -s,
       ;;
 
     fields)
-      if [[ -f "$file" ]]; then
-        head -n1 "$file"
-      else
-        echo "List '$name' does not exist."
-      fi
+      head -n1 "$file"
       ;;
 
     export)
-      if [[ -f "$file" ]]; then
-        local header
-        header=$(head -n1 "$file")
-        local data
-        data=$(tail -n +2 "$file")
-        local IFS=','
-        local -a fields
-        IFS=',' read -r -a fields <<< "$header"
-        echo "["
-        local first=1
-        while IFS=',' read -r -a row; do
-          if [[ $first -eq 0 ]]; then
-            echo ","
-          fi
-          first=0
-          echo "  {"
-          for i in "${!fields[@]}"; do
-            local key=${fields[i]}
-            local val=${row[i]//\"/\\\"}
-            echo "    \"$key\": \"$val\""$( [[ $i -lt $((${#fields[@]} - 1)) ]] && echo "," )
-          done
-          echo "  }"
-        done <<< "$data"
-        echo "]"
-      else
-        echo "List '$name' does not exist."
-      fi
+      local header
+      header=$(head -n1 "$file")
+      local data
+      data=$(tail -n +2 "$file")
+      local IFS=','
+      local -a fields
+      IFS=',' read -r -a fields <<< "$header"
+      echo "["
+      local first=1
+      while IFS=',' read -r -a row; do
+        if [[ $first -eq 0 ]]; then
+          echo ","
+        fi
+        first=0
+        echo "  {"
+        for i in "${!fields[@]}"; do
+          local key=${fields[i]}
+          local val=${row[i]//\"/\\\"}
+          echo "    \"$key\": \"$val\""$( [[ $i -lt $((${#fields[@]} - 1)) ]] && echo "," )
+        done
+        echo "  }"
+      done <<< "$data"
+      echo "]"
       ;;
 
     import)
@@ -349,11 +319,7 @@ list() {
       ;;
 
     clear)
-      if [[ -f "$file" ]]; then
-        head -n1 "$file" > "$file.tmp" && mv "$file.tmp" "$file"
-      else
-        echo "List '$name' does not exist."
-      fi
+      head -n1 "$file" > "$file.tmp" && mv "$file.tmp" "$file"
       ;;
 
     help|*)
@@ -367,9 +333,9 @@ list() {
     add fields...           Add a new entry (fails if key exists)
     update fields...        Update (or add) entry by key (first field)
     remove pattern          Remove entries matching pattern
-    show                    Show the list sorted by first field
+    show                    Show the list as-is
     edit                    Edit the list CSV directly
-    sort [field]            Sort list by specified field
+    sort [field]            Sort list by specified field (persists)
     find pattern            Find entries containing pattern
     clear                   Remove all entries
     export                  Export the list to JSON
