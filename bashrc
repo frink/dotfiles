@@ -149,15 +149,25 @@ function list() {
   local cmd="$1"
   shift
 
+  if [[ -z "$name" || -z "$cmd" ]]; then
+    echo "Usage: list [name] command [options]"
+    return 1
+  fi
+
   mkdir -p "$HOME/.lists"
   local file="$HOME/.lists/$name.csv"
 
   case "$cmd" in
     edit)
-      $EDITOR $file
+      : "${EDITOR:=nano}"
+      "$EDITOR" "$file"
       ;;
     define)
       local new_headers="$*"
+      if [[ -z "$new_headers" ]]; then
+        echo "Please provide headers to define."
+        return 1
+      fi
       if [[ ! -f "$file" ]]; then
         echo "$new_headers" > "$file"
       else
@@ -191,10 +201,46 @@ function list() {
       fi
       ;;
     add)
+      if [[ ! -f "$file" ]]; then
+        echo "List '$name' does not exist. Define headers first."
+        return 1
+      fi
       echo "$*" >> "$file"
       ;;
+    update)
+      if [[ ! -f "$file" ]]; then
+        echo "List '$name' does not exist."
+        return 1
+      fi
+      local new_row="$*"
+      if [[ -z "$new_row" ]]; then
+        echo "Usage: list $name update field1_value,field2_value,..."
+        return 1
+      fi
+      local key="${new_row%%,*}"
+      {
+        head -n1 "$file"
+        updated=0
+        tail -n +2 "$file" | while IFS=',' read -r -a row; do
+          if [[ $updated -eq 0 && "${row[0]}" == "$key" ]]; then
+            echo "$new_row"
+            updated=1
+          else
+            (IFS=','; echo "${row[*]}")
+          fi
+        done
+        if [[ $updated -eq 0 ]]; then
+          echo "$new_row"
+        fi
+      } > "$file.tmp"
+      mv "$file.tmp" "$file"
+      ;;
     remove)
-      grep -v "$*" "$file" > "$file.tmp" && mv "$file.tmp" "$file"
+      if [[ ! -f "$file" ]]; then
+        echo "List '$name' does not exist."
+        return 1
+      fi
+      grep -vF -- "$*" "$file" > "$file.tmp" && mv "$file.tmp" "$file"
       ;;
     show)
       if [[ -f "$file" ]]; then
@@ -236,7 +282,7 @@ function list() {
       if [[ -f "$file" ]]; then
         {
           head -n1 "$file"
-          grep "$*" "$file" | grep -v "$(head -n1 "$file")"
+          grep -F -- "$*" "$file" | grep -vF -- "$(head -n1 "$file")"
         } | column -t -s,
       else
         echo "List '$name' does not exist."
@@ -268,7 +314,7 @@ function list() {
           echo "  {"
           for i in "${!fields[@]}"; do
             local key=${fields[i]}
-            local val=${row[i]}
+            local val=${row[i]//\"/\\\"}
             echo "    \"$key\": \"$val\""$( [[ $i -lt $((${#fields[@]} - 1)) ]] && echo "," )
           done
           echo "  }"
@@ -280,6 +326,10 @@ function list() {
       ;;
     import)
       local import_file="$1"
+      if [[ -z "$import_file" ]]; then
+        echo "Usage: list $name import [file]"
+        return 1
+      fi
       if [[ -f "$import_file" ]]; then
         tail -n +2 "$import_file" >> "$file"
       else
@@ -298,18 +348,19 @@ function list() {
   Usage: list [name] command [options]
 
   Commands:
-    define fields...          Define or redefine list columns
-    fields                    Show list columns
-    add field1,field2,...     Add a new entry
-    remove pattern            Remove entries matching pattern
-    show                      Show the list sorted by first field
-    edit                      Edit the list CSV directly
-    sort [field]              Sort list by specified field
-    find pattern              Find entries containing pattern
-    export                    Export the list to JSON
-    import file               Import entries from CSV
-    clear                     Remove all entries
-    help                      Show this help message
+    define fields...            Define or redefine list columns
+    fields                      Show list columns
+    add fields...               Add a new entry
+    update fields...            Update (or add) entry by key (field1)
+    remove pattern              Remove entries matching pattern
+    show                        Show the list sorted by first field
+    edit                        Edit the list CSV directly
+    sort [field]                Sort list by specified field
+    find pattern                Find entries containing pattern
+    export                      Export the list to JSON
+    import file                 Import entries from CSV
+    clear                       Remove all entries
+    help                        Show this help message
       "
       ;;
   esac
