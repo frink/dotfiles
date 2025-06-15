@@ -180,7 +180,11 @@ list() {
       ;;
 
     define)
-      local new_headers="$*"
+      local old_headers new_headers old_fields new_fields out
+      local -a field_map
+
+
+      new_headers="$*"
 
       if [[ -z "$new_headers" ]]; then
         echo "Please provide fields in your definition..."
@@ -190,16 +194,15 @@ list() {
       if [[ ! -f "$file" ]]; then
         echo "$new_headers" > "$file"
       else
-        local old_headers
         old_headers=$(head -n1 "$file")
 
-        IFS=',' read -r -a old_fields <<< "$old_headers"
-        IFS=',' read -r -a new_fields <<< "$new_headers"
 
-        declare -A field_map
+        IFS=',' read -r -a old_fields <<< "${old_header//↓/}"
+        IFS=',' read -r -a new_fields <<< "$new_headers"
 
         for i in "${!new_fields[@]}"; do
           field_map[$i]=-1
+
           for j in "${!old_fields[@]}"; do
             if [[ "${new_fields[i]}" == "${old_fields[j]}" ]]; then
               field_map[$i]=$j
