@@ -142,7 +142,6 @@ function note() {
 alias todo="note todo"
 alias idea="note ideas"
 
-
 function list() {
   local name="$1"
   shift
@@ -357,7 +356,6 @@ function list() {
       ;;
   esac
 }
-
 
 alias domains="list domains"
 
