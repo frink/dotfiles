@@ -200,26 +200,32 @@ function list() {
         mv "$file.tmp" "$file"
       fi
       ;;
-    add|update)
+    add)
+      if [[ ! -f "$file" ]]; then
+        echo "List '$name' does not exist. Define fields... first."
+        return 1
+      fi
+      local input="$*"
+      local key="${input%%,*}"
+      # Check if key exists
+      if grep -q "^${key}," "$file"; then
+        echo "Error: entry with key '$key' already exists."
+        return 1
+      fi
+      # Fall through to update logic
+      ;&
+    update)
       if [[ ! -f "$file" ]]; then
         echo "List '$name' does not exist."
         return 1
       fi
-      local new_row="$*"
-      if [[ -z "$new_row" ]]; then
-        echo "Usage: list $name update fields..."
-        return 1
-      fi
-      local key="${new_row%%,*}"
-      # Escape special characters in key for sed
-      local key_escaped
-      key_escaped=$(printf '%s\n' "$key" | sed 's/[][\.*^$/]/\\&/g')
-      if grep -q "^$key_escaped," "$file"; then
-        sed -i.bak "/^$key_escaped,/c\\$new_row" "$file"
-        rm -f "$file.bak"
-      else
-        echo "$new_row" >> "$file"
-      fi
+      local input="$*"
+      local key="${input%%,*}"
+      # Remove any existing row(s) with this key
+      sed -i.bak "/^${key//\//\\/},/d" "$file"
+      rm -f "$file.bak"
+      # Append new row
+      echo "$input" >> "$file"
       ;;
     remove)
       if [[ ! -f "$file" ]]; then
@@ -336,7 +342,7 @@ function list() {
   Commands:
     define fields...        Define or redefine list columns
     fields                  Show list columns
-    add fields...           Add a new entry
+    add fields...           Add a new entry (fails if key exists)
     update fields...        Update (or add) entry by key (first field)
     remove pattern          Remove entries matching pattern
     show                    Show the list sorted by first field
@@ -351,6 +357,7 @@ function list() {
       ;;
   esac
 }
+
 
 alias domains="list domains"
 
