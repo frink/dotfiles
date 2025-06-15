@@ -258,7 +258,7 @@ list() {
       ;;
 
     show)
-      column -t -s, "$file"
+      list "$name" sort
       ;;
 
     sort)
