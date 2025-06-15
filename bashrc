@@ -247,25 +247,36 @@ list() {
       ;;
 
     sort)
-      local field="$1"
-      if [[ -z "$field" ]]; then
-        field=1
-      else
-        local header
-        header=$(head -n1 "$file")
-        IFS=',' read -r -a fields <<< "$header"
+      local index field header orig_lines sort_lines
+      local -a fields
+      index=1
+      field="$1"
+
+      header=$(head -n1 "$file")
+      IFS=',' read -r -a fields <<< "$header"
+
+      if [[ -n "$field" ]]; then
         for i in "${!fields[@]}"; do
           if [[ "${fields[i]}" == "$field" ]]; then
-            field=$((i+1))
+            index=$((i+1))
             break
           fi
         done
       fi
-      # Save sorted data back to file (except header)
+
+      # Safety net: check line counts before overwriting
+      orig_lines=$(wc -l < "$file")
       head -n1 "$file" > "$file.tmp"
-      tail -n +2 "$file" | sort -t, -k${field},${field} >> "$file.tmp"
-      mv "$file.tmp" "$file"
-      column -t -s, "$file"
+      tail -n +2 "$file" | sort -t, -k${index},${index} >> "$file.tmp"
+      sort_lines=$(wc -l < "$file.tmp")
+      if [[ $orig_lines -eq $sort_lines ]]; then
+        mv "$file.tmp" "$file"
+        column -t -s, "$file"
+      else
+        echo "Error resorting ${name}"
+        rm -f "$file.tmp"
+        return 1
+      fi
       ;;
 
     find)
