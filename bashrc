@@ -228,6 +228,7 @@ list() {
       fi
       # Fall through to update logic
       ;&
+
     update)
       local input="$*"
       local key="${input%%,*}"
@@ -247,28 +248,28 @@ list() {
       ;;
 
     sort)
-      local index field header orig_lines sort_lines
+      local index arrow field header orig_lines sort_lines
       local -a fields
-      index=1
+
       field="$1"
-
       header=$(head -n1 "$file")
-      IFS=',' read -r -a fields <<< "$header"
+      arrow=$(sed 's/↓.*//' <<< "$header" | tr -cd ',')
+      index=$((${#arrow} + 1))
+      IFS=',' read -r -a fields <<< "${header//↓/}"
 
-      if [[ -n "$field" ]]; then
-        for i in "${!fields[@]}"; do
-          if [[ "${fields[i]}" == "$field" ]]; then
-            index=$((i+1))
-            break
-          fi
-        done
-      fi
+      for i in "${!fields[@]}"; do
+        [[ "${fields[i]}" == "$field" ]] && index=$((i+1)) && break
+      done
 
-      # Safety net: check line counts before overwriting
-      orig_lines=$(wc -l < "$file")
-      head -n1 "$file" > "$file.tmp"
+      field="${fields[$((index-1))]}"
+      fields[$((index-1))]+="↓"
+
+      (IFS=','; echo "${fields[*]}") > "$file.tmp"
       tail -n +2 "$file" | sort -t, -k${index},${index} >> "$file.tmp"
+
+      orig_lines=$(wc -l < "$file")
       sort_lines=$(wc -l < "$file.tmp")
+
       if [[ $orig_lines -eq $sort_lines ]]; then
         mv "$file.tmp" "$file"
         column -t -s, "$file"
