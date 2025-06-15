@@ -324,7 +324,7 @@ function list() {
     fields                    Show list columns
     add field1,field2,...     Add a new entry
     remove pattern            Remove entries matching pattern
-    show                      Display the list (sorted by first field)
+    show                      Show the list (sorted by first field)
     sort [field]              Sort list by specified field
     find pattern              Find entries containing pattern
     export                    Export the list to JSON
