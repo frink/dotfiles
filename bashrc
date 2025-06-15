@@ -144,14 +144,14 @@ alias idea="note ideas"
 alias domains="note domains"
 
 
-list() {
+function list() {
   local name="$1"
   shift
   local cmd="$1"
   shift
 
   mkdir -p "$HOME/.lists"
-  local file="$HOME/.lits/$name.csv"
+  local file="$HOME/.lists/$name.csv"
 
   case "$cmd" in
     define)
