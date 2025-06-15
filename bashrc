@@ -150,8 +150,7 @@ function list() {
   shift
 
   if [[ -z "$name" || -z "$cmd" ]]; then
-    echo "Usage: list [name] command [options]"
-    return 1
+    cmd="help"
   fi
 
   mkdir -p "$HOME/.lists"
