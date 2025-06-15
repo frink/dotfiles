@@ -220,7 +220,7 @@ function list() {
       local input="$*"
       local key="${input%%,*}"
       # Remove any existing row(s) with this key
-      sed -i.bak "/^${key//\//\\/},/d" "$file"
+      sed -i.bak "/^${key//\//\\/}\(,\|$\)/d" "$file"
       rm -f "$file.bak"
       # Append new row
       echo "$input" >> "$file"
