@@ -356,7 +356,9 @@ function list() {
   esac
 }
 
-alias domains="list domains"
+function domains() {
+  list "$@" 2>&1 | sed 's/^Usage: list name$/Usage: domains/'
+}
 
 alias open="xdg-open"
 alias o="open"
