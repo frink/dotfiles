@@ -357,7 +357,7 @@ function list() {
 }
 
 function domains() {
-  list "$@" 2>&1 | sed 's/^Usage: list name/Usage: domains/'
+  list "$@" 2>&1 | sed 's/^  Usage: list name/  Usage: domains/'
 }
 
 alias open="xdg-open"
