@@ -207,7 +207,7 @@ function list() {
       local input="$*"
       local key="${input%%,*}"
       # Check if key exists
-      if grep -q "^${key}," "$file"; then
+      if grep -q "^${key},?" "$file"; then
         echo "Error: entry with key '$key' already exists."
         return 1
       fi
