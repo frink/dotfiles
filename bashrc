@@ -153,6 +153,9 @@ function list() {
   local file="$HOME/.lists/$name.csv"
 
   case "$cmd" in
+    edit)
+      $EDITOR $file
+      ;;
     define)
       local new_headers="$*"
       if [[ ! -f "$file" ]]; then
@@ -299,9 +302,10 @@ function list() {
     fields                    Show list columns
     add field1,field2,...     Add a new entry
     remove pattern            Remove entries matching pattern
-    show                      Show the list (sorted by first field, pretty table)
-    sort [field]              Sort list by specified field (pretty table)
-    find pattern              Find entries containing pattern (pretty table)
+    show                      Show the list sorted by first field
+    edit                      Edit the list CSV directly
+    sort [field]              Sort list by specified field
+    find pattern              Find entries containing pattern
     export                    Export the list to JSON
     import file               Import entries from CSV
     clear                     Remove all entries
