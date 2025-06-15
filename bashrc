@@ -163,7 +163,7 @@ list() {
         if [[ \"\$1\" == \"edit\" ]]; then
           list $name \"\$@\"
         else
-          list $name \"\$@\" 2>&1 | sed 's/^  Usage: list name/  Usage: $name/'
+          list $name \"\$@\" 2>&1 | sed  -e 's/^  Usage: list name/  Usage: $name/' -e '/^    alias .*/d'
         fi
       }
       "
