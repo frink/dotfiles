@@ -143,6 +143,199 @@ alias todo="note todo"
 alias idea="note ideas"
 alias domains="note domains"
 
+
+list() {
+  local name="$1"
+  shift
+  local cmd="$1"
+  shift
+
+  mkdir -p "$HOME/.lists"
+  local file="$HOME/.lits/$name.csv"
+
+  case "$cmd" in
+    define)
+      local new_headers="$*"
+      if [[ ! -f "$file" ]]; then
+        echo "$new_headers" > "$file"
+      else
+        local old_headers
+        old_headers=$(head -n1 "$file")
+
+        IFS=',' read -r -a old_fields <<< "$old_headers"
+        IFS=',' read -r -a new_fields <<< "$new_headers"
+
+        declare -A field_map
+
+        for i in "${!new_fields[@]}"; do
+          field_map[$i]=-1
+
+          for j in "${!old_fields[@]}"; do
+            if [[ "${new_fields[i]}" == "${old_fields[j]}" ]]; then
+              field_map[$i]=$j
+
+              break
+            fi
+          done
+        done
+
+        echo "$new_headers" > "$file.tmp"
+
+        tail -n +2 "$file" | while IFS=',' read -r -a row; do
+          out=()
+
+          for i in "${!new_fields[@]}"; do
+            if [[ ${field_map[$i]} -ge 0 ]]; then
+              out+=("${row[${field_map[$i]}]}")
+            else
+              out+=("")
+            fi
+          done
+
+          (IFS=','; echo "${out[*]}")
+        done >> "$file.tmp"
+
+        mv "$file.tmp" "$file"
+      fi
+      ;;
+    add)
+      echo "$*" >> "$file"
+      ;;
+    remove)
+      grep -v "$*" "$file" > "$file.tmp" && mv "$file.tmp" "$file"
+      ;;
+    show)
+      if [[ -f "$file" ]]; then
+        head -n1 "$file"
+        tail -n +2 "$file" | sort -t, -k1,1
+      else
+        echo "List '$name' does not exist."
+      fi
+      ;;
+    sort)
+      local field="$1"
+      if [[ -z "$field" ]]; then
+        field=1
+      else
+        if [[ -f "$file" ]]; then
+          local header
+
+          header=$(head -n1 "$file")
+
+          IFS=',' read -r -a fields <<< "$header"
+
+          for i in "${!fields[@]}"; do
+            if [[ "${fields[i]}" == "$field" ]]; then
+              field=$((i+1))
+
+              break
+            fi
+          done
+        fi
+      fi
+
+      if [[ -f "$file" ]]; then
+        head -n1 "$file"
+        tail -n +2 "$file" | sort -t, -k${field},${field}
+      else
+        echo "List '$name' does not exist."
+      fi
+      ;;
+    find)
+      if [[ -f "$file" ]]; then
+        head -n1 "$file"
+        grep "$*" "$file" | grep -v "$(head -n1 "$file")"
+      else
+        echo "List '$name' does not exist."
+      fi
+      ;;
+    fields)
+      if [[ -f "$file" ]]; then
+        head -n1 "$file"
+      else
+        echo "List '$name' does not exist."
+      fi
+      ;;
+    export)
+      if [[ -f "$file" ]]; then
+        local header
+
+        header=$(head -n1 "$file")
+
+        local data
+
+        data=$(tail -n +2 "$file")
+
+        local IFS=','
+        local -a fields
+
+        IFS=',' read -r -a fields <<< "$header"
+
+        echo "["
+
+        local first=1
+
+        while IFS=',' read -r -a row; do
+          if [[ $first -eq 0 ]]; then
+            echo ","
+          fi
+
+          first=0
+
+          echo "  {"
+
+          for i in "${!fields[@]}"; do
+            local key=${fields[i]}
+            local val=${row[i]}
+
+            echo "    \"$key\": \"$val\""$( [[ $i -lt $((${#fields[@]} - 1)) ]] && echo "," )
+          done
+
+          echo "  }"
+        done <<< "$data"
+
+        echo "]"
+      else
+        echo "List '$name' does not exist."
+      fi
+      ;;
+    import)
+      local import_file="$1"
+
+      if [[ -f "$import_file" ]]; then
+        tail -n +2 "$import_file" >> "$file"
+      else
+        echo "Import file '$import_file' does not exist."
+      fi
+      ;;
+    clear)
+      if [[ -f "$file" ]]; then
+        head -n1 "$file" > "$file.tmp" && mv "$file.tmp" "$file"
+      else
+        echo "List '$name' does not exist."
+      fi
+      ;;
+    help|*)
+      echo "
+  Usage: list [name] command [options]
+
+  Commands:
+    define fields...          Define or redefine list columns
+    fields                    Show list columns
+    add field1,field2,...     Add a new entry
+    remove pattern            Remove entries matching pattern
+    show                      Display the list (sorted by first field)
+    sort [field]              Sort list by specified field
+    find pattern              Find entries containing pattern
+    export                    Export the list to JSON
+    import file               Import entries from CSV
+    clear                     Remove all entries
+    help                      Show this help message
+      "
+      ;;
+  esac
+}
+
 alias open="xdg-open"
 alias o="open"
 alias ls="ls --color=auto --file-type --group-directories-first --literal"
