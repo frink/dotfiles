@@ -161,29 +161,21 @@ function list() {
       else
         local old_headers
         old_headers=$(head -n1 "$file")
-
         IFS=',' read -r -a old_fields <<< "$old_headers"
         IFS=',' read -r -a new_fields <<< "$new_headers"
-
         declare -A field_map
-
         for i in "${!new_fields[@]}"; do
           field_map[$i]=-1
-
           for j in "${!old_fields[@]}"; do
             if [[ "${new_fields[i]}" == "${old_fields[j]}" ]]; then
               field_map[$i]=$j
-
               break
             fi
           done
         done
-
         echo "$new_headers" > "$file.tmp"
-
         tail -n +2 "$file" | while IFS=',' read -r -a row; do
           out=()
-
           for i in "${!new_fields[@]}"; do
             if [[ ${field_map[$i]} -ge 0 ]]; then
               out+=("${row[${field_map[$i]}]}")
@@ -191,10 +183,8 @@ function list() {
               out+=("")
             fi
           done
-
           (IFS=','; echo "${out[*]}")
         done >> "$file.tmp"
-
         mv "$file.tmp" "$file"
       fi
       ;;
@@ -206,8 +196,10 @@ function list() {
       ;;
     show)
       if [[ -f "$file" ]]; then
-        head -n1 "$file"
-        tail -n +2 "$file" | sort -t, -k1,1
+        {
+          head -n1 "$file"
+          tail -n +2 "$file" | sort -t, -k1,1
+        } | column -t -s,
       else
         echo "List '$name' does not exist."
       fi
@@ -219,32 +211,31 @@ function list() {
       else
         if [[ -f "$file" ]]; then
           local header
-
           header=$(head -n1 "$file")
-
           IFS=',' read -r -a fields <<< "$header"
-
           for i in "${!fields[@]}"; do
             if [[ "${fields[i]}" == "$field" ]]; then
               field=$((i+1))
-
               break
             fi
           done
         fi
       fi
-
       if [[ -f "$file" ]]; then
-        head -n1 "$file"
-        tail -n +2 "$file" | sort -t, -k${field},${field}
+        {
+          head -n1 "$file"
+          tail -n +2 "$file" | sort -t, -k${field},${field}
+        } | column -t -s,
       else
         echo "List '$name' does not exist."
       fi
       ;;
     find)
       if [[ -f "$file" ]]; then
-        head -n1 "$file"
-        grep "$*" "$file" | grep -v "$(head -n1 "$file")"
+        {
+          head -n1 "$file"
+          grep "$*" "$file" | grep -v "$(head -n1 "$file")"
+        } | column -t -s,
       else
         echo "List '$name' does not exist."
       fi
@@ -259,41 +250,27 @@ function list() {
     export)
       if [[ -f "$file" ]]; then
         local header
-
         header=$(head -n1 "$file")
-
         local data
-
         data=$(tail -n +2 "$file")
-
         local IFS=','
         local -a fields
-
         IFS=',' read -r -a fields <<< "$header"
-
         echo "["
-
         local first=1
-
         while IFS=',' read -r -a row; do
           if [[ $first -eq 0 ]]; then
             echo ","
           fi
-
           first=0
-
           echo "  {"
-
           for i in "${!fields[@]}"; do
             local key=${fields[i]}
             local val=${row[i]}
-
             echo "    \"$key\": \"$val\""$( [[ $i -lt $((${#fields[@]} - 1)) ]] && echo "," )
           done
-
           echo "  }"
         done <<< "$data"
-
         echo "]"
       else
         echo "List '$name' does not exist."
@@ -301,7 +278,6 @@ function list() {
       ;;
     import)
       local import_file="$1"
-
       if [[ -f "$import_file" ]]; then
         tail -n +2 "$import_file" >> "$file"
       else
@@ -324,9 +300,9 @@ function list() {
     fields                    Show list columns
     add field1,field2,...     Add a new entry
     remove pattern            Remove entries matching pattern
-    show                      Show the list (sorted by first field)
-    sort [field]              Sort list by specified field
-    find pattern              Find entries containing pattern
+    show                      Show the list (sorted by first field, pretty table)
+    sort [field]              Sort list by specified field (pretty table)
+    find pattern              Find entries containing pattern (pretty table)
     export                    Export the list to JSON
     import file               Import entries from CSV
     clear                     Remove all entries
