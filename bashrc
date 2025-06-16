@@ -382,6 +382,7 @@ list() {
 }
 
 list domains alias
+list business alias
 
 alias open="xdg-open"
 alias o="open"
