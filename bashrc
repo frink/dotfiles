@@ -183,7 +183,6 @@ list() {
       local old_headers new_headers old_fields new_fields out
       local -a field_map
 
-
       new_headers="$*"
 
       if [[ -z "$new_headers" ]]; then
@@ -371,7 +370,9 @@ list() {
       ;;
 
     fields)
-      head -n1 "$file"
+      headers=$(head -n1 "$file")
+
+      echo "${headers//↓/}"
       ;;
 
     export)
