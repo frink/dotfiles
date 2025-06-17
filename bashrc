@@ -345,15 +345,14 @@ function list() {
 
         awk_expr=$(echo "$awk_expr" | sed -E 's/\band\b/&&/gi; s/\bor\b/||/gi')
         awk_expr=$(echo "$awk_expr" | sed -E 's/([^!><])=([^=])/\1==\2/g')
-        # Now matches quoted, numeric, OR ISO date
+        # Automatically quote ISO dates if not already quoted
+        awk_expr=$(echo "$awk_expr" | sed -E 's/([<>]=?|==|!=)[[:space:]]*([0-9]{4}-[0-9]{2}-[0-9]{2})/\1"\2"/g')
         awk_expr=$(echo "$awk_expr" | \
-            sed -E 's/(\$[0-9]+)[[:space:]]*([<>]=?|==|!=)[[:space:]]*("[^"]*"|[0-9.]+|[0-9]{4}-[0-9]{2}-[0-9]{2})/(\1 != "" \&\& \1 \2 \3)/g')
-
-        echo awk -F, "NR>1 { for(i=1;i<=NF;i++) gsub(/^ +| +$/, \"\", \$i); if ($awk_expr) print \$0 }" "$file"
+            sed -E 's/(\$[0-9]+)[[:space:]]*([<>]=?|==|!=)[[:space:]]*("[^"]*"|[0-9.]+)/(\1 != "" \&\& \1 \2 \3)/g')
 
         {
-          echo "$header"
-          awk -F, "NR>1 { for(i=1;i<=NF;i++) gsub(/^ +| +$/, \"\", \$i); if ($awk_expr) print \$0 }" "$file"
+            echo "$header"
+            awk -F, "NR>1 { for(i=1;i<=NF;i++) gsub(/^ +| +$/, \"\", \$i); if ($awk_expr) print \$0 }" "$file"
         } | column -t -s,
         ;;
 
