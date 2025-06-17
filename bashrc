@@ -142,7 +142,7 @@ function note() {
 alias todo="note todo"
 alias idea="note ideas"
 
-list() {
+function list() {
   local name="$1"
   shift
   local cmd="$1"
@@ -163,6 +163,10 @@ list() {
   fi
 
   case "$cmd" in
+    edit)
+      $EDITOR "$file"
+      ;;
+
     alias)
       eval "
       ${name}() {
@@ -175,13 +179,9 @@ list() {
       "
       ;;
 
-    edit)
-      $EDITOR "$file"
-      ;;
-
     define)
       local old_headers new_headers old_fields new_fields out
-      local -a field_map
+      local -a field_map lost
 
       new_headers="$*"
 
@@ -195,9 +195,27 @@ list() {
       else
         old_headers=$(head -n1 "$file")
 
-
         IFS=',' read -r -a old_fields <<< "${old_headers//↓/}"
         IFS=',' read -r -a new_fields <<< "$new_headers"
+
+        # Find lost columns
+        for old in "${old_fields[@]}"; do
+          found=0
+
+          for new in "${new_fields[@]}"; do
+            [[ "$old" == "$new" ]] && found=1 && break
+          done
+
+          [[ $found -eq 0 ]] && lost+=("$old")
+        done
+
+        if (( ${#lost[@]} > 0 )); then
+          echo "Warning these fields will be deleted: ${lost[*]}"
+
+          read -p "Are you okay with data loss? [y/N]: " confirm
+
+          [[ "$confirm" =~ ^[Yy]$ ]] || { echo "Aborted."; return 1; }
+        fi
 
         for i in "${!new_fields[@]}"; do
           field_map[$i]=-1
@@ -205,6 +223,7 @@ list() {
           for j in "${!old_fields[@]}"; do
             if [[ "${new_fields[i]}" == "${old_fields[j]}" ]]; then
               field_map[$i]=$j
+
               break
             fi
           done
@@ -233,11 +252,13 @@ list() {
     add)
       local input="$*"
       local key="${input%%,*}"
+
       # Check if key exists
       if grep -q "^${key}\(,\|$\)" "$file"; then
         echo "Error: entry with key '$key' already exists."
         return 1
       fi
+
       # Fall through to update logic
       ;&
 
@@ -329,42 +350,54 @@ list() {
 
       # Output header and filtered rows
       echo "$header"
-      awk -F, "NR>1 && ($awk_expr)" "$file"
+      awk -F, "NR>1 && ($awk_expr)" "$file" | column -t -s
       ;;
 
     sum)
-      local col="$1"
+      local col filter tmpfile header index found total
+  
+      col="$1"
       shift
-      local filter="$*"
-      local tmpfile=$(mktemp)
-
-      # Run filter and capture output
+      filter="$*"
+      tmpfile=$(mktemp)
+    
+      # Get column output (TSV with extra spaces)
       list "$name" filter "$filter" > "$tmpfile"
-
-      # Parse header and find column index
-      local header index found=0
-      header=$(head -n1 "$tmpfile")
-      IFS=',' read -r -a fields <<< "${header//↓/}"
-
+    
+      # Find the column index (header fields are separated by tabs and possibly spaces)
+      found=0
+      header=$(head -n1 "$tmpfile" | sed 's/^ *//;s/ *$//')
+      IFS=$'\t' read -r -a fields <<< "$header"
+    
       for i in "${!fields[@]}"; do
-        if [[ "${fields[i]}" == "$col" ]]; then
+        # Trim field name spaces
+        field=$(echo "${fields[i]}" | xargs)
+        if [[ "$field" == "$col" ]]; then
           index=$i
           found=1
           break
         fi
       done
-
+    
       if [[ $found -eq 0 ]]; then
         echo "Column '$col' not found."
         rm -f "$tmpfile"
         return 1
       fi
-
+    
       # Print filtered table
-      column -t -s, "$tmpfile"
-
-      # Calculate and print sum
-      total=$(awk -F, -v idx=$((index+1)) 'NR>1 && $idx ~ /^[0-9.]+$/ {sum+=$idx} END {print sum+0}' "$tmpfile")
+      cat "$tmpfile"
+    
+      # Sum the column (skip header, trim spaces, handle tabs)
+      total=$(awk -v idx=$((index+1)) '
+        NR > 1 {
+          # Remove leading/trailing spaces from each field
+          for(i=1;i<=NF;i++) gsub(/^ +| +$/, "", $i)
+          if ($idx ~ /^[0-9.]+$/) sum += $idx
+        }
+        END { print sum+0 }
+      ' FS='\t' "$tmpfile")
+    
       echo -e "\nTOTAL: $total"
       rm -f "$tmpfile"
       ;;
