@@ -350,7 +350,7 @@ function list() {
 
       # Output header and filtered rows
       echo "$header"
-      awk -F, "NR>1 && ($awk_expr)" "$file" | column -t -s
+      awk -F, "NR>1 && ($awk_expr)" "$file" | column -t -s,
       ;;
 
     sum)
