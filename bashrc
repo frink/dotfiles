@@ -1074,6 +1074,9 @@ git.as() {
       echo "Target directory not found: $target_dir"
       return 1
     fi
+  elif [[ "$1" == "init" ]]; then
+    command git "$@"
+    git.id "$nickname"
   else
     GIT_SSH_COMMAND="ssh -i $HOME/.ssh/$nickname -o IdentitiesOnly=yes" command git "$@"
   fi
