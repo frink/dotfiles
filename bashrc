@@ -343,29 +343,13 @@ function list() {
             awk_expr=$(echo "$awk_expr" | sed -E "s/\\b${colname}\\b/\\\$$((i+1))/g")
         done
 
-        # Replace logical operators (case-insensitive)
         awk_expr=$(echo "$awk_expr" | sed -E 's/\band\b/&&/gi; s/\bor\b/||/gi')
-
-        # Replace = with ==, but not !=, >=, <=
         awk_expr=$(echo "$awk_expr" | sed -E 's/([^!><])=([^=])/\1==\2/g')
-
-        # Wrap all comparisons with a non-empty check
         awk_expr=$(echo "$awk_expr" | \
             sed -E 's/(\$[0-9]+)[[:space:]]*([<>]=?|==|!=)[[:space:]]*("[^"]*"|[0-9.]+)/(\1 != "" \&\& \1 \2 \3)/g')
 
         echo "$header"
-        awk -F, -v expr="$awk_expr" '
-            NR==1 { next }
-            {
-                # Trim leading/trailing spaces from all fields
-                for(i=1;i<=NF;i++) gsub(/^ +| +$/, "", $i)
-                if (eval(expr)) print $0
-            }
-            function eval(s,    r) {
-                # Evaluate the rewritten expression safely
-                return (r = s, (r = r, eval(r)))
-            }
-        ' "$file" | column -t -s,
+        awk -F, "NR>1 { for(i=1;i<=NF;i++) gsub(/^ +| +$/, \"\", \$i); if ($awk_expr) print \$0 }" "$file" | column -t -s,
         ;;
 
     sum)
