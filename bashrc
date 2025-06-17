@@ -325,33 +325,40 @@ function list() {
       ;;
 
     filter)
-      local filter="$*"
+      local filter header awk_expr colname
+      local -a fields
+    
+      filter="$*"
       if [[ -z "$filter" ]]; then
         cat "$file"
         return
       fi
-
-      local header
+    
       header=$(head -n1 "$file")
       IFS=',' read -r -a fields <<< "${header//↓/}"
-
+    
       # Build mapping: colname -> $N
-      local awk_expr="$filter"
+      awk_expr="$filter"
       for i in "${!fields[@]}"; do
-        # Use word boundaries to avoid partial replacements
-        awk_expr=$(echo "$awk_expr" | sed -E "s/\\b${fields[$i]}\\b/\\\$$((i+1))/g")
+        colname="${fields[$i]}"
+        awk_expr=$(echo "$awk_expr" | sed -E "s/\\b${colname}\\b/\\\$$((i+1))/g")
       done
-
+    
       # Replace logical operators (case-insensitive)
       awk_expr=$(echo "$awk_expr" | sed -E 's/\band\b/&&/gi; s/\bor\b/||/gi')
-
+    
       # Replace = with ==, but not !=, >=, <=
       awk_expr=$(echo "$awk_expr" | sed -E 's/([^!><])=([^=])/\1==\2/g')
-
+    
+      # For every comparison, ensure field is not empty (fixes date and numeric issues)
+      awk_expr=$(echo "$awk_expr" | \
+        sed -E 's/(\$[0-9]+)[[:space:]]*([<>]=?|==|!=)[[:space:]]*("[^"]*"|[0-9.]+)/(\1 != "" \&\& \1 \2 \3)/g')
+    
       # Output header and filtered rows
       echo "$header"
       awk -F, "NR>1 && ($awk_expr)" "$file" | column -t -s,
       ;;
+
 
     sum)
       local col filter tmpfile header index found total
