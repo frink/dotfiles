@@ -352,7 +352,6 @@ function list() {
         awk -F, "NR>1 { for(i=1;i<=NF;i++) gsub(/^ +| +$/, \"\", \$i); if ($awk_expr) print \$0 }" "$file" | column -t -s,
         ;;
 
-
     sum)
       local col filter tmpfile header index found total
   
