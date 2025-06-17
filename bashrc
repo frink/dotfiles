@@ -304,6 +304,72 @@ list() {
       } | column -t -s,
       ;;
 
+    filter)
+      local filter="$*"
+      if [[ -z "$filter" ]]; then
+        cat "$file"
+        return
+      fi
+
+      local header
+      header=$(head -n1 "$file")
+      IFS=',' read -r -a fields <<< "${header//↓/}"
+
+      # Build mapping: colname -> $N
+      local awk_expr="$filter"
+      for i in "${!fields[@]}"; do
+        # Use word boundaries to avoid partial replacements
+        awk_expr=$(echo "$awk_expr" | sed -E "s/\\b${fields[$i]}\\b/\\\$$((i+1))/g")
+      done
+
+      # Replace logical operators (case-insensitive)
+      awk_expr=$(echo "$awk_expr" | sed -E 's/\band\b/&&/gi; s/\bor\b/||/gi')
+
+      # Replace = with ==, but not !=, >=, <=
+      awk_expr=$(echo "$awk_expr" | sed -E 's/([^!><])=([^=])/\1==\2/g')
+
+      # Output header and filtered rows
+      echo "$header"
+      awk -F, "NR>1 && ($awk_expr)" "$file"
+      ;;
+
+    sum)
+      local col="$1"
+      shift
+      local filter="$*"
+      local tmpfile=$(mktemp)
+
+      # Run filter and capture output
+      list "$name" filter "$filter" > "$tmpfile"
+
+      # Parse header and find column index
+      local header index found=0
+      header=$(head -n1 "$tmpfile")
+      IFS=',' read -r -a fields <<< "${header//↓/}"
+
+      for i in "${!fields[@]}"; do
+        if [[ "${fields[i]}" == "$col" ]]; then
+          index=$i
+          found=1
+          break
+        fi
+      done
+
+      if [[ $found -eq 0 ]]; then
+        echo "Column '$col' not found."
+        rm -f "$tmpfile"
+        return 1
+      fi
+
+      # Print filtered table
+      column -t -s, "$tmpfile"
+
+      # Calculate and print sum
+      total=$(awk -F, -v idx=$((index+1)) 'NR>1 && $idx ~ /^[0-9.]+$/ {sum+=$idx} END {print sum+0}' "$tmpfile")
+      echo -e "\nTOTAL: $total"
+      rm -f "$tmpfile"
+      ;;
+
     fields)
       head -n1 "$file"
       ;;
@@ -369,8 +435,10 @@ list() {
     remove pattern          Remove entries matching pattern
     show                    Show the list as-is
     edit                    Edit the list CSV directly
-    sort [field]            Sort list by specified field (persists)
+    sort field              Sort list by specified field (persists)
     find pattern            Find entries containing pattern
+    filter 'pattern'        Filter by pattern (make sure to quote pattern)
+    sum field 'pattern'     Sums field filtered by pattern (make sure to quote pattern)
     clear                   Remove all entries
     export                  Export the list to JSON
     import file             Import entries from CSV
