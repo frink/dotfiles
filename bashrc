@@ -1189,5 +1189,4 @@ localalias() {
   echo "Alias '$nickname' updated: $alias_cmd"
 }
 
-
 [ -f ~/.localrc ] && source ~/.localrc
