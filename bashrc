@@ -434,6 +434,9 @@ function list() {
       # Get filtered data, convert back to CSV
       list "$name" filter "$filter" | tr '\t' ',' > "$tmpfile"
     
+      cat "$tmpfile"
+      echo "$tmpfile"
+
       # Find column index using comma as separator
       header=$(head -n1 "$file")
       IFS=',' read -r -a fields <<< "${header//↓/}"
@@ -450,7 +453,6 @@ function list() {
     
       if [[ $found -eq 0 ]]; then
         echo "Column '$col' not found."
-        rm -f "$tmpfile"
         return 1
       fi
     
@@ -464,7 +466,6 @@ function list() {
       ' "$tmpfile")
     
       echo -e "\nTOTAL: $total"
-      rm -f "$tmpfile"
       ;;
 
     fields)
