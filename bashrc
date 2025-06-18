@@ -383,9 +383,10 @@ function list() {
     find)
       {
         head -n1 "$file"
-        tail -n +2 "$file" grep -F -- "$*" "$file"
+        tail -n +2 "$file" | grep -F -- "$*"
       } | column -t -s,
-      ;;
+     ;;
+
 
     filter)
       local filter header expr colname
