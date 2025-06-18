@@ -318,6 +318,52 @@ function list() {
       list "$name" sort > /dev/null
       list "$name" filter "$field=\"$key\""
       ;;
+    update)
+      local key field value arg updates_str
+
+      key="$1"
+      shift
+      updates_str=""
+
+      # Build updates string: field1=value1,field2=value2,...
+      for arg in "$@"; do
+        field="${arg%%=*}"
+        value="${arg#*=}"
+        updates_str+="${field}=${value},"
+      done
+      updates_str="${updates_str%,}"  # Remove trailing comma
+
+      awk -v key="$key" -v updates="$updates_str" '
+        BEGIN {
+          FS=OFS=","
+          # Parse updates into an array
+          n = split(updates, arr, ",")
+          for (i = 1; i <= n; i++) {
+            split(arr[i], kv, "=")
+            upd[kv[1]] = kv[2]
+          }
+        }
+        NR==1 {
+          for (i=1; i<=NF; i++) {
+            # Remove down arrow (↓) from header
+            header[i] = gensub(/↓/, "", "g", $i)
+          }
+          print $0
+          next
+        }
+        $1 == key {
+          for (i=2; i<=NF; i++) {
+            if (header[i] in upd) $i=upd[header[i]]
+          }
+        }
+        { print $0 }
+      ' "$file" > "$file.tmp" && mv "$file.tmp" "$file"
+
+      field=$(head -n1 "$file" | cut -d',' -f1)
+      list "$name" sort > /dev/null
+      list "$name" filter "$field=\"$key\""
+      ;;
+
 
     remove)
       {
