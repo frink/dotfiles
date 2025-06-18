@@ -425,22 +425,22 @@ function list() {
 
     sum)
       local col filter tmpfile header index found total
-    
+
       col="$1"
       shift
       filter="$*"
       tmpfile=$(mktemp)
-    
+
       # Get filtered data, convert back to CSV
-      list "$name" filter "$filter" | tr '\t' ',' > "$tmpfile"
-    
+      list "$name" filter "$filter" | sed 's/  \+/,/g' > "$tmpfile"
+
       cat "$tmpfile"
       echo "$tmpfile"
 
       # Find column index using comma as separator
       header=$(head -n1 "$file")
       IFS=',' read -r -a fields <<< "${header//↓/}"
-    
+
       found=0
       for i in "${!fields[@]}"; do
         field=$(echo "${fields[i]}" | xargs)
@@ -450,12 +450,12 @@ function list() {
           break
         fi
       done
-    
+
       if [[ $found -eq 0 ]]; then
         echo "Column '$col' not found."
         return 1
       fi
-    
+
       # Sum the column (handle CSV)
       total=$(awk -v idx=$((index+1)) -F ',' '
         NR > 1 {
@@ -464,7 +464,7 @@ function list() {
         }
         END { print sum+0 }
       ' "$tmpfile")
-    
+
       echo -e "\nTOTAL: $total"
       ;;
 
