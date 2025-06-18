@@ -261,8 +261,6 @@ function list() {
       if grep -q "^${key}\(,\|$\)" "$file"; then
         read -p "Entry with key '$key' exists. Replace it? [y/N] " -n 1 -r
 
-        echo    # move to a new line
-
         if [[ ! $REPLY =~ ^[Yy]$ ]]; then
           echo "Add cancelled."
           return 1
