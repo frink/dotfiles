@@ -278,23 +278,34 @@ function list() {
       ;;
 
     update)
-      local key field value arg script
-      local -a headers updates
+      local key field value arg updates_str
+      local -a headers
 
       key="$1"
       shift
-    
-      # Parse field="value" arguments
+
+      # Build updates string: field1=value1,field2=value2,...
+      updates_str=""
       for arg in "$@"; do
         field="${arg%%=*}"
         value="${arg#*=}"
-        updates["$field"]="${value%\"}"
+        updates_str+="${field}=${value},"
       done
-    
-      # Read header and map fields to indices
+      updates_str="${updates_str%,}"  # Remove trailing comma
+
+      # Read header into array
       IFS=',' read -r -a headers < "$file"
-      script='
-        BEGIN { FS=OFS="," }
+
+      awk -v key="$key" -v updates="$updates_str" '
+        BEGIN {
+          FS=OFS=","
+          # Parse updates into an array
+          n = split(updates, arr, ",")
+          for (i = 1; i <= n; i++) {
+            split(arr[i], kv, "=")
+            upd[kv[1]] = kv[2]
+          }
+        }
         NR==1 {
           for (i=1; i<=NF; i++) header[i]=$i
           print $0
@@ -302,13 +313,11 @@ function list() {
         }
         $1 == key {
           for (i=2; i<=NF; i++) {
-            if (header[i] in updates) $i=updates[header[i]]
+            if (header[i] in upd) $i=upd[header[i]]
           }
         }
         { print $0 }
-      '
-
-      awk -v key="$key" -v updates="$(declare -p updates)" "$script" "$file" > "$file.tmp" && mv "$file.tmp" "$file"
+      ' "$file" > "$file.tmp" && mv "$file.tmp" "$file"
       ;;
 
     remove)
