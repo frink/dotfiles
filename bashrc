@@ -437,7 +437,7 @@ function list() {
       # Find column index using TAB as separator
       found=0
       header=$(head -n1 "$tmpfile")
-      IFS=$'\t' read -r -a old_fields <<< "${header//↓/}"
+      IFS=$'\t' read -r -a fields <<< "${header//↓/}"
 
       for i in "${!fields[@]}"; do
         field="${fields[i]// /}"
