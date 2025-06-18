@@ -317,7 +317,7 @@ function list() {
 
       field=$(head -n1 "$file" | cut -d',' -f1)
       list "$name" sort > /dev/null
-      list "$name" filter "$field='$key'"
+      list "$name" filter "$field=\"$key\""
       ;;
 
     remove)
