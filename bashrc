@@ -315,7 +315,8 @@ function list() {
         { print $0 }
       ' "$file" > "$file.tmp" && mv "$file.tmp" "$file"
 
-      list "$nam3" sort
+      list "$name" sort > /dev/null
+      list "$name" find 
       ;;
 
     remove)
