@@ -452,7 +452,6 @@ function list() {
 
       if [[ $found -eq 0 ]]; then
         echo "Column '$col' not found."
-        rm -f "$tmpfile"
         return 1
       fi
 
@@ -467,7 +466,6 @@ function list() {
 
       echo -e "\nTOTAL: $total"
       ;;
-
 
     fields)
       local header
