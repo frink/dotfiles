@@ -434,6 +434,8 @@ function list() {
       # Get filtered data (TSV format from filter output)
       list "$name" filter "$filter" > "$tmpfile"
 
+      echo "$tmpfile"
+
       # Find column index using TAB as separator
       found=0
       header=$(head -n1 "$tmpfile" | sed 's/↓//g')  # Remove down arrow
@@ -464,7 +466,6 @@ function list() {
       ' "$tmpfile")
 
       echo -e "\nTOTAL: $total"
-      rm -f "$tmpfile"
       ;;
 
 
