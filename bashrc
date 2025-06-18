@@ -438,8 +438,8 @@ function list() {
 
       # Find column index using TAB as separator
       found=0
-      header=$(head -n1 "$tmpfile" | sed 's/↓//g')  # Remove down arrow
-      IFS=$'\t' read -r -a fields <<< "$header"
+      header=$(head -n1 "$tmpfile")
+      IFS=$'\t' read -r -a fields <<< "${header//↓/}"
 
       for i in "${!fields[@]}"; do
         field=$(echo "${fields[i]}" | xargs)  # Trim all whitespace
