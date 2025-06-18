@@ -143,9 +143,11 @@ alias todo="note todo"
 alias idea="note ideas"
 
 function list() {
-  local name="$1"
+  local name cmd file
+
+  name="$1"
   shift
-  local cmd="$1"
+  cmd="$1"
   shift
 
   # If missing arguments, show help
@@ -154,11 +156,12 @@ function list() {
   fi
 
   mkdir -p "$HOME/.lists"
-  local file="$HOME/.lists/$name.csv"
+  file="$HOME/.lists/$name.csv"
 
   # Only allow 'alias', 'help', and 'define' if the file does not exist
   if [[ ! -f "$file" && "$cmd" != "alias" && "$cmd" != "help" && "$cmd" != "define" ]]; then
     echo "List '$name' does not exist. Use 'define' to create it."
+
     return 1
   fi
 
@@ -250,34 +253,85 @@ function list() {
       ;;
 
     add)
-      local input="$*"
-      local key="${input%%,*}"
-
-      # Check if key exists
-      if grep -q "^${key}\(,\|$\)" "$file"; then
-        echo "Error: entry with key '$key' already exists."
-        return 1
-      fi
-
-      # Fall through to update logic
-      ;&
-
-    update)
       local input key
 
       input="$*"
       key="${input%%,*}"
+    
+      if grep -q "^${key}\(,\|$\)" "$file"; then
+        read -p "Entry with key '$key' exists. Replace it? [y/N] " -n 1 -r
 
-      sed -i.bak "/^${key//\//\\/}\(,\|$\)/d" "$file"
-      rm -f "$file.bak"
+        echo    # move to a new line
 
+        if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+          echo "Add cancelled."
+          return 1
+        fi
+
+        sed -i.bak "/^${key//\//\\/}\(,\|$\)/d" "$file"
+        rm -f "$file.bak"
+      fi
+    
       echo "$input" >> "$file"
 
       list "$name" sort
       ;;
 
+    update)
+      local key field value arg script
+      local -a headers updates
+
+      key="$1"
+      shift
+    
+      # Parse field="value" arguments
+      for arg in "$@"; do
+        field="${arg%%=*}"
+        value="${arg#*=}"
+        updates["$field"]="${value%\"}"
+      done
+    
+      # Read header and map fields to indices
+      IFS=',' read -r -a headers < "$file"
+      script='
+        BEGIN { FS=OFS="," }
+        NR==1 {
+          for (i=1; i<=NF; i++) header[i]=$i
+          print $0
+          next
+        }
+        $1 == key {
+          for (i=2; i<=NF; i++) {
+            if (header[i] in updates) $i=updates[header[i]]
+          }
+        }
+        { print $0 }
+      '
+
+      awk -v key="$key" -v updates="$(declare -p updates)" "$script" "$file" > "$file.tmp" && mv "$file.tmp" "$file"
+      ;;
+
     remove)
-      grep -vF -- "$*" "$file" > "$file.tmp" && mv "$file.tmp" "$file"
+      {
+        head -n1 "$file"
+        tail -n +2 "$file" | grep -F -- "$*"
+      } | column -t -s,
+
+      echo    # move to a new line
+
+      read -p "Are you sure you want to remove these? [y/N] " -n 1 -r
+
+      echo    # move to a new line
+
+      if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+        echo "Remove cancelled."
+        return 1
+      fi
+
+      {
+        head -n1 "$file"
+        tail -n +2 "$file" | grep -vF -- "$*"
+      } > "$file.tmp" && mv "$file.tmp" "$file"
       ;;
 
     show)
@@ -320,41 +374,41 @@ function list() {
     find)
       {
         head -n1 "$file"
-        grep -F -- "$*" "$file" | grep -vF -- "$(head -n1 "$file")"
+        tail -n +2 "$file" grep -F -- "$*" "$file"
       } | column -t -s,
       ;;
 
     filter)
-        local filter header awk_expr colname
-        local -a fields
+      local filter header expr colname
+      local -a fields
 
-        filter="$*"
-        if [[ -z "$filter" ]]; then
-            cat "$file"
-            return
-        fi
+      filter="$*"
 
-        header=$(head -n1 "$file")
-        IFS=',' read -r -a fields <<< "${header//↓/}"
+      if [[ -z "$filter" ]]; then
+        column -t -s, "$file"
+        return
+      fi
 
-        awk_expr="$filter"
-        for i in "${!fields[@]}"; do
-            colname="${fields[$i]}"
-            awk_expr=$(echo "$awk_expr" | sed -E "s/\\b${colname}\\b/\\\$$((i+1))/g")
-        done
+      header=$(head -n1 "$file")
+      IFS=',' read -r -a fields <<< "${header//↓/}"
 
-        awk_expr=$(echo "$awk_expr" | sed -E 's/\band\b/&&/gi; s/\bor\b/||/gi')
-        awk_expr=$(echo "$awk_expr" | sed -E 's/([^!><])=([^=])/\1==\2/g')
-        # Automatically quote ISO dates if not already quoted
-        awk_expr=$(echo "$awk_expr" | sed -E 's/([<>]=?|==|!=)[[:space:]]*([0-9]{4}-[0-9]{2}-[0-9]{2})/\1"\2"/g')
-        awk_expr=$(echo "$awk_expr" | \
-            sed -E 's/(\$[0-9]+)[[:space:]]*([<>]=?|==|!=)[[:space:]]*("[^"]*"|[0-9.]+)/(\1 != "" \&\& \1 \2 \3)/g')
+      expr="$filter"
 
-        {
-            echo "$header"
-            awk -F, "NR>1 { for(i=1;i<=NF;i++) gsub(/^ +| +$/, \"\", \$i); if ($awk_expr) print \$0 }" "$file"
-        } | column -t -s,
-        ;;
+      for i in "${!fields[@]}"; do
+        colname="${fields[$i]}"
+        expr=$(echo "$expr" | sed -E "s/\\b${colname}\\b/\\\$$((i+1))/g")
+      done
+
+      expr=$(echo "$expr" | sed -E 's/\band\b/&&/gi; s/\bor\b/||/gi')
+      expr=$(echo "$expr" | sed -E 's/([^!><])=([^=])/\1==\2/g')
+      expr=$(echo "$expr" | sed -E 's/([<>]=?|==|!=)[[:space:]]*([0-9]{4}-[0-9]{2}-[0-9]{2})/\1"\2"/g')
+      expr=$(echo "$expr" | sed -E 's/(\$[0-9]+)[[:space:]]*([<>]=?|==|!=)[[:space:]]*("[^"]*"|[0-9.]+)/(\1 != "" \&\& \1 \2 \3)/g')
+
+      {
+        echo "$header"
+        awk -F, "NR>1 { for(i=1;i<=NF;i++) gsub(/^ +| +$/, \"\", \$i); if ($expr) print \$0 }" "$file"
+      } | column -t -s,
+      ;;
 
     sum)
       local col filter tmpfile header index found total
@@ -370,14 +424,16 @@ function list() {
       # Find the column index (header fields are separated by tabs and possibly spaces)
       found=0
       header=$(head -n1 "$tmpfile" | sed 's/^ *//;s/ *$//')
-      IFS=$'\t' read -r -a fields <<< "$header"
+      IFS=$'\t' read -r -a fields <<< "${header//↓/}"
     
       for i in "${!fields[@]}"; do
         # Trim field name spaces
         field=$(echo "${fields[i]}" | xargs)
+
         if [[ "$field" == "$col" ]]; then
           index=$i
           found=1
+
           break
         fi
       done
@@ -385,6 +441,7 @@ function list() {
       if [[ $found -eq 0 ]]; then
         echo "Column '$col' not found."
         rm -f "$tmpfile"
+
         return 1
       fi
     
@@ -406,27 +463,32 @@ function list() {
       ;;
 
     fields)
-      headers=$(head -n1 "$file")
+      local header
 
-      echo "${headers//↓/}"
+      header=$(head -n1 "$file")
+
+      echo "${header//↓/}"
       ;;
 
     export)
-      local header data first
+      local data header first
       local -a fields
 
-      header=$(head -n1 "$file")
       data=$(tail -n +2 "$file")
+      header=$(head -n1 "$file")
+      IFS=',' read -r -a fields <<< "${header//↓/}"
 
-      IFS=',' read -r -a fields <<< "$header"
       echo "["
 
       while IFS=',' read -r -a row; do
         if [[ $first -eq 0 ]]; then
           echo ","
         fi
+
         first=0
+
         echo "  {"
+
         for i in "${!fields[@]}"; do
           local key val
 
@@ -443,15 +505,25 @@ function list() {
       ;;
 
     import)
-      local import_file="$1"
-      if [[ -z "$import_file" ]]; then
+      local import header line
+      local -a fields from
+
+      import="$1"
+      header=$(head -n1 "$file")
+      IFS=',' read -r -a fields <<< "${header//↓/}"
+      IFS=',' read -r -a from < <(head -n1 "$import")
+
+      if [[ -z "$import" ]]; then
         echo "Usage: list $name import file"
         return 1
       fi
-      if [[ -f "$import_file" ]]; then
-        tail -n +2 "$import_file" >> "$file"
+
+      if [[ -f "$import" ]]; then
+        tail -n +2 "$import" | while IFS= read -r line; do
+          list "$name" add "$line"
+        done
       else
-        echo "Import file '$import_file' does not exist."
+        echo "Import file '$import' does not exist."
       fi
       ;;
 
