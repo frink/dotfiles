@@ -278,7 +278,7 @@ function list() {
       ;;
 
     update)
-      local key field value arg updates_str
+      local key field value arg header updates_str
 
       key="$1"
       shift
@@ -315,8 +315,9 @@ function list() {
         { print $0 }
       ' "$file" > "$file.tmp" && mv "$file.tmp" "$file"
 
+      field=$(head -n1 "$file" | cut -d',' -f1)
       list "$name" sort > /dev/null
-      list "$name" find 
+      list "$name" filter "$field='$key'"
       ;;
 
     remove)
@@ -385,7 +386,6 @@ function list() {
         tail -n +2 "$file" | grep -F -- "$*"
       } | column -t -s,
      ;;
-
 
     filter)
       local filter header expr colname
