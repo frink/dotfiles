@@ -425,46 +425,46 @@ function list() {
 
     sum)
       local col filter tmpfile header index found total
-
+    
       col="$1"
       shift
       filter="$*"
       tmpfile=$(mktemp)
-
-      # Get filtered data (TSV format from filter output)
-      list "$name" filter "$filter" > "$tmpfile"
-
-      echo "$tmpfile"
-
-      # Find column index using TAB as separator
+    
+      # Get filtered data, convert back to CSV
+      list "$name" filter "$filter" | tr '\t' ',' > "$tmpfile"
+    
+      # Find column index using comma as separator
+      header=$(head -n1 "$file")
+      IFS=',' read -r -a fields <<< "${header//↓/}"
+    
       found=0
-      header=$(head -n1 "$tmpfile")
-      read -r -a fields <<< "${header//↓/}"
-
       for i in "${!fields[@]}"; do
-        field=$(echo "${fields[i]}" | xargs)  # Trim all whitespace
+        field=$(echo "${fields[i]}" | xargs)
         if [[ "$field" == "$col" ]]; then
           index=$i
           found=1
           break
         fi
       done
-
+    
       if [[ $found -eq 0 ]]; then
         echo "Column '$col' not found."
+        rm -f "$tmpfile"
         return 1
       fi
-
-      # Sum the column (skip header, trim spaces, handle tabs)
-      total=$(awk -v idx=$((index+1)) -F '\t' '
+    
+      # Sum the column (handle CSV)
+      total=$(awk -v idx=$((index+1)) -F ',' '
         NR > 1 {
-          for(i=1;i<=NF;i++) gsub(/^ +| +$/, "", $i)
+          gsub(/^ +| +$/, "", $idx)
           if ($idx ~ /^[0-9.]+$/) sum += $idx
         }
         END { print sum+0 }
       ' "$tmpfile")
-
+    
       echo -e "\nTOTAL: $total"
+      rm -f "$tmpfile"
       ;;
 
     fields)
