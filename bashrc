@@ -279,22 +279,18 @@ function list() {
 
     update)
       local key field value arg updates_str
-      local -a headers
 
       key="$1"
       shift
-
-      # Build updates string: field1=value1,field2=value2,...
       updates_str=""
+
       for arg in "$@"; do
         field="${arg%%=*}"
         value="${arg#*=}"
         updates_str+="${field}=${value},"
       done
-      updates_str="${updates_str%,}"  # Remove trailing comma
 
-      # Read header into array
-      IFS=',' read -r -a headers < "$file"
+      updates_str="${updates_str%,}"  # Remove trailing comma
 
       awk -v key="$key" -v updates="$updates_str" '
         BEGIN {
@@ -318,6 +314,8 @@ function list() {
         }
         { print $0 }
       ' "$file" > "$file.tmp" && mv "$file.tmp" "$file"
+
+      list "$nam3" sort
       ;;
 
     remove)
