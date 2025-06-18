@@ -453,6 +453,7 @@ function list() {
 
       if [[ $found -eq 0 ]]; then
         echo "Column '$col' not found."
+        rm -f "$tmpfile"
         return 1
       fi
 
@@ -465,7 +466,9 @@ function list() {
         END { print sum+0 }
       ' "$tmpfile")
 
+      column -t -s, "$tmpfile"
       echo -e "\nTOTAL: $total"
+      rm -f "$tmpfile"
       ;;
 
     fields)
