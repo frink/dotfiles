@@ -278,7 +278,7 @@ function list() {
       ;;
 
     update)
-      local key field value arg header updates_str
+      local key field value arg updates_str
 
       key="$1"
       shift
@@ -289,7 +289,6 @@ function list() {
         value="${arg#*=}"
         updates_str+="${field}=${value},"
       done
-
       updates_str="${updates_str%,}"  # Remove trailing comma
 
       awk -v key="$key" -v updates="$updates_str" '
