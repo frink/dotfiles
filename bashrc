@@ -425,52 +425,44 @@ function list() {
 
     sum)
       local col filter tmpfile header index found total
-  
+
       col="$1"
       shift
       filter="$*"
       tmpfile=$(mktemp)
-    
-      # Get column output (TSV with extra spaces)
-      list "$name" filter "$filter" > "$tmpfile"
-    
-      # Find the column index (header fields are separated by tabs and possibly spaces)
-      found=0
-      header=$(head -n1 "$tmpfile" | sed 's/^ *//;s/ *$//')
-      IFS=$'\t' read -r -a fields <<< "${header//↓/}"
-    
-      for i in "${!fields[@]}"; do
-        # Trim field name spaces
-        field=$(echo "${fields[i]}" | xargs)
 
+      # Get filtered data (TSV format from filter output)
+      list "$name" filter "$filter" > "$tmpfile"
+
+      # Find column index using TAB as separator
+      found=0
+      header=$(head -n1 "$tmpfile" | sed 's/↓//g')
+      IFS=$'\t' read -r -a fields <<< "$header"
+
+      for i in "${!fields[@]}"; do
+        field="${fields[i]// /}"
         if [[ "$field" == "$col" ]]; then
           index=$i
           found=1
-
           break
         fi
       done
-    
+
       if [[ $found -eq 0 ]]; then
         echo "Column '$col' not found."
         rm -f "$tmpfile"
-
         return 1
       fi
-    
-      # Print filtered table
-      cat "$tmpfile"
-    
+
       # Sum the column (skip header, trim spaces, handle tabs)
-      total=$(awk -v idx=$((index+1)) '
+      total=$(awk -v idx=$((index+1)) -F '\t' '
         NR > 1 {
-          # Remove leading/trailing spaces from each field
           for(i=1;i<=NF;i++) gsub(/^ +| +$/, "", $i)
           if ($idx ~ /^[0-9.]+$/) sum += $idx
         }
         END { print sum+0 }
-      ' FS='\t' "$tmpfile")
-    
+      ' "$tmpfile")
+
       echo -e "\nTOTAL: $total"
       rm -f "$tmpfile"
       ;;
