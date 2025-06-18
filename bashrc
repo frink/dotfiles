@@ -434,9 +434,6 @@ function list() {
       # Get filtered data, convert back to CSV
       list "$name" filter "$filter" | sed 's/  \+/,/g' > "$tmpfile"
 
-      cat "$tmpfile"
-      echo "$tmpfile"
-
       # Find column index using comma as separator
       header=$(head -n1 "$file")
       IFS=',' read -r -a fields <<< "${header//↓/}"
