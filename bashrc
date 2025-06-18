@@ -183,23 +183,23 @@ function list() {
       ;;
 
     define)
-      local old_headers new_headers old_fields new_fields out
+      local old_header new_header old_fields new_fields out
       local -a field_map lost
 
-      new_headers="$*"
+      new_header="$*"
 
-      if [[ -z "$new_headers" ]]; then
+      if [[ -z "$new_header" ]]; then
         echo "Please provide fields in your definition..."
         return 1
       fi
 
       if [[ ! -f "$file" ]]; then
-        echo "$new_headers" > "$file"
+        echo "$new_header" > "$file"
       else
-        old_headers=$(head -n1 "$file")
+        old_header=$(head -n1 "$file")
 
-        IFS=',' read -r -a old_fields <<< "${old_headers//↓/}"
-        IFS=',' read -r -a new_fields <<< "$new_headers"
+        IFS=',' read -r -a old_fields <<< "${old_header//↓/}"
+        IFS=',' read -r -a new_fields <<< "$new_header"
 
         # Find lost columns
         for old in "${old_fields[@]}"; do
@@ -232,7 +232,7 @@ function list() {
           done
         done
 
-        echo "$new_headers" > "$file.tmp"
+        echo "$new_header" > "$file.tmp"
 
         tail -n +2 "$file" | while IFS=',' read -r -a row; do
           out=()
@@ -436,8 +436,8 @@ function list() {
 
       # Find column index using TAB as separator
       found=0
-      header=$(head -n1 "$tmpfile" | sed 's/↓//g')
-      IFS=$'\t' read -r -a fields <<< "$header"
+      header=$(head -n1 "$tmpfile")
+      IFS=',' read -r -a old_fields <<< "${header//↓/}"
 
       for i in "${!fields[@]}"; do
         field="${fields[i]// /}"
