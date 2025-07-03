@@ -318,6 +318,7 @@ function list() {
       ' "$file" > "$file.tmp" && mv "$file.tmp" "$file"
 
       field=$(head -n1 "$file" | cut -d',' -f1)
+
       list "$name" sort > /dev/null
       list "$name" filter "$field=\"$key\""
       ;;
