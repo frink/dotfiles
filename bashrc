@@ -391,7 +391,11 @@ function list() {
      ;;
 
     filter)
-      list  | column -t -s,
+      local filter
+
+      filter="$*"
+      
+      list "$name" export "$filter" | column -t -s,
       ;;
 
     sum)
@@ -403,7 +407,7 @@ function list() {
       tmpfile=$(mktemp)
 
       # Get filtered data, convert back to CSV
-      list "$name" filter "$filter" | sed 's/  \+/,/g' > "$tmpfile"
+      list "$name" export "$filter" > "$tmpfile"
 
       # Find column index using comma as separator
       header=$(head -n1 "$file")
@@ -445,40 +449,6 @@ function list() {
       header=$(head -n1 "$file")
 
       echo "${header//↓/}"
-      ;;
-
-    json)
-      local data header first
-      local -a fields
-
-      data=$(tail -n +2 "$file")
-      header=$(head -n1 "$file")
-      IFS=',' read -r -a fields <<< "${header//↓/}"
-
-      echo "["
-
-      while IFS=',' read -r -a row; do
-        if [[ $first -eq 0 ]]; then
-          echo ","
-        fi
-
-        first=0
-
-        echo "  {"
-
-        for i in "${!fields[@]}"; do
-          local key val
-
-          key=${fields[i]}
-          val=${row[i]//\"/\\\"}
-
-          echo "    \"$key\": \"$val\""$( [[ $i -lt $((${#fields[@]} - 1)) ]] && echo "," )
-        done
-
-        echo "  }"
-      done <<< "$data"
-
-      echo "]"
       ;;
 
     import)
@@ -530,10 +500,42 @@ function list() {
       expr=$(echo "$expr" | sed -E 's/([<>]=?|==|!=)[[:space:]]*([0-9]{4}-[0-9]{2}-[0-9]{2})/\1"\2"/g')
       expr=$(echo "$expr" | sed -E 's/(\$[0-9]+)[[:space:]]*([<>]=?|==|!=)[[:space:]]*("[^"]*"|[0-9.]+)/(\1 != "" \&\& \1 \2 \3)/g')
 
-      {
-        echo "$header"
-        awk -F, "NR>1 { for(i=1;i<=NF;i++) gsub(/^ +| +$/, \"\", \$i); if ($expr) print \$0 }" "$file"
-      },
+      echo "$header"
+      awk -F, "NR>1 { for(i=1;i<=NF;i++) gsub(/^ +| +$/, \"\", \$i); if ($expr) print \$0 }" "$file"
+      ;;
+
+    json)
+      local data header first
+      local -a fields
+
+      data=$(tail -n +2 "$file")
+      header=$(head -n1 "$file")
+      IFS=',' read -r -a fields <<< "${header//↓/}"
+
+      echo "["
+
+      while IFS=',' read -r -a row; do
+        if [[ $first -eq 0 ]]; then
+          echo ","
+        fi
+
+        first=0
+
+        echo "  {"
+
+        for i in "${!fields[@]}"; do
+          local key val
+
+          key=${fields[i]}
+          val=${row[i]//\"/\\\"}
+
+          echo "    \"$key\": \"$val\""$( [[ $i -lt $((${#fields[@]} - 1)) ]] && echo "," )
+        done
+
+        echo "  }"
+      done <<< "$data"
+
+      echo "]"
       ;;
 
     clear)
