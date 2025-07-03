@@ -391,35 +391,7 @@ function list() {
      ;;
 
     filter)
-      local filter header expr colname
-      local -a fields
-
-      filter="$*"
-
-      if [[ -z "$filter" ]]; then
-        column -t -s, "$file"
-        return
-      fi
-
-      header=$(head -n1 "$file")
-      IFS=',' read -r -a fields <<< "${header//↓/}"
-
-      expr="$filter"
-
-      for i in "${!fields[@]}"; do
-        colname="${fields[$i]}"
-        expr=$(echo "$expr" | sed -E "s/\\b${colname}\\b/\\\$$((i+1))/g")
-      done
-
-      expr=$(echo "$expr" | sed -E 's/\band\b/&&/gi; s/\bor\b/||/gi')
-      expr=$(echo "$expr" | sed -E 's/([^!><])=([^=])/\1==\2/g')
-      expr=$(echo "$expr" | sed -E 's/([<>]=?|==|!=)[[:space:]]*([0-9]{4}-[0-9]{2}-[0-9]{2})/\1"\2"/g')
-      expr=$(echo "$expr" | sed -E 's/(\$[0-9]+)[[:space:]]*([<>]=?|==|!=)[[:space:]]*("[^"]*"|[0-9.]+)/(\1 != "" \&\& \1 \2 \3)/g')
-
-      {
-        echo "$header"
-        awk -F, "NR>1 { for(i=1;i<=NF;i++) gsub(/^ +| +$/, \"\", \$i); if ($expr) print \$0 }" "$file"
-      } | column -t -s,
+      list  | column -t -s,
       ;;
 
     sum)
@@ -475,7 +447,7 @@ function list() {
       echo "${header//↓/}"
       ;;
 
-    export)
+    json)
       local data header first
       local -a fields
 
@@ -532,6 +504,38 @@ function list() {
       fi
       ;;
 
+    export)
+      local filter header expr colname
+      local -a fields
+
+      filter="$*"
+
+      if [[ -z "$filter" ]]; then
+        cat "$file"
+        return
+      fi
+
+      header=$(head -n1 "$file")
+      IFS=',' read -r -a fields <<< "${header//↓/}"
+
+      expr="$filter"
+
+      for i in "${!fields[@]}"; do
+        colname="${fields[$i]}"
+        expr=$(echo "$expr" | sed -E "s/\\b${colname}\\b/\\\$$((i+1))/g")
+      done
+
+      expr=$(echo "$expr" | sed -E 's/\band\b/&&/gi; s/\bor\b/||/gi')
+      expr=$(echo "$expr" | sed -E 's/([^!><])=([^=])/\1==\2/g')
+      expr=$(echo "$expr" | sed -E 's/([<>]=?|==|!=)[[:space:]]*([0-9]{4}-[0-9]{2}-[0-9]{2})/\1"\2"/g')
+      expr=$(echo "$expr" | sed -E 's/(\$[0-9]+)[[:space:]]*([<>]=?|==|!=)[[:space:]]*("[^"]*"|[0-9.]+)/(\1 != "" \&\& \1 \2 \3)/g')
+
+      {
+        echo "$header"
+        awk -F, "NR>1 { for(i=1;i<=NF;i++) gsub(/^ +| +$/, \"\", \$i); if ($expr) print \$0 }" "$file"
+      },
+      ;;
+
     clear)
       head -n1 "$file" > "$file.tmp" && mv "$file.tmp" "$file"
       ;;
@@ -554,8 +558,9 @@ function list() {
     filter 'pattern'        Filter by pattern (make sure to quote pattern)
     sum field 'pattern'     Sums field filtered by pattern (make sure to quote pattern)
     clear                   Remove all entries
-    export                  Export the list to JSON
     import file             Import entries from CSV
+    export 'pattern'        Export the list to CSV
+    json                    Export the list to JSON
     alias                   Create an alias for 'list name'
     help                    Show this help message
       "
