@@ -1,8 +1,8 @@
-set encoding=utf8 ffs=unix,dos,mac
-set number nowrap foldmethod=indent
-set list lcs=tab:•·,space:•,trail:·,nbsp:•,precedes:◀,extends:▶
-set sidescroll=1 scrolloff=3
-set hlsearch incsearch magic
+#set encoding=utf8 ffs=unix,dos,mac
+#set number nowrap foldmethod=indent
+#set list lcs=tab:•·,space:•,trail:·,nbsp:•,precedes:◀,extends:▶
+#set sidescroll=1 scrolloff=3
+#set hlsearch incsearch magic
 set cursorline
 set lazyredraw 
 set showmatch mat=2
