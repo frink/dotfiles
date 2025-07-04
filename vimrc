@@ -1,8 +1,8 @@
-#set encoding=utf8 ffs=unix,dos,mac
-#set number nowrap foldmethod=indent
-#set list lcs=tab:•·,space:•,trail:·,nbsp:•,precedes:◀,extends:▶
-#set sidescroll=1 scrolloff=3
-#set hlsearch incsearch magic
+set encoding=utf8 ffs=unix,dos,mac
+set number nowrap foldmethod=indent
+set list lcs=tab:•·,space:•,trail:·,nbsp:•,precedes:◀,extends:▶
+set sidescroll=1 scrolloff=3
+set hlsearch incsearch magic
 set cursorline
 set lazyredraw 
 set showmatch mat=2
@@ -124,4 +124,4 @@ autocmd FileType html setlocal tabstop=2 softtabstop=0 expandtab shiftwidth=2 sm
 autocmd FileType php setlocal tabstop=2 softtabstop=0 expandtab shiftwidth=2 smarttab autoindent smartindent cindent
 autocmd FileType sh setlocal tabstop=2 softtabstop=0 expandtab shiftwidth=2 smarttab autoindent smartindent cindent
 autocmd FileType caddyfile setlocal noexpandtab tabstop=4 shiftwidth=4 autoindent smartindent cindent
-autocmd FileType template setlocal tabstop=2 softtabstop=0 expandtab shiftwidth=2 smarttab autoindent smartindent cindent
+autocmd FileType template setlocal tabstop=2 softtabstop=2 expandtab shiftwidth=2 smarttab autoindent smartindent cindent
