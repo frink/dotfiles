@@ -886,8 +886,8 @@ install-go() {
 
   version=$(wget -qO- 'https://go.dev/dl/?mode=json' | grep -m1 -oP '"version":\s*"\Kgo[0-9.]+' | sed 's/^go//' | tr '[:upper:]' '[:lower:]')
 
-  wget -P . https://go.dev/dl/go${version}.linux-amd64.tar.gz
-  sudo tar -xzf ./go${version}.linux-amd64.tar.gz --strip-components=1 go/bin/go go/bin/gofmt -C ./bin
+  wget -P /tmp https://go.dev/dl/go${version}.linux-amd64.tar.gz
+  sudo tar -xzf /tmp//go${version}.linux-amd64.tar.gz --strip-components=1 go/bin/go go/bin/gofmt -C ./bin
 }
 
 run-or-install psql
