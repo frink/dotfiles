@@ -882,13 +882,12 @@ function install-psql() {
 }
 
 install-go() {
-  local version, file
+  local version
 
-  version=$(curl -s 'https://go.dev/dl/?mode=json' | grep -m1 -oP '"version":\s*"\Kgo[0-9.]+')
-  file="${version}.linux-amd64.tar.gz"
+  version=$(wget -qO- 'https://go.dev/dl/?mode=json' | grep -m1 -oP '"version":\s*"\Kgo[0-9.]+' | sed 's/^go//' | tr '[:upper:]' '[:lower:]')
 
-  wget "https://go.dev/dl/${file}"
-  sudo tar -xzf "${file}" --strip-components=1 go/bin/go go/bin/gofmt -C /usr/local/bin
+  wget -P . https://go.dev/dl/go${version}.linux-amd64.tar.gz
+  tar -xzf ./go${version}.linux-amd64.tar.gz --strip-components=1 go/bin/go go/bin/gofmt -C ./bin
 }
 
 run-or-install psql
