@@ -888,7 +888,7 @@ install-go() {
   file="${version}.linux-amd64.tar.gz"
 
   wget "https://go.dev/dl/${file}"
-  tar -xzf "${file}" --strip-components=1 go/bin/go go/bin/gofmt -C /usr/local/bin
+  sudo tar -xzf "${file}" --strip-components=1 go/bin/go go/bin/gofmt -C /usr/local/bin
 }
 
 run-or-install psql
