@@ -1024,7 +1024,7 @@ alias wpost="wget -qO- --body-file=- --method=POST"
 alias wput="wget -qO- --body-file=- --method=PUT"
 
 function wread() {
-  wcat "$@" | sed -E \
+  wbody "$@" | sed -E \
     sed -E \
     -e 's#<style[^>]*>.*?</style># #g' \
     -e 's#<script[^>]*>.*?</script># #g' \
