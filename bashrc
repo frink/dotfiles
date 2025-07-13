@@ -1025,6 +1025,9 @@ alias wput="wget -qO- --body-file=- --method=PUT"
 
 function wread() {
   wcat "$@" | sed -E \
+    sed -E \
+    -e 's#<style[^>]*>.*?</style># #g' \
+    -e 's#<script[^>]*>.*?</script># #g' \
     -e 's#<li[^>]*>(.*?)</li>#- \\1#g' \
     -e 's#</?(ul|ol)[^>]*># #g' \
     -e 's#<a[^>]*href="([^"]*)"[^>]*>([^<]*)</a>#[\\2](\\1)#g' \
