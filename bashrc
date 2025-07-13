@@ -881,7 +881,7 @@ function install-psql() {
   sudo apt-get install -y postgresql-client
 }
 
-install-go() {
+function install-go() {
   local version
 
   version=$(wget -qO- 'https://go.dev/dl/?mode=json' | grep -m1 -oP '"version":\s*"\Kgo[0-9.]+' | sed 's/^go//')
@@ -891,12 +891,17 @@ install-go() {
   sudo tar -C /usr/local -xzf "/tmp/go${version}.linux-amd64.tar.gz"
 }
 
+function install-clai() {
+  wget -qO- https://raw.githubusercontent.com/baalimago/clai/main/setup.sh | sudo sh
+}
+
 run-or-install psql
 run-or-install docker
 run-or-install jq
 run-or-install whois
 run-or-install ncat
 run-or-install go
+run-or-install clai
 
 function sql.run() {
   if [ -z "$2" ]; then
