@@ -1023,6 +1023,22 @@ alias whead="wget -qS --method=HEAD"
 alias wpost="wget -qO- --body-file=- --method=POST"
 alias wput="wget -qO- --body-file=- --method=PUT"
 
+function wread() {
+  wcat "$@" | sed -E \
+    -e 's#<li[^>]*>(.*?)</li>#- \\1#g' \
+    -e 's#</?(ul|ol)[^>]*># #g' \
+    -e 's#<a[^>]*href="([^"]*)"[^>]*>([^<]*)</a>#[\\2](\\1)#g' \
+    -e 's#<img[^>]*src="([^"]*)"[^>]*alt="([^"]*)"[^>]*>#!\\2(\\1)!#g' \
+    -e 's#<h([1-6])[^>]*>(.*?)</h\\1>#\\n\\1 \\2\\n#g' \
+    -e 's#<strong[^>]*>(.*?)</strong>#**\\1**#g' \
+    -e 's#<b[^>]*>(.*?)</b>#**\\1**#g' \
+    -e 's#<em[^>]*>(.*?)</em>#*\\1*#g' \
+    -e 's#<i[^>]*>(.*?)</i>#*\\1*#g' \
+    -e 's#<blockquote[^>]*>(.*?)</blockquote>#\\n> \\1\\n#g' \
+    -e 's#<pre[^>]*><code[^>]*>(.*?)</code></pre>#``````#g' \
+    -e 's#</?[^>]+># #g' | glow
+}
+
 function surash() {
   wbody $1 | sudo bash ${@:2}
 }
