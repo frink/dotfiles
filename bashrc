@@ -1346,4 +1346,6 @@ localalias() {
   echo "Alias '$nickname' updated: $alias_cmd"
 }
 
+alias ai="clai q"
+
 [ -f ~/.localrc ] && source ~/.localrc
