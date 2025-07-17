@@ -670,6 +670,7 @@ function gc() {
 }
 
 alias gs="git status"
+alias gd="git diff"
 
 function -() {
   [ -n "$1" ] && pushd "$1" && return
