@@ -669,6 +669,8 @@ function gc() {
   git commit -am "${@:}"
 }
 
+alias gs="git status"
+
 function -() {
   [ -n "$1" ] && pushd "$1" && return
   dirs -p | grep -q '^/' && popd || cd -
