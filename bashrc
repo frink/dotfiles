@@ -666,7 +666,7 @@ function gp() {
 }
 
 function gc() {
-  git commit -am "${@:}"
+  git commit -am "$@"
 }
 
 alias gs="git status"
