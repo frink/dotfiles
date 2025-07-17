@@ -644,7 +644,7 @@ function g..() {
   x
 }
 
-alias gp="git pull && git merge && git push"
+alias gp="git pull && git mergetool > /dev/null && git push"
 
 function -() {
   [ -n "$1" ] && pushd "$1" && return
