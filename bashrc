@@ -646,7 +646,28 @@ function g..() {
   x
 }
 
-alias gp='if ! git diff-index --quiet HEAD --; then echo "Oops Uncommitted changes!"; exit 1; fi; git pull && git mergetool && git push'
+function gp() {
+  branch="$1"
+  if [ -n "$branch" ]; then
+    if git show-ref --verify --quiet "refs/heads/$branch"; then
+      git checkout "$branch"
+    else
+      echo "No such branch: $branch"
+      return 2
+    fi
+    shift
+  fi
+
+  if ! git diff-index --quiet HEAD --; then
+    echo "Oops Uncommitted changes!"
+    return 1
+  fi
+  git pull && git mergetool && git push
+}
+
+function gc() {
+  git commit -am "${@:}"
+}
 
 function -() {
   [ -n "$1" ] && pushd "$1" && return
