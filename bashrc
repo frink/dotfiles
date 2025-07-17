@@ -1349,3 +1349,6 @@ localalias() {
 alias ai="clai q"
 
 [ -f ~/.localrc ] && source ~/.localrc
+
+# opencode
+export PATH=/home/rods/.opencode/bin:$PATH
