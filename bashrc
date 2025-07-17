@@ -644,6 +644,8 @@ function g..() {
   x
 }
 
+alias gp="git pull && git merge && git push"
+
 function -() {
   [ -n "$1" ] && pushd "$1" && return
   dirs -p | grep -q '^/' && popd || cd -
