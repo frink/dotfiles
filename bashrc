@@ -646,7 +646,7 @@ function g..() {
   x
 }
 
-alias gp="git pull && git mergetool > /dev/null && git push"
+alias gp='if ! git diff-index --quiet HEAD --; then echo "Oops Uncommitted changes!"; exit 1; fi; git pull && git mergetool && git push'
 
 function -() {
   [ -n "$1" ] && pushd "$1" && return
