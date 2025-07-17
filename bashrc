@@ -1046,9 +1046,9 @@ function error() {
 }
 
 
-alias wcat="wget -qSO- --method=GET"
-alias wbody="wget -qO- --method=GET"
-alias whead="wget -qS --method=HEAD"
+alias wcat="wget --no-cache -qSO- --method=GET"
+alias wbody="wget --no-cache  -qO- --method=GET"
+alias whead="wget --no-cache  -qS --method=HEAD"
 alias wpost="wget -qO- --body-file=- --method=POST"
 alias wput="wget -qO- --body-file=- --method=PUT"
 
