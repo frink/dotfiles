@@ -6,9 +6,10 @@ export TERM=screen-256color
 
 set -o vi
 
+# termux settings
 if [ "$PREFIX" = "/data/data/com.termux/files/usr" ]; then
-  export HOSTNAME="chromebook"
-  export USER="termux"
+  export HOSTNAME="android"
+  export USER="term"
   export OS_TERMUX=1
 fi
 
@@ -44,8 +45,10 @@ function .path() {
 git config --global merge.tool vimdiff
 
 export PATH="~/.local/bin/:$HOME/go/bin/:/usr/local/go/bin/:$PATH"
-export PS1="\[\e[33;1m\]<$HOSTNAME>\[\e[91m\]\$(.branch)\n\[\e[34m\]@$USER \[\e[32m\]\$(.path) \[\e[?12h\]\[\e]12;#999900\007\]\[\e[4h\] \[\e[90m\]\$\[\e[0m\]"
-export PS1=""$ "
+#export PS1="\[\e[33;1m\]<$HOSTNAME>\[\e[91m\]\$(.branch)\n\[\e[34m\]@$USER \[\e[32m\]\$(.path) \[\e[?12h\]\[\e]12;#999900\007\]\[\e[4h\] \[\e[90m\]\$\[\e[0m\]"
+export PS1="\[\e[33;1m\]<\$HOSTNAME>\[\e[91m\]\$(.branch)\n\[\e[34m\]@$USER \[\e[32m\]\$(.path) \[\e[90m\]\$\[\e[0m\] \[\e]12;#999900\007\]\[\e]12;#999900\007\]\[\e[3 q\]"
+
+
 export EDITOR="$(which vim) -p"
 
 #type -p wslview > /dev/null && export BROWSER="wslview"
@@ -800,11 +803,11 @@ function v() {
   fi
 }
 
-alias vvc="dotfiles edit vimrc"
 alias vrc="dotfiles edit bashrc"
+alias vvc="dotfiles edit vimrc"
+alias vrc_="$EDITOR ~/.bashrc;source ~/.bashrc"
 alias vrc.="[ ! -f ~/.localrc ] && touch ~/.localrc && ln -s ~/.localrc $DOTREPO/localrc;dotfiles edit localrc"
 
-return 
 alias fio="rash https://raw.githubusercontent.com/boazsegev/facil.io/master/scripts/new/app"
 
 if [ ! $OS_TERMUX ]; then
@@ -1400,3 +1403,5 @@ alias ai="clai q"
 
 # opencode
 export PATH=/home/rods/.opencode/bin:$PATH
+
+alias vrc="vim -p ~/.bashrc;source ~/.bashrc"
