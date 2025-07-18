@@ -11,11 +11,9 @@ set foldcolumn=1
 set foldlevel=1
 set mouse=a
 
-if &term =~ 'xterm'
-  let &t_SI = "\e[6 q"
-  let &t_SR = "\e[4 q"
-  let &t_EI = "\e[2 q"
-endif
+let &t_SI = "\e[6 q"
+let &t_SR = "\e[4 q"
+let &t_EI = "\e[2 q"
 
 syntax enable
 colorscheme ron 
