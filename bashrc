@@ -10,7 +10,7 @@ if [ "$PREFIX" = "/data/data/com.termux/files/usr" ]; then
 fi
 
 function .branch() {
-  git branch -v 2> /dev/null | sed \
+  command git branch -v 2> /dev/null | sed \
     -e '/^[^*]/d' \
     -e 's/^..(*\([^ ]*\)[^\[]*/\1/' \
     -e 's/\].*$//' \
@@ -23,11 +23,11 @@ function .branch() {
 }
 
 function .change() {
-  git diff-index HEAD 2> /dev/null | sed 's/.\+$/*/' | uniq
+  command git diff-index HEAD 2> /dev/null | sed 's/.\+$/*/' | uniq
 }
 
 function .path() {
-  groot=$(git rev-parse --show-toplevel 2>/dev/null || echo '@@@')
+  groot=$(command git rev-parse --show-toplevel 2>/dev/null || echo '@@@')
 
   case $PWD in
     $HOME) echo "~/";;
@@ -1343,7 +1343,9 @@ git() {
   email=$(command git config user.email)
 
   case $1 in
-    config|rev-parse) git "$@";;
+    config|rev-parse|diff-index|branch)
+      command git "$@"
+      return $?;;
     *)
       if [[ -z "$email" ]]; then
         echo "git.id not set. Use git.id to configure this repository."
