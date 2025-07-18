@@ -1343,7 +1343,7 @@ git() {
   email=$(command git config user.email)
 
   case $1 in
-    status|config|branch|rev-parse|diff-index)
+    init|status|config|branch|rev-parse|diff-index)
       command git "$@"
       return $?;;
     *)
