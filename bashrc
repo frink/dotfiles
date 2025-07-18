@@ -45,7 +45,7 @@ export PS1="\[\e[33;1m\]<$HOSTNAME>\[\e[91m\]\$(.branch)\n\[\e[34m\]@$USER \[\e[
 export EDITOR="PS1= $(which vim) -p"
 
 function .editor(){
-  1=
+  (ps1=
 } 
 
 type -p wslview > /dev/null && export BROWSER="wslview"
