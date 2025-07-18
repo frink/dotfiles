@@ -672,8 +672,13 @@ function gp() {
   git pull && git mergetool && git push
 }
 
-function gc() {
+function gm() {
   git commit -am "$*"
+}
+
+function gu() {
+  gm "$*"
+  gp
 }
 
 alias gs="git status"
