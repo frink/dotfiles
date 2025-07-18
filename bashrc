@@ -857,11 +857,11 @@ type -p nhost > /dev/null || alias nhost="rash https://raw.githubusercontent.com
 function run-or-install () {
   local prog=$1
 
-  type -p $prog > /dev/null || alias $prog="install-$prog && unalias $prog && $prog"
-
   if [ -z "$(type -t install-$prog)" ]; then
     alias inatall-$prog="apt install $prog -y"
   fi
+
+  type -p $prog > /dev/null || alias $prog="install-$prog && unalias $prog && $prog"
 }
 
 function install-docker() {
