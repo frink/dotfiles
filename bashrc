@@ -41,11 +41,8 @@ function .path() {
 git config --global merge.tool vimdiff
 
 export PATH="~/.local/bin/:$HOME/go/bin/:/usr/local/go/bin/:$PATH"
-#export PS1="\[\e[33;1m\]<$HOSTNAME>\[\e[91m\]$(.branch)\n\[\e[34m\]@$USER \[\e[32m\]$(.path) \[\e[90m\]\$\[\e[0m\] \[\e[?12h\]\[\e[4h\]\^[\033]12;#999900\007\]"
-#export PS1="\[\e[33;1m\]<$HOSTNAME>\[\e[91m\]\$(.branch)\n\[\e[34m\]@$USER \[\e[32m\]\$(.path) \[\e[90m\]\$\[\e[0m\] \[\e[?12h\]\[\e[4h\]\[\e]12;#999900\007\]"
-#export PS1="\[\e[33;1m\]<$HOSTNAME>\[\e[91m\]\$(.branch)\n\[\e[34m\]@$USER \[\e[32m\]\$(.path) \[\e[90m\]\$\[\e[0m\] \[\e[4h\]\[\e[?12h\]\[\e]12;#999900\007\]"
-export PS1="\[\e[33;1m\]<$HOSTNAME>\[\e[91m\]\$(.branch)\n\[\e[34m\]@$USER \[\e[32m\]\$(.path) \[\e[90m\]\$\[\e[0m\] \[\e[?12h\]\[\e]12;#999900\007\]\[\e[4h\]"
-
+#export PS1="\[\e[33;1m\]<$HOSTNAME>\[\e[91m\]\$(.branch)\n\[\e[34m\]@$USER \[\e[32m\]\$(.path) \[\e[90m\]\$\[\e[0m\] \[\e[?12h\]\[\e]12;#999900\007\]\[\e[4h\]"
+export PS1="$"
 
 
 
