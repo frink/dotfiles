@@ -1338,11 +1338,18 @@ git.as() {
 }
 
 git() {
-  local email=$(command git config user.email)
-  if [[ -z "$email" ]]; then
-    echo "git.id not set. Use git.id to configure this repository."
-    return 1
-  fi
+  local email
+
+  email=$(command git config user.email)
+
+  case $1 in
+    config|rev-parse) git "$@";;
+    *)
+      if [[ -z "$email" ]]; then
+        echo "git.id not set. Use git.id to configure this repository."
+        return 1
+      fi;;
+  esac
 
   # Find the SSH key nickname by grepping .ssh/*.pub for the email
   local pubfile=$(grep -l "$email" ~/.ssh/*.pub 2>/dev/null | head -n1)
