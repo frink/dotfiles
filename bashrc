@@ -1,5 +1,7 @@
 #!/bin/bash
 [ -z "$PS1" ] && return
+unset NCURSES_NO_UTF8_ACS
+return
 
 set -o vi
 
@@ -45,7 +47,6 @@ export PS1="\[\e[33;1m\]<$HOSTNAME>\[\e[91m\]\$(.branch)\n\[\e[34m\]@$USER \[\e[
 export EDITOR="$(which vim) -p"
 
 # fix vim being weird
-unset NCURSES_NO_UTF8_ACS
 
 type -p wslview > /dev/null && export BROWSER="wslview"
 type -p see > /dev/null || alias see="$BROWSER"
