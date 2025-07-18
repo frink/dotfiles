@@ -924,6 +924,9 @@ function install-clai() {
   wget -qO- https://raw.githubusercontent.com/baalimago/clai/main/setup.sh | sudo sh
 }
 
+function install-clai() {
+  wget -qO- https://raw.githubusercontent.com/frinknet/wacc/main/utils/install.sh | sh
+}
 run-or-install psql
 run-or-install docker
 run-or-install jq
@@ -931,6 +934,8 @@ run-or-install whois
 run-or-install ncat
 run-or-install go
 run-or-install clai
+run-or-install dtach
+run-or-install wacc
 
 function sql.run() {
   if [ -z "$2" ]; then
