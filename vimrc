@@ -14,6 +14,7 @@ set mouse=a
 let &t_SI = "\e[6 q"
 let &t_SR = "\e[4 q"
 let &t_EI = "\e[2 q"
+call feedkeys("\e[2 q", "n")
 
 syntax enable
 colorscheme ron 
