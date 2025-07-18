@@ -1016,7 +1016,7 @@ function sqit() {
 }
 function on() {
   (
-    exe=( ${@:2} )
+    exe=( "${@:2}" )
     dtach -A /dev/shm/on-$1 ${exe[@]:-bash}
   )
 }
