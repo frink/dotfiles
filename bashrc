@@ -1,5 +1,6 @@
 #!/bin/bash
 [ -z "$PS1" ] && return
+return
 
 set -o vi
 
